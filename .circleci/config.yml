@@ -9,15 +9,6 @@ orbs:
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   upload-to-codecov:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "codecov"
-          command: "upload"
-
-  say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
@@ -26,9 +17,7 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+      - codecov/upload
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -36,6 +25,3 @@ workflows:
   codecov-workflow:
     jobs:
       - upload-to-codecov
-  say-hello-workflow:
-    jobs:
-      - say-hello
