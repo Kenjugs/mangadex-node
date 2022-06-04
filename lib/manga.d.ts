@@ -1,4 +1,4 @@
-import { AuthenticationToken } from "./authentication";
+import AuthAPI from "./authentication";
 import CommonAPI from "./common";
 
 declare namespace MangaAPI {
@@ -281,7 +281,7 @@ declare namespace MangaAPI {
     declare function getSearchManga(options?: GetSearchMangaRequestOptions): Promise<GetSearchMangaResponse | CommonAPI.ErrorResponse>;
 
     /** Get reading status of ALL manga for logged User. If `status` is provided, returns a filtered list with that specific reading status. */
-    declare function getMangaStatus(token: AuthenticationToken, status?: MangaReadingStatus): Promise<GetMangaStatusResponse | CommonAPI.ErrorResponse>;
+    declare function getMangaStatus(token: AuthAPI.AuthenticationToken, status?: MangaReadingStatus): Promise<GetMangaStatusResponse | CommonAPI.ErrorResponse>;
 
     /** Gets the feed of chapters for the given manga. */
     declare function getMangaIdFeed(mangaId: string, options?: GetMangaIdFeedRequestOptions): Promise<GetMangaIdFeedResponse | CommonAPI.ErrorResponse>;
