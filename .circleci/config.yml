@@ -17,7 +17,8 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - codecov/upload
+      - codecov/upload:
+          token: '2ade611a-c3c4-4abf-be0b-7ead9d116690'
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
