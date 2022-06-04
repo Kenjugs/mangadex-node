@@ -264,6 +264,19 @@ declare namespace MangaAPI {
         volumes: Record<string, MangaVolume>
     };
 
+    /** Request parameters for `GET /manga/{id}` */
+    declare type GetMangaIdRequestOptions = {
+        includes?: string
+    };
+
+    /** Response from `GET /manga/{id} */
+    declare type GetMangaIdResponse = {
+        result: 'ok' | 'error'
+        /** Default: "entity" */
+        response: string
+        data: Manga
+    };
+
     /** Search for manga. */
     declare function getSearchManga(options?: GetSearchMangaRequestOptions): Promise<GetSearchMangaResponse | CommonAPI.ErrorResponse>;
 
@@ -275,6 +288,9 @@ declare namespace MangaAPI {
 
     /** Get manga volumes and chapters. */
     declare function getMangaIdAggregate(mangaId: string, options?: GetMangaIdAggregateRequestOptions): Promise<GetMangaIdAggregateResponse | CommonAPI.ErrorResponse>;
+
+    /** Get manga information by ID. */
+    declare function getMangaId(mangaId: string, options?: GetMangaIdRequestOptions): Promise<GetMangaIdResponse | ErrorResponse>;
 }
 
 export = MangaAPI;
