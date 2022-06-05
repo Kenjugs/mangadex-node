@@ -277,19 +277,49 @@ declare namespace MangaAPI {
         data: Manga
     };
 
-    /** Search for manga. */
+    /**
+     * Search for manga.
+     * 
+     * @param {GetSearchMangaRequestOptions} [options] See {@link GetSearchMangaRequestOptions}
+     * @returns {Promise<GetSearchMangaResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetSearchMangaResponse} object.
+     */
     declare function getSearchManga(options?: GetSearchMangaRequestOptions): Promise<GetSearchMangaResponse | CommonAPI.ErrorResponse>;
 
-    /** Get reading status of ALL manga for logged User. If `status` is provided, returns a filtered list with that specific reading status. */
-    declare function getMangaStatus(token: AuthAPI.AuthenticationToken, status?: MangaReadingStatus): Promise<GetMangaStatusResponse | CommonAPI.ErrorResponse>;
+    /**
+     * Get reading status of ALL manga for logged User. If `status` is given,
+     * returns a filtered list with that specific reading status.
+     * 
+     * @param {AuthenticationToken} token See {@link AuthAPI.AuthenticationToken}
+     * @param {MangaReadingStatus} [status] See {@link MangaReadingStatus}
+     * @returns {Promise<GetMangaStatusResponse>} A promise that resolves to a {@link GetMangaStatusResponse} object.
+     */
+    declare function getMangaStatus(token: AuthAPI.AuthenticationToken, status?: MangaReadingStatus): Promise<GetMangaStatusResponse>;
 
-    /** Gets the feed of chapters for the given manga. */
+    /**
+     * Gets the feed of chapters for the given manga.
+     * 
+     * @param {string} mangaId
+     * @param {GetMangaIdFeedRequestOptions} [options] See {@link GetMangaIdFeedRequestOptions}
+     * @returns {Promise<GetMangaIdFeedResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetMangaIdFeedResponse} object
+     */
     declare function getMangaIdFeed(mangaId: string, options?: GetMangaIdFeedRequestOptions): Promise<GetMangaIdFeedResponse | CommonAPI.ErrorResponse>;
 
-    /** Get manga volumes and chapters. */
-    declare function getMangaIdAggregate(mangaId: string, options?: GetMangaIdAggregateRequestOptions): Promise<GetMangaIdAggregateResponse | CommonAPI.ErrorResponse>;
+    /**
+     * Get manga volumes and chapters.
+     * 
+     * @param {string} mangaId UUID formatted string
+     * @param {GetMangaIdAggregateRequestOptions} [options] See {@link GetMangaIdAggregateRequestOptions}
+     * @returns {Promise<GetMangaIdAggregateResponse>} A promise that resolves to a {@link GetMangaIdAggregateResponse} object
+     */
+    declare function getMangaIdAggregate(mangaId: string, options?: GetMangaIdAggregateRequestOptions): Promise<GetMangaIdAggregateResponse>;
 
-    /** Get manga information by ID. */
+    /**
+     * Get manga information by ID.
+     * 
+     * @param {string} mangaId UUID formatted string
+     * @param {GetMangaIdRequestOptions} [options] See {@link GetMangaIdRequestOptions}
+     * @returns {Promise<GetMangaIdResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetMangaIdResponse} object
+     */
     declare function getMangaId(mangaId: string, options?: GetMangaIdRequestOptions): Promise<GetMangaIdResponse | ErrorResponse>;
 }
 

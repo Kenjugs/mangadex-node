@@ -11,8 +11,12 @@ declare namespace AuthAPI {
         refresh: string
     };
 
+    /***********************
+     * API REQUEST/RESPONSE
+     ***********************/
+
     /** Login object for logging in and obtaining an auth token object. At least one of username or email is required. */
-    declare type Login = {
+    declare type AuthLoginRequestOptions = {
         /** 
          * ```console
          * Minimum length: 1
@@ -30,18 +34,68 @@ declare namespace AuthAPI {
         password: string
     };
 
-    /***********************
-     * API REQUEST/RESPONSE
-     ***********************/
-
     /** Response from `POST /auth/login` */
     declare type AuthLoginResponse = {
         result: 'ok' | 'error'
         token: AuthenticationToken
     };
 
-    /** Send account credentials and receive an authentication token */
-    declare function authLogin(login: Login): Promise<AuthLoginResponse | CommonAPI.ErrorResponse>;
+    /** Response from `GET /auth/check` */
+    declare type GetAuthCheckResponse = {
+        /** Default: "ok" */
+        result: string
+        isAuthenticated: boolean
+        roles: string[]
+        permissions: string[]
+    };
+
+    /** Response from `POST /auth/logout` */
+    declare type AuthLogoutResponse = {
+        result: 'ok' | 'error'
+    };
+
+    /** Response from `POST /auth/refresh` */
+    declare type AuthRefreshResponse = {
+        result: 'ok' | 'error'
+        token?: AuthenticationToken
+        message?: string
+    };
+
+    /**
+     * Send account credentials and receive an authentication token
+     * 
+     * @param {AuthLoginRequestOptions} login See {@link AuthLoginRequestOptions}
+     * @returns {Promise<AuthLoginResponse | CommonAPI.ErrorResponse>} A promise that resolves to an {@link AuthLoginResponse} object
+     */
+    declare function authLogin(login: AuthLoginRequestOptions): Promise<AuthLoginResponse | CommonAPI.ErrorResponse>;
+
+    /**
+     * Check if a session token is still valid
+     * 
+     * @param {AuthenticationToken} token See {@link AuthenticationToken}
+     * @returns {Promise<GetAuthCheckResponse>} A promise that resolves to a {@link GetAuthCheckResponse} object
+     */
+    declare function getAuthCheck(token: AuthenticationToken): Promise<GetAuthCheckResponse>;
+
+    /**
+     * Logs out of a currently valid session
+     * 
+     * @param {AuthenticationToken} token See {@link AuthenticationToken}
+     * @returns {Promise<AuthLogoutResponse | CommonAPI.ErrorResponse>} A promise that resolves to an {@link AuthLogoutResponse} object
+     */
+    declare function authLogout(token: AuthenticationToken): Promise<AuthLogoutResponse | CommonAPI.ErrorResponse>;
+
+    /**
+     * Refreshes a session token that has expired. Session tokens only last for 15
+     * minutes; refresh tokens allow you to refresh expired session tokens for up
+     * to a month without needing to re-authenticate. If the refresh token has
+     * expired, you will need to log in again; you cannot refresh a refresh token
+     * any other way.
+     * 
+     * @param {AuthenticationToken} token See {@link AuthenticationToken}
+     * @returns {Promise<AuthRefreshResponse | ErrorResponse>} A promise that resolves to an {@link AuthRefreshResponse} object
+     */
+    declare function authRefresh(token: AuthenticationToken): Promise<AuthRefreshResponse | CommonAPI.ErrorResponse>;
 }
 
 export = AuthAPI;
