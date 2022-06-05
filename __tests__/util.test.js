@@ -1,4 +1,6 @@
 const util = require('../lib/util');
+const https = require('https');
+const { EventEmitter } = require('stream');
 
 test('test buildQueryStringFromOptions with static data', () => {
     const options = {
@@ -78,8 +80,69 @@ test('test buildQueryStringFromOptions with blank options', () => {
     expect(s).toBe('');
 });
 
-// the purpose of this test is simply to make sure our request is properly formed
-test('test createHttpsRequestPromise', async () => {
-    const p = await util.createHttpsRequestPromise('GET', '/ping');
-    expect(p).toBe('pong');
+test('test createHttpsRequestPromise successful resolve', () => {
+    const spy = jest.spyOn(https, 'request').mockImplementation((options, callback) => {
+        const incomingMessage = new EventEmitter();
+        callback(incomingMessage);
+        incomingMessage.emit('data', '{ "result": "ok", ');
+        incomingMessage.emit('data', '"status": "dummy API call"');
+        incomingMessage.emit('data', ' }');
+        incomingMessage.emit('end');
+        return {
+            write: () => null,
+            end: () => null,
+            on: () => jest.fn(done => done()),
+        };
+    });
+
+    const options = {
+        body: {
+            a: 'hello',
+            b: 'world',
+        },
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    const p = util.createHttpsRequestPromise('POST', '/path', options).then(data => {
+        const expected = JSON.parse('{ "result": "ok", "status": "dummy API call" }');
+        expect(data).toEqual(expected);
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+
+    spy.mockRestore();
+});
+
+test('test createHttpsRequestPromise error', () => {
+    const spy = jest.spyOn(https, 'request').mockImplementation((options, callback) => {
+        const incomingMessage = new EventEmitter();
+        callback(incomingMessage);
+        incomingMessage.emit('error', 'error message');
+        incomingMessage.emit('end');
+        return {
+            write: () => null,
+            end: () => null,
+            on: () => jest.fn(done => done()),
+        };
+    });
+
+    const options = {
+        body: {
+            a: 'hello',
+            b: 'world',
+        },
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    const p = util.createHttpsRequestPromise('POST', '/path', options).catch(reason => {
+        expect(reason).toBe('error message');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+
+    spy.mockRestore();
 });
