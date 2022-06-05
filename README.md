@@ -1,1 +1,1 @@
-Mangadex v5 API wrapper - WIP
+Low-level Mangadex v5 API wrapper - WIP
