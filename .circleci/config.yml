@@ -41,4 +41,6 @@ workflows:
   codecov-workflow:
     jobs:
       - run-tests
-      - upload-to-codecov
+      - upload-to-codecov:
+          requires:
+            - run-tests
