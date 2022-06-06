@@ -18,6 +18,8 @@ jobs:
       - run:
           command: npm test
           name: Run tests
+      - store_test_results:
+          path: coverage
       - codecov/upload:
           token: CODECOV_TOKEN
 
