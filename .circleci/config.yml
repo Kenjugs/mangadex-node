@@ -18,22 +18,15 @@ jobs:
       - run:
           command: npm test
           name: Run tests
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - coverage
-  upload-to-codecov:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - attach_workspace:
-          at: ~/project/coverage 
       - codecov/upload:
           token: CODECOV_TOKEN
+          file: coverage/clover.xml
+      - codecov/upload:
+          token: CODECOV_TOKEN
+          file: coverage/coverage-final.json
+      - codecov/upload:
+          token: CODECOV_TOKEN
+          file: coverage/lcov.info
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -41,6 +34,3 @@ workflows:
   codecov-workflow:
     jobs:
       - run-tests
-      - upload-to-codecov:
-          requires:
-            - run-tests
