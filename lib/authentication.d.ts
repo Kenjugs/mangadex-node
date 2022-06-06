@@ -1,4 +1,4 @@
-import CommonAPI from "./common";
+import CommonAPI from './common';
 
 declare namespace AuthAPI {
     /*******************

@@ -1,5 +1,5 @@
-import AuthAPI from "./authentication";
-import CommonAPI from "./common";
+import AuthAPI from './authentication';
+import CommonAPI from './common';
 
 declare namespace MangaAPI {
     /********************
