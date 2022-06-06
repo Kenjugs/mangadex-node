@@ -16,8 +16,13 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm test
-          name: Run tests
+          command: npm install --save-dev jest-junit
+          name: Install JUnit coverage reporter
+      - run:
+          command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          name: Run tests with JUnit as reporter
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./coverage
       - store_test_results:
           path: coverage
       - codecov/upload:
