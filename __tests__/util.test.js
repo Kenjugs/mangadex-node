@@ -80,6 +80,40 @@ test('test buildQueryStringFromOptions with blank options', () => {
     expect(s).toBe('');
 });
 
+test('test createHttpsRequestPromise with no parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = util.createHttpsRequestPromise();
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - createHttpsRequestPromise: Parameter `method` cannot be undefined');
+
+    spy.mockRestore();
+});
+
+test('test createHttpsRequestPromise with missing required parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = util.createHttpsRequestPromise('get');
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - createHttpsRequestPromise: Parameter `path` cannot be undefined');
+
+    spy.mockRestore();
+});
+
+test('test createHttpsRequestPromise with blank parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = util.createHttpsRequestPromise('');
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - createHttpsRequestPromise: Parameter `method` cannot be blank');
+
+    const q = util.createHttpsRequestPromise('test', '');
+    expect(q).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - createHttpsRequestPromise: Parameter `path` cannot be blank');
+
+    spy.mockRestore();
+});
+
 test('test createHttpsRequestPromise successful resolve', () => {
     const spy = jest.spyOn(https, 'request').mockImplementation((options, callback) => {
         const incomingMessage = new EventEmitter();
