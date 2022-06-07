@@ -85,13 +85,35 @@ declare namespace GroupAPI {
         total: number
     };
 
+    /** Request parameters for `GET /group/{id}` */
+    declare type GetGroupIdRequestOptions = {
+        includes?: string[]
+    };
+
+    /** Response from `GET /group/{id}` */
+    declare type GetGroupIdResponse = {
+        result: 'ok'
+        /** Default: "entity" */
+        response: string
+        data: ScanlationGroup
+    };
+
     /**
      * Search for a scanlation group
      * 
-     * @param {GetSearchGroupRequestOptions} options See {@link GetSearchGroupRequestOptions}
+     * @param {GetSearchGroupRequestOptions} [options] See {@link GetSearchGroupRequestOptions}
      * @returns {Promise<GetSearchGroupResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetSearchGroupResponse} object
      */
-    declare function getSearchGroup(options: GetSearchGroupRequestOptions): Promise<GetSearchGroupResponse | CommonAPI.ErrorResponse>;
+    declare function getSearchGroup(options?: GetSearchGroupRequestOptions): Promise<GetSearchGroupResponse | CommonAPI.ErrorResponse>;
+
+    /**
+     * Get info about a specific scanlation group by their ID
+     * 
+     * @param {string} groupId UUID formatted string
+     * @param {GetGroupIdRequestOptions} [options] See {@link GetGroupIdRequestOptions}
+     * @returns {Promise<GetGroupIdResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetGroupIdResponse} object
+     */
+    declare function getGroupId(groupId: string, options?: GetGroupIdRequestOptions): Promise<GetGroupIdResponse | CommonAPI.ErrorResponse>;
 }
 
 export = GroupAPI;
