@@ -1,4 +1,4 @@
-const CommonAPI = require('./common');
+import CommonAPI from './common';
 
 declare namespace Utility {
     /**
