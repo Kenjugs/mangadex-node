@@ -143,12 +143,6 @@ declare namespace CommonAPI {
         attributes: TagAttributes
         relationships: Relationship[]
     };
-
-    /** Build a query string from a request options object. */
-    declare function buildQueryStringFromOptions(options: any): string;
-
-    /** Create an HTTPS request and return a Promise that resolves to T. */
-    declare function createHttpsRequestPromise<T>(method: string, path: string): Promise<T | ErrorResponse>;
 }
 
 export = CommonAPI;
