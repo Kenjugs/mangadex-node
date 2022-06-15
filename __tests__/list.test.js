@@ -34,3 +34,37 @@ test('test getListId with valid parameters', () => {
 
     spy.mockRestore();
 });
+
+test ('test getUserList with no parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = list.getUserList();
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getUserList: Parameter `token` cannot be undefined');
+
+    spy.mockRestore();
+});
+
+test ('test getUserList with blank parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = list.getUserList({},{});
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getUserList: Parameter `token` missing required property `session`');
+
+    spy.mockRestore();
+});
+
+test ('test getUserList with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = list.getUserList({session: 'test', refresh: 'abcd'}, {limit: 5}).then(res => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+
+    spy.mockRestore();
+});
