@@ -85,7 +85,7 @@ declare namespace MangaAPI {
         relationships: CommonAPI.Relationship[]
     };
 
-    type MangaChapter = {
+    type MangaVolumeChapter = {
         chapter: string
         /** UUID formatted string */
         id: string
@@ -99,7 +99,7 @@ declare namespace MangaAPI {
         volume: string
         /** Total number of chapters in volume across filtered languages */
         count: number
-        chapters: Record<string, MangaChapter>
+        chapters: Record<string, MangaVolumeChapter>
     };
 
     /***********************
@@ -242,7 +242,7 @@ declare namespace MangaAPI {
         result: string
         /** Default: "collection" */
         response: string
-        data: MangaChapter[]
+        data: MangaVolumeChapter[]
         limit: number
         offset: number
         total: number
