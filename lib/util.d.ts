@@ -1,6 +1,11 @@
+import * as https from 'https';
 import CommonAPI from './common';
 
 declare namespace Utility {
+    type RequestOptions = https.RequestOptions & {
+        body: object
+    };
+
     /**
      * Build a query string from a request options object
      * 
@@ -15,10 +20,10 @@ declare namespace Utility {
      * @template T
      * @param {string} method The HTTP method
      * @param {string} path The endpoint path
-     * @param {object} [options] Additional request options (such as request body, headers, etc.)
+     * @param {RequestOptions} [options] Additional request options (such as request body, headers, etc.)
      * @returns {Promise<T | CommonAPI.ErrorResponse>} A promise that resolves to a specific response object T
      */
-    function createHttpsRequestPromise<T>(method: string, path: string, options?: object): Promise<T | CommonAPI.ErrorResponse>;
+    function createHttpsRequestPromise<T>(method: string, path: string, options?: RequestOptions): Promise<T | CommonAPI.ErrorResponse>;
 }
 
 export = Utility;
