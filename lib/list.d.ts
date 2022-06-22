@@ -45,6 +45,7 @@ declare namespace ListAPI {
         offset?: number
     };
 
+    /** Response from `GET /user/list` */
     declare type GetUserListResponse = {
         /** Default: "ok" */
         result: string
@@ -55,6 +56,12 @@ declare namespace ListAPI {
         offset: number
         total: number
     };
+
+    /** Request parameters for `GET /user/{id}/list` */
+    declare type GetUserIdListRequestOptions = GetUserListRequestOptions;
+
+    /** Response from `GET /user/{id}/list` */
+    declare type GetUserIdListResponse = GetUserListResponse;
 
     /**
      * Get info about a list by its ID
@@ -72,6 +79,15 @@ declare namespace ListAPI {
      * @returns {Promise<GetUserListResponse>} A promise that resolves to a {@link GetUserListResponse} object
      */
     declare function getUserList(token: AuthAPI.AuthenticationToken, options?: GetUserListRequestOptions): Promise<GetUserListResponse>;
+
+    /**
+     * Get a specific user's custom lists (public only)
+     * 
+     * @param {string} id UUID formatted string
+     * @param {GetUserIdListRequestOptions} [options] See {@link GetUserIdListRequestOptions}
+     * @returns {Promise<GetUserIdListResponse>} A promise that resolves to a {@link GetUserIdListResponse} object
+     */
+    declare function getUserIdList(id: string, options?: GetUserIdListRequestOptions): Promise<GetUserIdListResponse>;
 };
 
 export = ListAPI;
