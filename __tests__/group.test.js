@@ -11,7 +11,7 @@ test('test getSearchGroup with no parameters', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
-    
+
     spy.mockRestore();
 });
 
@@ -29,7 +29,7 @@ test('test getSearchGroup with valid parameters', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
-    
+
     spy.mockRestore();
 });
 

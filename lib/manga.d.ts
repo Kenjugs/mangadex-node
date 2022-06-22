@@ -7,7 +7,7 @@ declare namespace MangaAPI {
      ********************/
 
     /** Enum for manga reading status */
-    declare enum MangaReadingStatus {
+    enum MangaReadingStatus {
         READING,
         ON_HOLD,
         PLAN_TO_READ,
@@ -17,7 +17,7 @@ declare namespace MangaAPI {
     }
 
     /** Enum for manga content rating */
-    declare enum MangaContentRating {
+    enum MangaContentRating {
         SAFE,
         SUGGESTIVE,
         EROTICA,
@@ -25,7 +25,7 @@ declare namespace MangaAPI {
     }
 
     /** Enum for manga publication demographic */
-    declare enum MangaPublicationDemographic {
+    enum MangaPublicationDemographic {
         SHOUNEN,
         SHOUJO,
         JOSEI,
@@ -33,7 +33,7 @@ declare namespace MangaAPI {
     }
 
     /** Enum for manga publication status */
-    declare enum MangaPublicationStatus {
+    enum MangaPublicationStatus {
         COMPLETED,
         ONGOING,
         CANCELLED,
@@ -41,7 +41,7 @@ declare namespace MangaAPI {
     }
 
     /** Enum for Mangadex manga state */
-    declare enum MangadexMangaState {
+    enum MangadexMangaState {
         DRAFT,
         SUBMITTED,
         PUBLISHED,
@@ -52,12 +52,12 @@ declare namespace MangaAPI {
      * TYPE DEFINITIONS
      *******************/
 
-    declare type MangaAttributes = {
-        title: LocalizedString
-        altTitles: LocalizedString[]
-        descriptiont: LocalizedString
+    type MangaAttributes = {
+        title: CommonAPI.LocalizedString
+        altTitles: CommonAPI.LocalizedString[]
+        descriptiont: CommonAPI.LocalizedString
         isLocked: boolean
-        links: Links
+        links: CommonAPI.Links
         originalLanguage: string
         lastVolume?: string
         lastChapter?: string
@@ -68,7 +68,7 @@ declare namespace MangaAPI {
         contentRating: MangaContentRating
         chapterNumbersResetOnNewVolume: boolean
         availableTranslatedLanguages: string[]
-        tags: Tag[]
+        tags: CommonAPI.Tag[]
         state: MangadexMangaState
         version: number
         /** DateTime formatted as YYYY-MM-DDTHH:mm:SS+HH:mm */
@@ -77,15 +77,15 @@ declare namespace MangaAPI {
         updatedAt: string
     };
 
-    declare type Manga = {
+    type Manga = {
         /** UUID formatted string */
         id: string
         type: 'manga'
         attributes: MangaAttributes
-        relationships: Relationship[]
+        relationships: CommonAPI.Relationship[]
     };
 
-    declare type MangaChapter = {
+    type MangaChapter = {
         chapter: string
         /** UUID formatted string */
         id: string
@@ -95,7 +95,7 @@ declare namespace MangaAPI {
         count: number
     };
 
-    declare type MangaVolume = {
+    type MangaVolume = {
         volume: string
         /** Total number of chapters in volume across filtered languages */
         count: number
@@ -106,7 +106,7 @@ declare namespace MangaAPI {
      * API REQUEST/RESPONSE
      ***********************/
 
-    declare type GetSearchMangaOrder = {
+    type GetSearchMangaOrder = {
         title?: CommonAPI.Order
         year?: CommonAPI.Order
         createdAt?: CommonAPI.Order
@@ -117,7 +117,7 @@ declare namespace MangaAPI {
     };
 
     /** Request parameters for `GET /manga` */
-    declare type GetSearchMangaRequestOptions = {
+    type GetSearchMangaRequestOptions = {
         /** Default: 10 */
         limit?: number
         offset?: number
@@ -160,7 +160,7 @@ declare namespace MangaAPI {
     };
 
     /** Response from `GET /manga` */
-    declare type GetSearchMangaResponse = {
+    type GetSearchMangaResponse = {
         /** Default: "ok" */
         result: string
         /** Default: "collection" */
@@ -172,7 +172,7 @@ declare namespace MangaAPI {
     };
 
     /** Response from `GET /manga/status` */
-    declare type GetMangaStatusResponse = {
+    type GetMangaStatusResponse = {
         /** Default: "ok" */
         result: string
         /**
@@ -192,7 +192,7 @@ declare namespace MangaAPI {
         statuses: Record<string, MangaReadingStatus>
     };
 
-    declare type GetMangaIdFeedOrder = {
+    type GetMangaIdFeedOrder = {
         createdAt?: CommonAPI.Order
         updatedAt?: CommonAPI.Order
         publishAt?: CommonAPI.Order
@@ -202,7 +202,7 @@ declare namespace MangaAPI {
     };
 
     /** Request parameters for `GET /manga/{id}/feed` */
-    declare type GetMangaIdFeedRequestOptions = {
+    type GetMangaIdFeedRequestOptions = {
         /**
          * ```console
          * Default: 100
@@ -237,19 +237,19 @@ declare namespace MangaAPI {
     };
 
     /** Response from `GET /manga/{id}/feed` */
-    declare type GetMangaIdFeedResponse = {
+    type GetMangaIdFeedResponse = {
         /** Default: "ok" */
         result: string
         /** Default: "collection" */
         response: string
-        data: Chapter[]
+        data: MangaChapter[]
         limit: number
         offset: number
         total: number
     };
 
     /** Request parameters for `GET /manga/{id}/aggregate` */
-    declare type GetMangaIdAggregateRequestOptions = {
+    type GetMangaIdAggregateRequestOptions = {
         /** ISO 639-1 standard two or five letter language code */
         translatedLanguage?: string[]
         /** UUID formatted strings */
@@ -257,7 +257,7 @@ declare namespace MangaAPI {
     };
 
     /** Response from `GET /manga/{id}/aggregate` */
-    declare type GetMangaIdAggregateResponse = {
+    type GetMangaIdAggregateResponse = {
         /** Default: "ok" */
         result: string
         /** Object containing volumes and their respective chapters */
@@ -265,12 +265,12 @@ declare namespace MangaAPI {
     };
 
     /** Request parameters for `GET /manga/{id}` */
-    declare type GetMangaIdRequestOptions = {
+    type GetMangaIdRequestOptions = {
         includes?: string
     };
 
     /** Response from `GET /manga/{id} */
-    declare type GetMangaIdResponse = {
+    type GetMangaIdResponse = {
         result: 'ok' | 'error'
         /** Default: "entity" */
         response: string
@@ -283,7 +283,7 @@ declare namespace MangaAPI {
      * @param {GetSearchMangaRequestOptions} [options] See {@link GetSearchMangaRequestOptions}
      * @returns {Promise<GetSearchMangaResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetSearchMangaResponse} object.
      */
-    declare function getSearchManga(options?: GetSearchMangaRequestOptions): Promise<GetSearchMangaResponse | CommonAPI.ErrorResponse>;
+    function getSearchManga(options?: GetSearchMangaRequestOptions): Promise<GetSearchMangaResponse | CommonAPI.ErrorResponse>;
 
     /**
      * Get reading status of ALL manga for logged User. If `status` is given,
@@ -293,7 +293,7 @@ declare namespace MangaAPI {
      * @param {MangaReadingStatus} [status] See {@link MangaReadingStatus}
      * @returns {Promise<GetMangaStatusResponse>} A promise that resolves to a {@link GetMangaStatusResponse} object.
      */
-    declare function getMangaStatus(token: AuthAPI.AuthenticationToken, status?: MangaReadingStatus): Promise<GetMangaStatusResponse>;
+    function getMangaStatus(token: AuthAPI.AuthenticationToken, status?: MangaReadingStatus): Promise<GetMangaStatusResponse>;
 
     /**
      * Gets the feed of chapters for the given manga.
@@ -302,7 +302,7 @@ declare namespace MangaAPI {
      * @param {GetMangaIdFeedRequestOptions} [options] See {@link GetMangaIdFeedRequestOptions}
      * @returns {Promise<GetMangaIdFeedResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetMangaIdFeedResponse} object
      */
-    declare function getMangaIdFeed(mangaId: string, options?: GetMangaIdFeedRequestOptions): Promise<GetMangaIdFeedResponse | CommonAPI.ErrorResponse>;
+    function getMangaIdFeed(mangaId: string, options?: GetMangaIdFeedRequestOptions): Promise<GetMangaIdFeedResponse | CommonAPI.ErrorResponse>;
 
     /**
      * Get manga volumes and chapters.
@@ -311,7 +311,7 @@ declare namespace MangaAPI {
      * @param {GetMangaIdAggregateRequestOptions} [options] See {@link GetMangaIdAggregateRequestOptions}
      * @returns {Promise<GetMangaIdAggregateResponse>} A promise that resolves to a {@link GetMangaIdAggregateResponse} object
      */
-    declare function getMangaIdAggregate(mangaId: string, options?: GetMangaIdAggregateRequestOptions): Promise<GetMangaIdAggregateResponse>;
+    function getMangaIdAggregate(mangaId: string, options?: GetMangaIdAggregateRequestOptions): Promise<GetMangaIdAggregateResponse>;
 
     /**
      * Get manga information by ID.
@@ -320,7 +320,7 @@ declare namespace MangaAPI {
      * @param {GetMangaIdRequestOptions} [options] See {@link GetMangaIdRequestOptions}
      * @returns {Promise<GetMangaIdResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetMangaIdResponse} object
      */
-    declare function getMangaId(mangaId: string, options?: GetMangaIdRequestOptions): Promise<GetMangaIdResponse | ErrorResponse>;
+    function getMangaId(mangaId: string, options?: GetMangaIdRequestOptions): Promise<GetMangaIdResponse | CommonAPI.ErrorResponse>;
 }
 
 export = MangaAPI;

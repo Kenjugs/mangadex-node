@@ -3,17 +3,17 @@ const util = require('../lib/util');
 
 test('test authLogin with no parameters', () => {
     const spy = jest.spyOn(console, 'error').mockImplementation();
-    
+
     const p = auth.authLogin();
     expect(p).toBe(undefined);
     expect(console.error).toHaveBeenCalledWith('ERROR - authLogin: Parameter `login` cannot be undefined');
-    
+
     spy.mockRestore();
 });
 
 test('test authLogin with missing email and username', () => {
     const spy = jest.spyOn(console, 'error').mockImplementation();
-        
+
     const p = auth.authLogin({ password: 'a' });
     expect(p).toBe(undefined);
     expect(console.error).toHaveBeenCalledWith('ERROR - authLogin: Parameter `login` missing both `login.username` and `login.email`');
@@ -40,9 +40,9 @@ test('test authLogin with valid parameters', () => {
         username: 'a',
         password: 'c',
     };
-    
+
     const p = auth.authLogin(op).then(res => {
-        expect(res).toEqual({result: 'ok', token: 'test'});
+        expect(res).toEqual({ result: 'ok', token: 'test' });
     });
 
     expect(p).toBeInstanceOf(Promise);

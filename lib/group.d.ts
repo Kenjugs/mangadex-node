@@ -5,7 +5,7 @@ declare namespace GroupAPI {
      * TYPE DECLARATIONS
      ********************/
 
-    declare type ScanlationGroupAttributes = {
+    type ScanlationGroupAttributes = {
         name: string
         altNames: CommonAPI.LocalizedString[]
         website?: string
@@ -28,7 +28,7 @@ declare namespace GroupAPI {
         updatedAt: string
     };
 
-    declare type ScanlationGroup = {
+    type ScanlationGroup = {
         /** UUID formatted string */
         id: string
         type: 'scanlation_group'
@@ -40,7 +40,7 @@ declare namespace GroupAPI {
      * API REQUEST/RESPONSE
      ***********************/
 
-    declare type GetSearchGroupOrder = {
+    type GetSearchGroupOrder = {
         name?: CommonAPI.Order
         createdAt?: CommonAPI.Order
         updatedAt?: CommonAPI.Order
@@ -49,7 +49,7 @@ declare namespace GroupAPI {
     };
 
     /** Request parameters for `GET /group` */
-    declare type GetSearchGroupRequestOptions = {
+    type GetSearchGroupRequestOptions = {
         /**
          * ```console
          * Default: 10
@@ -74,7 +74,7 @@ declare namespace GroupAPI {
     };
 
     /** Response from `GET /group` */
-    declare type GetSearchGroupResponse = {
+    type GetSearchGroupResponse = {
         /** Default: "ok" */
         result: string
         /** Default: "collection" */
@@ -86,12 +86,12 @@ declare namespace GroupAPI {
     };
 
     /** Request parameters for `GET /group/{id}` */
-    declare type GetGroupIdRequestOptions = {
+    type GetGroupIdRequestOptions = {
         includes?: string[]
     };
 
     /** Response from `GET /group/{id}` */
-    declare type GetGroupIdResponse = {
+    type GetGroupIdResponse = {
         result: 'ok'
         /** Default: "entity" */
         response: string
@@ -104,7 +104,7 @@ declare namespace GroupAPI {
      * @param {GetSearchGroupRequestOptions} [options] See {@link GetSearchGroupRequestOptions}
      * @returns {Promise<GetSearchGroupResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetSearchGroupResponse} object
      */
-    declare function getSearchGroup(options?: GetSearchGroupRequestOptions): Promise<GetSearchGroupResponse | CommonAPI.ErrorResponse>;
+    function getSearchGroup(options?: GetSearchGroupRequestOptions): Promise<GetSearchGroupResponse | CommonAPI.ErrorResponse>;
 
     /**
      * Get info about a specific scanlation group by their ID
@@ -113,7 +113,7 @@ declare namespace GroupAPI {
      * @param {GetGroupIdRequestOptions} [options] See {@link GetGroupIdRequestOptions}
      * @returns {Promise<GetGroupIdResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetGroupIdResponse} object
      */
-    declare function getGroupId(groupId: string, options?: GetGroupIdRequestOptions): Promise<GetGroupIdResponse | CommonAPI.ErrorResponse>;
+    function getGroupId(groupId: string, options?: GetGroupIdRequestOptions): Promise<GetGroupIdResponse | CommonAPI.ErrorResponse>;
 }
 
 export = GroupAPI;

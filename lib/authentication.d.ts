@@ -6,7 +6,7 @@ declare namespace AuthAPI {
      *******************/
 
     /** Authentication token used for logging in to a user account */
-    declare type AuthenticationToken = {
+    type AuthenticationToken = {
         session: string
         refresh: string
     };
@@ -16,7 +16,7 @@ declare namespace AuthAPI {
      ***********************/
 
     /** Login object for logging in and obtaining an auth token object. At least one of username or email is required. */
-    declare type AuthLoginRequestOptions = {
+    type AuthLoginRequestOptions = {
         /** 
          * ```console
          * Minimum length: 1
@@ -35,13 +35,13 @@ declare namespace AuthAPI {
     };
 
     /** Response from `POST /auth/login` */
-    declare type AuthLoginResponse = {
+    type AuthLoginResponse = {
         result: 'ok' | 'error'
         token: AuthenticationToken
     };
 
     /** Response from `GET /auth/check` */
-    declare type GetAuthCheckResponse = {
+    type GetAuthCheckResponse = {
         /** Default: "ok" */
         result: string
         isAuthenticated: boolean
@@ -50,12 +50,12 @@ declare namespace AuthAPI {
     };
 
     /** Response from `POST /auth/logout` */
-    declare type AuthLogoutResponse = {
+    type AuthLogoutResponse = {
         result: 'ok' | 'error'
     };
 
     /** Response from `POST /auth/refresh` */
-    declare type AuthRefreshResponse = {
+    type AuthRefreshResponse = {
         result: 'ok' | 'error'
         token?: AuthenticationToken
         message?: string
@@ -67,7 +67,7 @@ declare namespace AuthAPI {
      * @param {AuthLoginRequestOptions} login See {@link AuthLoginRequestOptions}
      * @returns {Promise<AuthLoginResponse | CommonAPI.ErrorResponse>} A promise that resolves to an {@link AuthLoginResponse} object
      */
-    declare function authLogin(login: AuthLoginRequestOptions): Promise<AuthLoginResponse | CommonAPI.ErrorResponse>;
+    function authLogin(login: AuthLoginRequestOptions): Promise<AuthLoginResponse | CommonAPI.ErrorResponse>;
 
     /**
      * Check if a session token is still valid
@@ -75,7 +75,7 @@ declare namespace AuthAPI {
      * @param {AuthenticationToken} token See {@link AuthenticationToken}
      * @returns {Promise<GetAuthCheckResponse>} A promise that resolves to a {@link GetAuthCheckResponse} object
      */
-    declare function getAuthCheck(token: AuthenticationToken): Promise<GetAuthCheckResponse>;
+    function getAuthCheck(token: AuthenticationToken): Promise<GetAuthCheckResponse>;
 
     /**
      * Logs out of a currently valid session
@@ -83,7 +83,7 @@ declare namespace AuthAPI {
      * @param {AuthenticationToken} token See {@link AuthenticationToken}
      * @returns {Promise<AuthLogoutResponse | CommonAPI.ErrorResponse>} A promise that resolves to an {@link AuthLogoutResponse} object
      */
-    declare function authLogout(token: AuthenticationToken): Promise<AuthLogoutResponse | CommonAPI.ErrorResponse>;
+    function authLogout(token: AuthenticationToken): Promise<AuthLogoutResponse | CommonAPI.ErrorResponse>;
 
     /**
      * Refreshes a session token that has expired. Session tokens only last for 15
@@ -95,7 +95,7 @@ declare namespace AuthAPI {
      * @param {AuthenticationToken} token See {@link AuthenticationToken}
      * @returns {Promise<AuthRefreshResponse | ErrorResponse>} A promise that resolves to an {@link AuthRefreshResponse} object
      */
-    declare function authRefresh(token: AuthenticationToken): Promise<AuthRefreshResponse | CommonAPI.ErrorResponse>;
+    function authRefresh(token: AuthenticationToken): Promise<AuthRefreshResponse | CommonAPI.ErrorResponse>;
 }
 
 export = AuthAPI;

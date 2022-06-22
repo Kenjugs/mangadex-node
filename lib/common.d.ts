@@ -4,7 +4,7 @@ declare namespace CommonAPI {
      ********************/
 
     /** Enum for related manga type */
-    declare enum RelatedMangaType {
+    enum RelatedMangaType {
         MONOCHROME,
         MAIN_STORY,
         ADAPTED_FROM,
@@ -24,7 +24,7 @@ declare namespace CommonAPI {
     }
 
     /** Enum for order to return items in */
-    declare enum Order {
+    enum Order {
         ASC,
         DESC,
     }
@@ -33,21 +33,21 @@ declare namespace CommonAPI {
      * TYPE DEFINITIONS
      *******************/
 
-    declare type ResponseError = {
+    type ResponseError = {
         id: string
         status: number
         title: string
         detail: string
     };
 
-    declare type ErrorResponse = {
+    type ErrorResponse = {
         result: 'error'
         errors: ResponseError[]
     };
 
-    declare type LocalizedString = Record<string, string>;
+    type LocalizedString = Record<string, string>;
 
-    declare type Links = {
+    type Links = {
         /**
          * anilist
          * ```console
@@ -119,7 +119,7 @@ declare namespace CommonAPI {
         engtl: string
     };
 
-    declare type Relationship = {
+    type Relationship = {
         /** UUID formatted string */
         id: string
         type: string
@@ -129,14 +129,14 @@ declare namespace CommonAPI {
         attributes?: object
     };
 
-    declare type TagAttributes = {
+    type TagAttributes = {
         name: LocalizedString
         description: LocalizedString
         group: string
         version: number
     };
 
-    declare type Tag = {
+    type Tag = {
         /** UUID formatted string */
         id: string
         type: 'tag'

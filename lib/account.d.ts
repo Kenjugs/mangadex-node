@@ -6,7 +6,7 @@ declare namespace AccountAPI {
      ***********************/
 
     /** Response from `GET /account/available` */
-    declare type GetAccountAvailableResponse = {
+    type GetAccountAvailableResponse = {
         available: boolean
     };
 
@@ -16,7 +16,7 @@ declare namespace AccountAPI {
      * @param {string} username Username to check availability of
      * @returns {Promise<GetAccountAvailableResponse | CommonAPI.ErrorResponse>} A promise that resolves to an {@link GetAccountAvailableResponse} object
      */
-    declare function getAccountAvailable(username: string): Promise<GetAccountAvailableResponse | CommonAPI.ErrorResponse>;
+    function getAccountAvailable(username: string): Promise<GetAccountAvailableResponse | CommonAPI.ErrorResponse>;
 }
 
 export = AccountAPI;

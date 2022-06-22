@@ -6,13 +6,13 @@ declare namespace ListAPI {
      * TYPE DECLARATIONS
      ********************/
 
-    declare type CustomListAttributes = {
+    type CustomListAttributes = {
         name: string
         visibility: 'private' | 'public'
         version: number
     };
 
-    declare type CustomList = {
+    type CustomList = {
         /** UUID formatted string */
         id: string
         type: 'custom_list'
@@ -25,7 +25,7 @@ declare namespace ListAPI {
      ***********************/
 
     /** Response from `GET /list/{id}` */
-    declare type GetListIdResponse = {
+    type GetListIdResponse = {
         result: 'ok' | 'error'
         /** Default: "entity" */
         response: string
@@ -33,7 +33,7 @@ declare namespace ListAPI {
     };
 
     /** Request parameters for `GET /user/list` */
-    declare type GetUserListRequestOptions = {
+    type GetUserListRequestOptions = {
         /**
          * ```console
          * Default: 10
@@ -46,7 +46,7 @@ declare namespace ListAPI {
     };
 
     /** Response from `GET /user/list` */
-    declare type GetUserListResponse = {
+    type GetUserListResponse = {
         /** Default: "ok" */
         result: string
         /** Default: "collection" */
@@ -58,10 +58,10 @@ declare namespace ListAPI {
     };
 
     /** Request parameters for `GET /user/{id}/list` */
-    declare type GetUserIdListRequestOptions = GetUserListRequestOptions;
+    type GetUserIdListRequestOptions = GetUserListRequestOptions;
 
     /** Response from `GET /user/{id}/list` */
-    declare type GetUserIdListResponse = GetUserListResponse;
+    type GetUserIdListResponse = GetUserListResponse;
 
     /**
      * Get info about a list by its ID
@@ -69,7 +69,7 @@ declare namespace ListAPI {
      * @param {string} listId UUID formatted string
      * @returns {Promise<GetListIdResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetListIdResponse} object
      */
-    declare function getListId(listId: string): Promise<GetListIdResponse | CommonAPI.ErrorResponse>;
+    function getListId(listId: string): Promise<GetListIdResponse | CommonAPI.ErrorResponse>;
 
     /**
      * Get the currently logged in user's custom lists (public and private)
@@ -78,7 +78,7 @@ declare namespace ListAPI {
      * @param {GetUserListRequestOptions} [options] See {@link GetUserListRequestOptions}
      * @returns {Promise<GetUserListResponse>} A promise that resolves to a {@link GetUserListResponse} object
      */
-    declare function getUserList(token: AuthAPI.AuthenticationToken, options?: GetUserListRequestOptions): Promise<GetUserListResponse>;
+    function getUserList(token: AuthAPI.AuthenticationToken, options?: GetUserListRequestOptions): Promise<GetUserListResponse>;
 
     /**
      * Get a specific user's custom lists (public only)
@@ -87,7 +87,7 @@ declare namespace ListAPI {
      * @param {GetUserIdListRequestOptions} [options] See {@link GetUserIdListRequestOptions}
      * @returns {Promise<GetUserIdListResponse>} A promise that resolves to a {@link GetUserIdListResponse} object
      */
-    declare function getUserIdList(id: string, options?: GetUserIdListRequestOptions): Promise<GetUserIdListResponse>;
-};
+    function getUserIdList(id: string, options?: GetUserIdListRequestOptions): Promise<GetUserIdListResponse>;
+}
 
 export = ListAPI;
