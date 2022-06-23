@@ -1,5 +1,6 @@
 import AuthAPI from './authentication';
 import CommonAPI from './common';
+import ChapterAPI from './chapter';
 
 declare namespace MangaAPI {
     /********************
@@ -85,7 +86,7 @@ declare namespace MangaAPI {
         relationships: CommonAPI.Relationship[]
     };
 
-    type MangaVolumeChapter = {
+    type AggregateChapter = {
         chapter: string
         /** UUID formatted string */
         id: string
@@ -95,11 +96,11 @@ declare namespace MangaAPI {
         count: number
     };
 
-    type MangaVolume = {
+    type AggregateVolume = {
         volume: string
         /** Total number of chapters in volume across filtered languages */
         count: number
-        chapters: Record<string, MangaVolumeChapter>
+        chapters: Record<string, AggregateChapter>
     };
 
     /***********************
@@ -242,7 +243,7 @@ declare namespace MangaAPI {
         result: string
         /** Default: "collection" */
         response: string
-        data: MangaVolumeChapter[]
+        data: ChapterAPI.Chapter[]
         limit: number
         offset: number
         total: number
@@ -261,7 +262,7 @@ declare namespace MangaAPI {
         /** Default: "ok" */
         result: string
         /** Object containing volumes and their respective chapters */
-        volumes: Record<string, MangaVolume>
+        volumes: Record<string, AggregateVolume>
     };
 
     /** Request parameters for `GET /manga/{id}` */
