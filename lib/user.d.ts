@@ -57,6 +57,14 @@ declare namespace UserAPI {
         total: number
     };
 
+    /** Response from `GET /user/{id}` */
+    type GetUserIdResponse = {
+        result: 'ok'
+        /** Default: "entity" */
+        response: string
+        data: User
+    };
+
     /**
      * Get a list of users based on search parameters
      * 
@@ -65,6 +73,14 @@ declare namespace UserAPI {
      * @returns {Promise<GetUsersResponse>} A promise that resolves to a {@link GetUsersResponse} object
      */
     function getUsers(token: AuthAPI.AuthenticationToken, options?: GetUsersRequestOptions): Promise<GetUsersResponse>;
+
+    /**
+     * Get a specific user's information
+     * 
+     * @param {string} id UUID formatted string
+     * @returns {Promise<GetUserIdResponse>} A promise that resolves to a {@link GetUserIdResponse} object
+     */
+    function getUserId(id: string): Promise<GetUserIdResponse>;
 }
 
 export = UserAPI;
