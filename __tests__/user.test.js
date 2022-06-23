@@ -68,3 +68,37 @@ test('test getUserId with valid parameters', () => {
 
     spy.mockRestore();
 });
+
+test('test getUserFollowedMangaFeed with no parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = user.getUserFollowedMangaFeed();
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getUserFollowedMangaFeed: Parameter `token` cannot be undefined');
+
+    spy.mockRestore();
+});
+
+test('test getUserFollowedMangaFeed with blank parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = user.getUserFollowedMangaFeed({}, {});
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getUserFollowedMangaFeed: Parameter `token` missing required property `session`');
+
+    spy.mockRestore();
+});
+
+test('test getUserFollowedMangaFeed with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = user.getUserFollowedMangaFeed({ session: 'test' }, {}).then((res) => {
+        expect(res).toEqual({ result: 'ok' });
+    })
+
+    expect(p).toBeInstanceOf(Promise);
+
+    spy.mockRestore();
+});

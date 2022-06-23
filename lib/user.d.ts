@@ -1,5 +1,6 @@
 import AuthAPI from './authentication';
 import CommonAPI from './common';
+import MangaAPI from './manga';
 
 declare namespace UserAPI {
     /*******************
@@ -65,6 +66,62 @@ declare namespace UserAPI {
         data: User
     };
 
+    type GetUserFollowedMangaFeedOrder = {
+        createdAt: CommonAPI.Order
+        updatedAt: CommonAPI.Order
+        publishAt: CommonAPI.Order
+        readableAt: CommonAPI.Order
+        volume: CommonAPI.Order
+        chapter: CommonAPI.Order
+    };
+
+    /** Request parameters for `GET /user/follows/manga/feed` */
+    type GetUserFollowedMangaFeedRequestOptions = {
+        /**
+         * ```console
+         * Default: 10
+         * Minimum: 1
+         * Maximum: 500
+         */
+        limit?: number
+        offset?: number
+        /** ISO 639-1 standard two or five letter language code */
+        translatedLanguage?: string[]
+        /** ISO 639-1 standard two or five letter language code */
+        originalLanguage?: string[]
+        /** ISO 639-1 standard two or five letter language code */
+        excludedOriginalLanguage?: string[]
+        /** Default: ["safe", "suggestive", "erotica"] */
+        contentRating?: MangaAPI.MangaContentRating[]
+        /** UUID formatted strings */
+        excludedGroups?: string[]
+        /** UUID formatted strings */
+        excludedUploaders?: string[]
+        includeFutureUpdates?: '0' | '1'
+        /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
+        createdAtSince?: string
+        /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
+        updatedAtSince?: string
+        /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
+        publishAtSince?: string
+        order?: GetUserFollowedMangaFeedOrder
+        includes?: string[]
+    };
+
+    /** Response from `GET /user/follows/manga/feed` */
+    // Kenjugs (06/23/2022) TODO: This shares the same schema as MangaAPI.GetMangaIdFeedResponse and
+    // ChapterAPI.GetChaptersResponse, so it should be included as part of their type consolidation.
+    type GetUserFollowedMangaFeedResponse = {
+        /** Default: "ok" */
+        result: string
+        /** Default: "collection" */
+        response: string
+        data: Chapter[]
+        limit: number
+        offset: number
+        total: number
+    };
+
     /**
      * Get a list of users based on search parameters.
      * 
@@ -81,6 +138,15 @@ declare namespace UserAPI {
      * @returns {Promise<GetUserIdResponse>} A promise that resolves to a {@link GetUserIdResponse} object
      */
     function getUserId(id: string): Promise<GetUserIdResponse>;
+
+    /**
+     * Gets a chapter feed from currently logged in user's list of followed manga.
+     * 
+     * @param {AuthAPI.AuthenticationToken} token 
+     * @param {GetUserFollowedMangaFeedRequestOptions} [options] See {@link GetUserFollowedMangaFeedRequestOptions}
+     * @returns {Promise<GetUserFollowedMangaFeedResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetUserFollowedMangaFeedResponse} object
+     */
+    function getUserFollowedMangaFeed(token: AuthAPI.AuthenticationToken, options?: GetUserFollowedMangaFeedRequestOptions): Promise<GetUserFollowedMangaFeedResponse | CommonAPI.ErrorResponse>;
 }
 
 export = UserAPI;
