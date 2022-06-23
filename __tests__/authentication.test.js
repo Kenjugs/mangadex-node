@@ -36,16 +36,17 @@ test('test authLogin with valid parameters', () => {
         return Promise.resolve({ result: 'ok', token: 'test' });
     });
 
-    const op = {
+    const options = {
         username: 'a',
         password: 'c',
     };
 
-    const p = auth.authLogin(op).then(res => {
+    const p = auth.authLogin(options).then(res => {
         expect(res).toEqual({ result: 'ok', token: 'test' });
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('POST', '/auth/login', { body: options, headers: { 'Content-Type': 'application/json' } });
 
     spy.mockRestore();
 });
@@ -75,16 +76,17 @@ test('test getAuthCheck with valid parameters', () => {
         return Promise.resolve({ result: 'ok', isAuthenticated: true });
     });
 
-    const t = {
+    const token = {
         session: 'abcd',
         refresh: 'efgh',
     };
 
-    const p = auth.getAuthCheck(t).then(res => {
+    const p = auth.getAuthCheck(token).then(res => {
         expect(res).toEqual({ result: 'ok', isAuthenticated: true });
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/auth/check', { headers: { Authorization: 'Bearer abcd' } });
 
     spy.mockRestore();
 });
@@ -114,16 +116,17 @@ test('test authLogout with valid parameters', () => {
         return Promise.resolve({ result: 'ok' });
     });
 
-    const t = {
+    const token = {
         session: 'abcd',
         refresh: 'efgh',
     };
 
-    const p = auth.authLogout(t).then(res => {
+    const p = auth.authLogout(token).then(res => {
         expect(res).toEqual({ result: 'ok' });
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('POST', '/auth/logout', { headers: { Authorization: 'Bearer abcd' } });
 
     spy.mockRestore();
 });
@@ -153,16 +156,17 @@ test('test authRefresh with valid parameters', () => {
         return Promise.resolve({ result: 'ok' });
     });
 
-    const t = {
+    const token = {
         session: 'abcd',
         refresh: 'efgh',
     };
 
-    const p = auth.authRefresh(t).then(res => {
+    const p = auth.authRefresh(token).then(res => {
         expect(res).toEqual({ result: 'ok' });
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('POST', '/auth/refresh', { body: { token: 'efgh' }, headers: { 'Content-Type': 'application/json' } });
 
     spy.mockRestore();
 });

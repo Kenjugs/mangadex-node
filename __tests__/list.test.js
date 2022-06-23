@@ -31,6 +31,7 @@ test('test getListId with valid parameters', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/list/test');
 
     spy.mockRestore();
 });
@@ -65,6 +66,7 @@ test('test getUserList with valid parameters', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/user/list?limit=5', { headers: { Authorization: 'Bearer test' } });
 
     spy.mockRestore();
 });
@@ -99,6 +101,7 @@ test('test getUserIdList with valid parameters', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/user/test-id/list?limit=5');
 
     spy.mockRestore();
 });

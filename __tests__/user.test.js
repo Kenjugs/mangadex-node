@@ -31,6 +31,7 @@ test('test getUsers with valid parameters', () => {
     })
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/user?limit=5&username=steve', { headers: { Authorization: 'Bearer test' } });
 
     spy.mockRestore();
 });
@@ -65,6 +66,7 @@ test('test getUserId with valid parameters', () => {
     })
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/user/test-id');
 
     spy.mockRestore();
 });
@@ -94,11 +96,12 @@ test('test getUserFollowedMangaFeed with valid parameters', () => {
         return Promise.resolve({ result: 'ok' });
     });
 
-    const p = user.getUserFollowedMangaFeed({ session: 'test' }, {}).then((res) => {
+    const p = user.getUserFollowedMangaFeed({ session: 'test' }, { order: { chapter: 'asc' } }).then((res) => {
         expect(res).toEqual({ result: 'ok' });
     })
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/user/follows/manga/feed?order[chapter]=asc', { headers: { Authorization: 'Bearer test' } });
 
     spy.mockRestore();
 });

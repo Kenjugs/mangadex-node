@@ -31,6 +31,7 @@ test('test getAccountAvailable with valid parameter', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/account/available?username=test');
 
     spy.mockRestore();
 });

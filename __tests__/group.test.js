@@ -11,6 +11,7 @@ test('test getSearchGroup with no parameters', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/group');
 
     spy.mockRestore();
 });
@@ -29,6 +30,7 @@ test('test getSearchGroup with valid parameters', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/group?name=test');
 
     spy.mockRestore();
 });
@@ -58,11 +60,12 @@ test('test getGroupId with valid parameters', () => {
         return Promise.resolve({ result: 'ok' });
     });
 
-    const p = group.getGroupId('test', '').then(res => {
+    const p = group.getGroupId('test', {}).then(res => {
         expect(res).toEqual({ result: 'ok' });
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/group/test');
 
     spy.mockRestore();
 });

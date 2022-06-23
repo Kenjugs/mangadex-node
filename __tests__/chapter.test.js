@@ -25,6 +25,7 @@ test('test getChapters with non-blank parameters', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/chapter?limit=5&translatedLanguage[]=en&volume[]=1&volume[]=2');
 
     spy.mockRestore();
 });
@@ -59,6 +60,7 @@ test('test getChapterId with valid parameters', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/chapter/test');
 
     spy.mockRestore();
 });
