@@ -103,6 +103,19 @@ declare namespace ChapterAPI {
         total: number
     };
 
+    /** Request parameters for `GET /chapter/{id}` */
+    type GetChapterIdRequestOptions = {
+        includes?: string[]
+    };
+
+    /** Response from `GET /chapter/{id}` */
+    type GetChapterIdResponse = {
+        result: 'ok' | 'error'
+        /** Default: "entity" */
+        response: string
+        data: Chapter
+    };
+
     /**
      * Gets a list of chapters based on search options.
      * 
@@ -110,6 +123,15 @@ declare namespace ChapterAPI {
      * @returns {Promise<GetChaptersResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetChaptersResponse} object
      */
     function getChapters(options?: GetChaptersRequestOptions): Promise<GetChaptersResponse | CommonAPI.ErrorResponse>;
+
+    /**
+     * Gets information about a specific chapter.
+     * 
+     * @param {string} id UUID formatted string
+     * @param {GetChapterIdRequestOptions} [options] See {@link GetChapterIdRequestOptions}
+     * @returns {Promise<GetChapterIdResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetChapterIdResponse} object
+     */
+    function getChapterId(id: string, options?: GetChapterIdRequestOptions): Promise<GetChapterIdResponse | CommonAPI.ErrorResponse>;
 }
 
 export = ChapterAPI;

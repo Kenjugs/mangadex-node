@@ -28,3 +28,37 @@ test('test getChapters with non-blank parameters', () => {
 
     spy.mockRestore();
 });
+
+test('test getChapterId with no parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = chapter.getChapterId();
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getChapterId: Parameter `id` cannot be undefined');
+
+    spy.mockRestore();
+});
+
+test('test getChapterId with blank parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = chapter.getChapterId('', {});
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getChapterId: Parameter `id` cannot be blank');
+
+    spy.mockRestore();
+});
+
+test('test getChapterId with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = chapter.getChapterId('test').then((res) => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+
+    spy.mockRestore();
+});
