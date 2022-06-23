@@ -86,7 +86,7 @@ declare namespace ChapterAPI {
         /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
         publishAtSince?: string
         order?: GetChaptersOrder
-        includes?: string[]
+        includes?: CommonAPI.Includes[]
     };
 
     /** Response from `GET /chapter` */
@@ -105,7 +105,7 @@ declare namespace ChapterAPI {
 
     /** Request parameters for `GET /chapter/{id}` */
     type GetChapterIdRequestOptions = {
-        includes?: string[]
+        includes?: CommonAPI.Includes[]
     };
 
     /** Response from `GET /chapter/{id}` */

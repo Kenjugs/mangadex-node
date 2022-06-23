@@ -115,6 +115,7 @@ declare namespace MangaAPI {
         latestUploadedChapter?: CommonAPI.Order
         followedCount?: CommonAPI.Order
         relevance?: CommonAPI.Order
+        rating?: CommonAPI.Order
     };
 
     /** Request parameters for `GET /manga` */

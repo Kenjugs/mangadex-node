@@ -64,7 +64,7 @@ declare namespace GroupAPI {
         ids?: string[]
         name?: string
         focusedLanguage?: string
-        includes?: string[]
+        includes?: CommonAPI.Includes[]
         /**
          * Default: { latestUploadedChapter: 'desc' }
          * 
@@ -87,7 +87,7 @@ declare namespace GroupAPI {
 
     /** Request parameters for `GET /group/{id}` */
     type GetGroupIdRequestOptions = {
-        includes?: string[]
+        includes?: CommonAPI.Includes[]
     };
 
     /** Response from `GET /group/{id}` */

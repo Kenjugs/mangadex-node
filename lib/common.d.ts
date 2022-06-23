@@ -29,6 +29,19 @@ declare namespace CommonAPI {
         DESC,
     }
 
+    /** Enum for what relationship info to include in a search */
+    enum Includes {
+        MANGA,
+        CHAPTER,
+        COVER_ART,
+        AUTHOR,
+        ARTIST,
+        SCANLATION_GROUP,
+        TAG,
+        USER,
+        CUSTOM_LIST,
+    }
+
     /*******************
      * TYPE DEFINITIONS
      *******************/
