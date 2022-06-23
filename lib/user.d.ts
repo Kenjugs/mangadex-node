@@ -66,7 +66,7 @@ declare namespace UserAPI {
     };
 
     /**
-     * Get a list of users based on search parameters
+     * Get a list of users based on search parameters.
      * 
      * @param {AuthAPI.AuthenticationToken} token See {@link AuthAPI.AuthenticationToken}
      * @param {GetUsersRequestOptions} [options] See {@link GetUsersRequestOptions}
@@ -75,7 +75,7 @@ declare namespace UserAPI {
     function getUsers(token: AuthAPI.AuthenticationToken, options?: GetUsersRequestOptions): Promise<GetUsersResponse>;
 
     /**
-     * Get a specific user's information
+     * Get a specific user's information.
      * 
      * @param {string} id UUID formatted string
      * @returns {Promise<GetUserIdResponse>} A promise that resolves to a {@link GetUserIdResponse} object

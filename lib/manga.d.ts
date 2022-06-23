@@ -306,7 +306,7 @@ declare namespace MangaAPI {
     function getMangaIdFeed(mangaId: string, options?: GetMangaIdFeedRequestOptions): Promise<GetMangaIdFeedResponse | CommonAPI.ErrorResponse>;
 
     /**
-     * Get manga volumes and chapters.
+     * Get aggregate manga volume and chapter information.
      * 
      * @param {string} mangaId UUID formatted string
      * @param {GetMangaIdAggregateRequestOptions} [options] See {@link GetMangaIdAggregateRequestOptions}

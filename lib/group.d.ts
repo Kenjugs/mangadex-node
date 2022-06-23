@@ -99,7 +99,7 @@ declare namespace GroupAPI {
     };
 
     /**
-     * Search for a scanlation group
+     * Search for a scanlation group.
      * 
      * @param {GetSearchGroupRequestOptions} [options] See {@link GetSearchGroupRequestOptions}
      * @returns {Promise<GetSearchGroupResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetSearchGroupResponse} object
@@ -107,7 +107,7 @@ declare namespace GroupAPI {
     function getSearchGroup(options?: GetSearchGroupRequestOptions): Promise<GetSearchGroupResponse | CommonAPI.ErrorResponse>;
 
     /**
-     * Get info about a specific scanlation group by their ID
+     * Get info about a specific scanlation group by their ID.
      * 
      * @param {string} groupId UUID formatted string
      * @param {GetGroupIdRequestOptions} [options] See {@link GetGroupIdRequestOptions}

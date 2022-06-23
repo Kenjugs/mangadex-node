@@ -104,7 +104,7 @@ declare namespace ChapterAPI {
     };
 
     /**
-     * Gets a list of chapters based on search options
+     * Gets a list of chapters based on search options.
      * 
      * @param {GetChaptersRequestOptions} [options] See {@link GetChaptersRequestOptions}
      * @returns {Promise<GetChaptersResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetChaptersResponse} object

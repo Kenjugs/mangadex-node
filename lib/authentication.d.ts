@@ -62,7 +62,7 @@ declare namespace AuthAPI {
     };
 
     /**
-     * Send account credentials and receive an authentication token
+     * Send account credentials and receive an authentication token.
      * 
      * @param {AuthLoginRequestOptions} login See {@link AuthLoginRequestOptions}
      * @returns {Promise<AuthLoginResponse | CommonAPI.ErrorResponse>} A promise that resolves to an {@link AuthLoginResponse} object
@@ -70,7 +70,7 @@ declare namespace AuthAPI {
     function authLogin(login: AuthLoginRequestOptions): Promise<AuthLoginResponse | CommonAPI.ErrorResponse>;
 
     /**
-     * Check if a session token is still valid
+     * Check if a session token is still valid.
      * 
      * @param {AuthenticationToken} token See {@link AuthenticationToken}
      * @returns {Promise<GetAuthCheckResponse>} A promise that resolves to a {@link GetAuthCheckResponse} object
@@ -78,7 +78,7 @@ declare namespace AuthAPI {
     function getAuthCheck(token: AuthenticationToken): Promise<GetAuthCheckResponse>;
 
     /**
-     * Logs out of a currently valid session
+     * Logs out of a currently valid session.
      * 
      * @param {AuthenticationToken} token See {@link AuthenticationToken}
      * @returns {Promise<AuthLogoutResponse | CommonAPI.ErrorResponse>} A promise that resolves to an {@link AuthLogoutResponse} object
