@@ -155,7 +155,7 @@ declare namespace MangaAPI {
          * { latestUploadedChapter: 'desc' }
          * ``` */
         order?: GetSearchMangaOrder
-        includes?: string[]
+        includes?: CommonAPI.Includes[]
         hasAvailableChapters?: '0' | '1' | 'true' | 'false'
         /** UUID formatted string */
         group?: string
@@ -235,7 +235,7 @@ declare namespace MangaAPI {
         /** DateTime string with format YYYY-MM-DDTHH:mm:SS */
         publishAtSince?: string
         order?: GetMangaIdFeedOrder
-        includes?: string[]
+        includes?: CommonAPI.Includes[]
     };
 
     /** Response from `GET /manga/{id}/feed` */
@@ -268,7 +268,7 @@ declare namespace MangaAPI {
 
     /** Request parameters for `GET /manga/{id}` */
     type GetMangaIdRequestOptions = {
-        includes?: string
+        includes?: CommonAPI.Includes[]
     };
 
     /** Response from `GET /manga/{id} */
