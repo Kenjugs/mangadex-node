@@ -63,6 +63,66 @@ declare namespace ListAPI {
     /** Response from `GET /user/{id}/list` */
     type GetUserIdListResponse = GetUserListResponse;
 
+    // Kenjugs (06/24/2022) TODO: This type is identical to GetUserFollowedMangaFeedOrder.
+    // These should be consolidated into a base type.
+    type GetListIdFeedOrder = {
+        createdAt: CommonAPI.Order
+        updatedAt: CommonAPI.Order
+        publishAt: CommonAPI.Order
+        readableAt: CommonAPI.Order
+        volume: CommonAPI.Order
+        chapter: CommonAPI.Order
+    };
+
+    /** Request parameters for `GET /list/{id}/feed` */
+    // Kenjugs (06/24/2022) TODO: This type is identical to GetUserFollowedMangaFeedRequestOptions.
+    // These should be consolidated into a base type.
+    type GetListIdFeedRequestOptions = {
+        /**
+         * ```console
+         * Default: 100
+         * Minimum: 1
+         * Maximum: 500
+         */
+        limit?: number
+        offset?: number
+        /** ISO 639-1 standard two or five letter language code */
+        translatedLanguage?: string[]
+        /** ISO 639-1 standard two or five letter language code */
+        originalLanguage?: string[]
+        /** ISO 639-1 standard two or five letter language code */
+        excludedOriginalLanguage?: string[]
+        /** Default: ["safe", "suggestive", "erotica"] */
+        contentRating?: MangaAPI.MangaContentRating[]
+        /** UUID formatted strings */
+        excludedGroups?: string[]
+        /** UUID formatted strings */
+        excludedUploaders?: string[]
+        includeFutureUpdates?: '0' | '1'
+        /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
+        createdAtSince?: string
+        /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
+        updatedAtSince?: string
+        /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
+        publishAtSince?: string
+        order?: GetListIdFeedOrder
+        includes?: CommonAPI.Includes[]
+    };
+
+    /** Response from `GET /list/{id}/feed` */
+    // Kenjugs (06/24/2022) TODO: This type is identical to GetUserFollowedMangaFeedResponse.
+    // These should be consolidated into a base type.
+    type GetListIdFeedResponse = {
+        /** Default: "ok" */
+        result: string
+        /** Default: "collection" */
+        response: string
+        data: Chapter[]
+        limit: number
+        offset: number
+        total: number
+    };
+
     /**
      * Get info about a list by its ID.
      * 
@@ -88,6 +148,15 @@ declare namespace ListAPI {
      * @returns {Promise<GetUserIdListResponse>} A promise that resolves to a {@link GetUserIdListResponse} object
      */
     function getUserIdList(id: string, options?: GetUserIdListRequestOptions): Promise<GetUserIdListResponse>;
+
+    /**
+     * Gets a chapter feed from a specific list.
+     * 
+     * @param {string} id UUID formatted string
+     * @param {GetListIdFeedRequestOptions} [options] See {@link GetListIdFeedRequestOptions}
+     * @returns {Promise<GetListIdFeedResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetListIdFeedResponse} object
+     */
+    function getListIdFeed(id: string, options?: GetListIdFeedRequestOptions): Promise<GetListIdFeedResponse | CommonAPI.ErrorResponse>;
 }
 
 export = ListAPI;

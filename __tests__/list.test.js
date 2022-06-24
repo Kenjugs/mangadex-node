@@ -105,3 +105,38 @@ test('test getUserIdList with valid parameters', () => {
 
     spy.mockRestore();
 });
+
+test('test getListIdFeed with no parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = list.getListIdFeed();
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getListIdFeed: Parameter `id` cannot be undefined');
+
+    spy.mockRestore();
+});
+
+test('test getListIdFeed with blank parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = list.getListIdFeed('', {});
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getListIdFeed: Parameter `id` cannot be blank');
+
+    spy.mockRestore();
+});
+
+test('test getListIdFeed with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = list.getListIdFeed('list-id', { offset: 10 }).then((res) => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/list/list-id/feed?offset=10');
+
+    spy.mockRestore();
+});
