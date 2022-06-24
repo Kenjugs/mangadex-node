@@ -79,7 +79,7 @@ declare namespace UserAPI {
     type GetUserFollowedMangaFeedRequestOptions = {
         /**
          * ```console
-         * Default: 10
+         * Default: 100
          * Minimum: 1
          * Maximum: 500
          */
@@ -105,7 +105,7 @@ declare namespace UserAPI {
         /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
         publishAtSince?: string
         order?: GetUserFollowedMangaFeedOrder
-        includes?: string[]
+        includes?: CommonAPI.Includes[]
     };
 
     /** Response from `GET /user/follows/manga/feed` */
