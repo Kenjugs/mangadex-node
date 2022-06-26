@@ -4,4 +4,5 @@
 Low-level Mangadex v5 API wrapper - WIP
 
 Credits to the MangaDex team for all the hard work they do
+<br />
 [https://mangadex.org/](https://mangadex.org/)
