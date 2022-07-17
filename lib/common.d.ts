@@ -46,20 +46,6 @@ declare namespace CommonAPI {
      * TYPE DEFINITIONS
      *******************/
 
-    type ResponseError = {
-        id: string
-        status: number
-        title: string
-        detail: string
-    };
-
-    type ErrorResponse = {
-        result: 'error'
-        errors: ResponseError[]
-    };
-
-    type LocalizedString = Record<string, string>;
-
     type Links = {
         /**
          * anilist
@@ -130,31 +116,6 @@ declare namespace CommonAPI {
         raw: string
         /** Stored as full URL, official english licenced URL */
         engtl: string
-    };
-
-    type Relationship = {
-        /** UUID formatted string */
-        id: string
-        type: string
-        /** Related Manga type, only present if you are on a Manga entity and a Manga relationship */
-        related?: RelatedMangaType
-        /** If reference expansion is applied, contains objects attributes */
-        attributes?: object
-    };
-
-    type TagAttributes = {
-        name: LocalizedString
-        description: LocalizedString
-        group: string
-        version: number
-    };
-
-    type Tag = {
-        /** UUID formatted string */
-        id: string
-        type: 'tag'
-        attributes: TagAttributes
-        relationships: Relationship[]
     };
 }
 

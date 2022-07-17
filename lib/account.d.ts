@@ -1,4 +1,4 @@
-import CommonAPI from './common';
+import Schema from './schema';
 
 declare namespace AccountAPI {
     /***********************
@@ -14,9 +14,9 @@ declare namespace AccountAPI {
      * Check if an account username is available for account creation.
      * 
      * @param {string} username Username to check availability of
-     * @returns {Promise<GetAccountAvailableResponse | CommonAPI.ErrorResponse>} A promise that resolves to an {@link GetAccountAvailableResponse} object
+     * @returns {Promise<GetAccountAvailableResponse | Schema.ErrorResponse>} A promise that resolves to an {@link GetAccountAvailableResponse} object
      */
-    function getAccountAvailable(username: string): Promise<GetAccountAvailableResponse | CommonAPI.ErrorResponse>;
+    function getAccountAvailable(username: string): Promise<GetAccountAvailableResponse | Schema.ErrorResponse>;
 }
 
 export = AccountAPI;

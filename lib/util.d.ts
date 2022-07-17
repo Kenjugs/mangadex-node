@@ -1,5 +1,5 @@
 import * as https from 'https';
-import CommonAPI from './common';
+import Schema from './schema';
 
 declare namespace Utility {
     type RequestOptions = https.RequestOptions & {
@@ -21,9 +21,9 @@ declare namespace Utility {
      * @param {string} method The HTTP method
      * @param {string} path The endpoint path
      * @param {RequestOptions} [options] Additional request options (such as request body, headers, etc.)
-     * @returns {Promise<T | CommonAPI.ErrorResponse>} A promise that resolves to a specific response object T
+     * @returns {Promise<T | Schema.ErrorResponse>} A promise that resolves to a specific response object T
      */
-    function createHttpsRequestPromise<T>(method: string, path: string, options?: RequestOptions): Promise<T | CommonAPI.ErrorResponse>;
+    function createHttpsRequestPromise<T>(method: string, path: string, options?: RequestOptions): Promise<T | Schema.ErrorResponse>;
 }
 
 export = Utility;

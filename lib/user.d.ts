@@ -1,26 +1,9 @@
 import AuthAPI from './authentication';
 import CommonAPI from './common';
 import MangaAPI from './manga';
+import Schema from './schema'
 
 declare namespace UserAPI {
-    /*******************
-     * TYPE DEFINITIONS
-     *******************/
-
-    type UserAttributes = {
-        username: string
-        roles: string[]
-        version: number
-    };
-
-    type User = {
-        /** UUID formatted string */
-        id: string
-        type: 'user'
-        attributes: UserAttributes
-        relationships: CommonAPI.Relationship[]
-    };
-
     /***********************
      * API REQUEST/RESPONSE
      ***********************/
@@ -47,24 +30,10 @@ declare namespace UserAPI {
     };
 
     /** Response from `GET /user` */
-    type GetUsersResponse = {
-        /** Default: "ok" */
-        result: string
-        /** Default: "collection" */
-        response: string
-        data: User[]
-        limit: number
-        offset: number
-        total: number
-    };
+    type GetUsersResponse = Schema.UserList;
 
     /** Response from `GET /user/{id}` */
-    type GetUserIdResponse = {
-        result: 'ok'
-        /** Default: "entity" */
-        response: string
-        data: User
-    };
+    type GetUserIdResponse = Schema.UserResponse;
 
     type GetUserFollowedMangaFeedOrder = {
         createdAt: CommonAPI.Order
@@ -109,18 +78,7 @@ declare namespace UserAPI {
     };
 
     /** Response from `GET /user/follows/manga/feed` */
-    // Kenjugs (06/23/2022) TODO: This shares the same schema as MangaAPI.GetMangaIdFeedResponse and
-    // ChapterAPI.GetChaptersResponse, so it should be included as part of their type consolidation.
-    type GetUserFollowedMangaFeedResponse = {
-        /** Default: "ok" */
-        result: string
-        /** Default: "collection" */
-        response: string
-        data: Chapter[]
-        limit: number
-        offset: number
-        total: number
-    };
+    type GetUserFollowedMangaFeedResponse = Schema.ChapterList;
 
     /**
      * Get a list of users based on search parameters.
@@ -144,9 +102,9 @@ declare namespace UserAPI {
      * 
      * @param {AuthAPI.AuthenticationToken} token 
      * @param {GetUserFollowedMangaFeedRequestOptions} [options] See {@link GetUserFollowedMangaFeedRequestOptions}
-     * @returns {Promise<GetUserFollowedMangaFeedResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetUserFollowedMangaFeedResponse} object
+     * @returns {Promise<GetUserFollowedMangaFeedResponse | Schema.ErrorResponse>} A promise that resolves to a {@link GetUserFollowedMangaFeedResponse} object
      */
-    function getUserFollowedMangaFeed(token: AuthAPI.AuthenticationToken, options?: GetUserFollowedMangaFeedRequestOptions): Promise<GetUserFollowedMangaFeedResponse | CommonAPI.ErrorResponse>;
+    function getUserFollowedMangaFeed(token: AuthAPI.AuthenticationToken, options?: GetUserFollowedMangaFeedRequestOptions): Promise<GetUserFollowedMangaFeedResponse | Schema.ErrorResponse>;
 }
 
 export = UserAPI;

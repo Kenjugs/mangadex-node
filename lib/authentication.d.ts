@@ -1,11 +1,11 @@
-import CommonAPI from './common';
+import Schema from './schema';
 
 declare namespace AuthAPI {
     /*******************
      * TYPE DEFINITIONS
      *******************/
 
-    /** Authentication token used for logging in to a user account */
+    /** Authentication token issued when logging into a user account */
     type AuthenticationToken = {
         session: string
         refresh: string
@@ -15,59 +15,33 @@ declare namespace AuthAPI {
      * API REQUEST/RESPONSE
      ***********************/
 
-    /** Login object for logging in and obtaining an auth token object. At least one of username or email is required. */
-    type AuthLoginRequestOptions = {
-        /** 
-         * ```console
-         * Minimum length: 1
-         * Maximum length: 64
-         * ```
-         */
-        username?: string
-        email?: string
-        /**
-         * ```console
-         * Minimum length: 8
-         * Maximum length: 1024
-         * ```
-         */
-        password: string
-    };
+    /**
+     * Request body for `POST /auth/login`
+     * 
+     * Login object for logging in and obtaining an auth token object.
+     * At least one of username or email is required.
+     */
+    type AuthLoginRequestOptions = Schema.Login;
 
     /** Response from `POST /auth/login` */
-    type AuthLoginResponse = {
-        result: 'ok' | 'error'
-        token: AuthenticationToken
-    };
+    type AuthLoginResponse = Schema.LoginResponse;
 
     /** Response from `GET /auth/check` */
-    type GetAuthCheckResponse = {
-        /** Default: "ok" */
-        result: string
-        isAuthenticated: boolean
-        roles: string[]
-        permissions: string[]
-    };
+    type GetAuthCheckResponse = Schema.CheckResponse;
 
     /** Response from `POST /auth/logout` */
-    type AuthLogoutResponse = {
-        result: 'ok' | 'error'
-    };
+    type AuthLogoutResponse = Schema.LogoutResponse;
 
     /** Response from `POST /auth/refresh` */
-    type AuthRefreshResponse = {
-        result: 'ok' | 'error'
-        token?: AuthenticationToken
-        message?: string
-    };
+    type AuthRefreshResponse = Schema.RefreshResponse;
 
     /**
      * Send account credentials and receive an authentication token.
      * 
      * @param {AuthLoginRequestOptions} login See {@link AuthLoginRequestOptions}
-     * @returns {Promise<AuthLoginResponse | CommonAPI.ErrorResponse>} A promise that resolves to an {@link AuthLoginResponse} object
+     * @returns {Promise<AuthLoginResponse | Schema.ErrorResponse>} A promise that resolves to an {@link AuthLoginResponse} object
      */
-    function authLogin(login: AuthLoginRequestOptions): Promise<AuthLoginResponse | CommonAPI.ErrorResponse>;
+    function authLogin(login: AuthLoginRequestOptions): Promise<AuthLoginResponse | Schema.ErrorResponse>;
 
     /**
      * Check if a session token is still valid.
@@ -81,9 +55,9 @@ declare namespace AuthAPI {
      * Logs out of a currently valid session.
      * 
      * @param {AuthenticationToken} token See {@link AuthenticationToken}
-     * @returns {Promise<AuthLogoutResponse | CommonAPI.ErrorResponse>} A promise that resolves to an {@link AuthLogoutResponse} object
+     * @returns {Promise<AuthLogoutResponse | Schema.ErrorResponse>} A promise that resolves to an {@link AuthLogoutResponse} object
      */
-    function authLogout(token: AuthenticationToken): Promise<AuthLogoutResponse | CommonAPI.ErrorResponse>;
+    function authLogout(token: AuthenticationToken): Promise<AuthLogoutResponse | Schema.ErrorResponse>;
 
     /**
      * Refreshes a session token that has expired. Session tokens only last for 15
@@ -93,9 +67,9 @@ declare namespace AuthAPI {
      * any other way.
      * 
      * @param {AuthenticationToken} token See {@link AuthenticationToken}
-     * @returns {Promise<AuthRefreshResponse | ErrorResponse>} A promise that resolves to an {@link AuthRefreshResponse} object
+     * @returns {Promise<AuthRefreshResponse | Schema.ErrorResponse>} A promise that resolves to an {@link AuthRefreshResponse} object
      */
-    function authRefresh(token: AuthenticationToken): Promise<AuthRefreshResponse | CommonAPI.ErrorResponse>;
+    function authRefresh(token: AuthenticationToken): Promise<AuthRefreshResponse | Schema.ErrorResponse>;
 }
 
 export = AuthAPI;

@@ -1,36 +1,15 @@
 import AuthAPI from './authentication';
 import CommonAPI from './common';
+import MangaAPI from './manga';
+import Schema from './schema';
 
 declare namespace ListAPI {
-    /********************
-     * TYPE DECLARATIONS
-     ********************/
-
-    type CustomListAttributes = {
-        name: string
-        visibility: 'private' | 'public'
-        version: number
-    };
-
-    type CustomList = {
-        /** UUID formatted string */
-        id: string
-        type: 'custom_list'
-        attributes: CustomListAttributes
-        relationships: CommonAPI.Relationship[]
-    };
-
     /***********************
      * API REQUEST/RESPONSE
      ***********************/
 
     /** Response from `GET /list/{id}` */
-    type GetListIdResponse = {
-        result: 'ok' | 'error'
-        /** Default: "entity" */
-        response: string
-        data: CustomList
-    };
+    type GetListIdResponse = Schema.CustomListResponse;
 
     /** Request parameters for `GET /user/list` */
     type GetUserListRequestOptions = {
@@ -46,16 +25,7 @@ declare namespace ListAPI {
     };
 
     /** Response from `GET /user/list` */
-    type GetUserListResponse = {
-        /** Default: "ok" */
-        result: string
-        /** Default: "collection" */
-        response: string
-        data: CustomList[]
-        limit: number
-        offset: number
-        total: number
-    };
+    type GetUserListResponse = Schema.CustomListList;
 
     /** Request parameters for `GET /user/{id}/list` */
     type GetUserIdListRequestOptions = GetUserListRequestOptions;
@@ -110,26 +80,15 @@ declare namespace ListAPI {
     };
 
     /** Response from `GET /list/{id}/feed` */
-    // Kenjugs (06/24/2022) TODO: This type is identical to GetUserFollowedMangaFeedResponse.
-    // These should be consolidated into a base type.
-    type GetListIdFeedResponse = {
-        /** Default: "ok" */
-        result: string
-        /** Default: "collection" */
-        response: string
-        data: Chapter[]
-        limit: number
-        offset: number
-        total: number
-    };
+    type GetListIdFeedResponse = Schema.ChapterList;
 
     /**
      * Get info about a list by its ID.
      * 
      * @param {string} listId UUID formatted string
-     * @returns {Promise<GetListIdResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetListIdResponse} object
+     * @returns {Promise<GetListIdResponse | Schema.ErrorResponse>} A promise that resolves to a {@link GetListIdResponse} object
      */
-    function getListId(listId: string): Promise<GetListIdResponse | CommonAPI.ErrorResponse>;
+    function getListId(listId: string): Promise<GetListIdResponse | Schema.ErrorResponse>;
 
     /**
      * Get the currently logged in user's custom lists (public and private).
@@ -154,9 +113,9 @@ declare namespace ListAPI {
      * 
      * @param {string} id UUID formatted string
      * @param {GetListIdFeedRequestOptions} [options] See {@link GetListIdFeedRequestOptions}
-     * @returns {Promise<GetListIdFeedResponse | CommonAPI.ErrorResponse>} A promise that resolves to a {@link GetListIdFeedResponse} object
+     * @returns {Promise<GetListIdFeedResponse | Schema.ErrorResponse>} A promise that resolves to a {@link GetListIdFeedResponse} object
      */
-    function getListIdFeed(id: string, options?: GetListIdFeedRequestOptions): Promise<GetListIdFeedResponse | CommonAPI.ErrorResponse>;
+    function getListIdFeed(id: string, options?: GetListIdFeedRequestOptions): Promise<GetListIdFeedResponse | Schema.ErrorResponse>;
 }
 
 export = ListAPI;
