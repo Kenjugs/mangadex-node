@@ -1,5 +1,5 @@
 declare namespace Schema {
-    type RequiredPick<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+    type RequiredPick<T, K extends keyof T> = Partial<Omit<T, K>> & Required<Pick<T, K>>;
     type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> & {
         [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>
     }[Keys];
