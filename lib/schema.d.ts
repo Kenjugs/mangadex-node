@@ -189,7 +189,7 @@ declare namespace Schema {
         result: 'ok' | 'error'
     };
 
-    type Login = {
+    type Login = RequireAtLeastOne<{
         /** ```console
          * Minimum length: 1
          * Maximum length: 64
@@ -201,7 +201,7 @@ declare namespace Schema {
          * Maximum length: 1024
          * ``` */
         password: string
-    };
+    }, 'username' | 'email'>;
 
     type LoginResponse = {
         result: 'ok' | 'error'
