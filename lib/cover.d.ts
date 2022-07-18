@@ -58,10 +58,10 @@ declare namespace CoverAPI {
     /**
      * Search for manga covers based on some search criteria.
      * 
-     * @param {GetCoverRequestOptions} options See {@link GetCoverRequestOptions}
+     * @param {GetCoverRequestOptions} [options] See {@link GetCoverRequestOptions}
      * @returns {GetCoverResponse | Schema.ErrorResponse} A promise that resolves to a {@link GetCoverResponse} object
      */
-    function getCover(options: GetCoverRequestOptions): Promise<GetCoverResponse | Schema.ErrorResponse>;
+    function getCover(options?: GetCoverRequestOptions): Promise<GetCoverResponse | Schema.ErrorResponse>;
 }
 
 export = CoverAPI;
