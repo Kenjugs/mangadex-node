@@ -55,13 +55,30 @@ declare namespace CoverAPI {
     /** Response from `GET /cover` */
     type GetCoverResponse = Schema.CoverList;
 
+    /** Request parameters for `GET /cover/{mangaOrCoverId}` */
+    type GetCoverIdRequestOptions = {
+        includes?: string[]
+    };
+
+    /** Response from `GET /cover/{mangaOrCoverId}` */
+    type GetCoverIdResponse = Schema.CoverResponse;
+
     /**
      * Search for manga covers based on some search criteria.
      * 
      * @param {GetCoverRequestOptions} [options] See {@link GetCoverRequestOptions}
-     * @returns {GetCoverResponse | Schema.ErrorResponse} A promise that resolves to a {@link GetCoverResponse} object
+     * @returns {Promise<GetCoverResponse | Schema.ErrorResponse>} A promise that resolves to a {@link GetCoverResponse} object
      */
     function getCover(options?: GetCoverRequestOptions): Promise<GetCoverResponse | Schema.ErrorResponse>;
+
+    /**
+     * Get manga cover by ID
+     * 
+     * @param {string} id UUID formatted string
+     * @param {GetCoverIdRequestOptions} [options] See {@link GetCoverIdRequestOptions}
+     * @returns {Promise<GetCoverIdResponse | Schema.ErrorResponse>} A promise that resolves to a {@link GetCoverIdResponse} object
+     */
+    function getCoverId(id: string, options?: GetCoverIdRequestOptions): Promise<GetCoverIdResponse | Schema.ErrorResponse>;
 }
 
 export = CoverAPI;
