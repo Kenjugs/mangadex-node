@@ -36,6 +36,14 @@ declare namespace AuthorAPI {
     /** Response from `GET /author` */
     type GetAuthorResponse = Schema.AuthorList;
 
+    /** Request parameters for `GET /author/{id}` */
+    type GetAuthorIdRequestOptions = {
+        includes?: string[]
+    };
+
+    /** Response from `GET /author/{id}` */
+    type GetAuthorIdResponse = Schema.AuthorResponse;
+
     /**
      * Search for author based on search criteria
      * 
@@ -43,6 +51,15 @@ declare namespace AuthorAPI {
      * @returns {Promise<GetAuthorResponse | Schema.ErrorResponse>} A promise that resolves to a {@link GetAuthorResponse} object
      */
     function getAuthor(options?: GetAuthorRequestOptions): Promise<GetAuthorResponse | Schema.ErrorResponse>;
+
+    /**
+     * Get author info by ID
+     * 
+     * @param {string} id UUID formatted string
+     * @param {GetAuthorIdRequestOptions} [options] See {@link GetAuthorIdRequestOptions}
+     * @returns {Promise<GetAuthorIdResponse | Schema.ErrorResponse>} A promise that resolves to a {@link GetAuthorIdResponse} object
+     */
+    function getAuthorId(id: string, options?: GetAuthorIdRequestOptions): Promise<GetAuthorIdResponse | Schema.ErrorResponse>;
 }
 
 export = AuthorAPI;
