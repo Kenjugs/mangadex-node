@@ -56,7 +56,7 @@ test('test getAuthCheck with no parameters', () => {
 
     const p = auth.getAuthCheck();
     expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getAuthCheck: Parameter `token` cannot be undefined');
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
 
     spy.mockRestore();
 });
@@ -66,7 +66,7 @@ test('test getAuthCheck with missing required property', () => {
 
     const p = auth.getAuthCheck({ refresh: 'abcd' });
     expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getAuthCheck: Parameter `token` missing required property `session`');
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
 
     spy.mockRestore();
 });
@@ -96,7 +96,7 @@ test('test authLogout with no parameters', () => {
 
     const p = auth.authLogout();
     expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - authLogout: Parameter `token` cannot be undefined');
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
 
     spy.mockRestore();
 });
@@ -106,7 +106,7 @@ test('test authLogout with missing required parameter', () => {
 
     const p = auth.authLogout({ refresh: 'abcd' });
     expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - authLogout: Parameter `token` missing required property `session`');
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
 
     spy.mockRestore();
 });

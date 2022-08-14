@@ -41,7 +41,7 @@ test('test getUserList with no parameters', () => {
 
     const p = list.getUserList();
     expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUserList: Parameter `token` cannot be undefined');
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
 
     spy.mockRestore();
 });
@@ -51,7 +51,7 @@ test('test getUserList with blank parameters', () => {
 
     const p = list.getUserList({}, {});
     expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUserList: Parameter `token` missing required property `session`');
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
 
     spy.mockRestore();
 });

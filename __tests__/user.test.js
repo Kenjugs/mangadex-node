@@ -6,7 +6,7 @@ test('test getUsers with no parameters', () => {
 
     const p = user.getUsers();
     expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUsers: Parameter `token` cannot be undefined');
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
 
     spy.mockRestore();
 });
@@ -16,7 +16,7 @@ test('test getUsers with missing required parameters', () => {
 
     const p = user.getUsers({ test: 'test' });
     expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUsers: Parameter `token` missing required property `session`');
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
 
     spy.mockRestore();
 });
@@ -76,7 +76,7 @@ test('test getUserFollowedMangaFeed with no parameters', () => {
 
     const p = user.getUserFollowedMangaFeed();
     expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUserFollowedMangaFeed: Parameter `token` cannot be undefined');
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
 
     spy.mockRestore();
 });
@@ -86,7 +86,7 @@ test('test getUserFollowedMangaFeed with blank parameters', () => {
 
     const p = user.getUserFollowedMangaFeed({}, {});
     expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUserFollowedMangaFeed: Parameter `token` missing required property `session`');
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
 
     spy.mockRestore();
 });
