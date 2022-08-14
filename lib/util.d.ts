@@ -1,4 +1,5 @@
 import * as https from 'https';
+import AuthAPI from './authentication';
 import Schema from './schema';
 
 declare namespace Utility {
@@ -24,6 +25,15 @@ declare namespace Utility {
      * @returns {Promise<T | Schema.ErrorResponse>} A promise that resolves to a specific response object T
      */
     function createHttpsRequestPromise<T>(method: string, path: string, options?: RequestOptions): Promise<T | Schema.ErrorResponse>;
+
+    /**
+     * Adds an authorization token header to a request options object.
+     * 
+     * @param {AuthAPI.AuthenticationToken} token See {@link AuthAPI.AuthenticationToken}
+     * @param {RequestOptions} [request] RequestOptions object to add the token to
+     * @returns {RequestOptions} A new {@link RequestOptions} object with the added authorization token
+     */
+    function addTokenAuthorization(token: AuthAPI.AuthenticationToken, request?: RequestOptions): RequestOptions;
 }
 
 export = Utility;

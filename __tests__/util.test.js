@@ -180,3 +180,51 @@ test('test createHttpsRequestPromise error', () => {
 
     spy.mockRestore();
 });
+
+test('test addTokenAuthorization with no parameters', () => {
+    const spyOn = jest.spyOn(console, 'error').mockImplementation();
+    
+    const o = util.addTokenAuthorization();
+    expect(o).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    
+    spyOn.mockRestore();
+});
+
+test('test addTokenAuthorization with missing session property on token', () => {
+    const spyOn = jest.spyOn(console, 'error').mockImplementation();
+    
+    const o = util.addTokenAuthorization({});
+    expect(o).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    
+    spyOn.mockRestore();
+});
+
+test('test addTokenAuthorization with valid parameters', () => {
+    const r = {
+        body: {
+            ids: ['id1', 'id2'],
+            limit: 10,
+        },
+    };
+
+    const o = util.addTokenAuthorization({ session: 'test' }, r);
+
+    expect(o).toEqual({
+        body: {
+            ids: ['id1', 'id2'],
+            limit: 10,
+        },
+        headers: {
+            Authorization: `Bearer test`,
+        },
+    });
+
+    expect(r).toEqual({
+        body: {
+            ids: ['id1', 'id2'],
+            limit: 10,
+        },
+    });
+});
