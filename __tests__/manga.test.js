@@ -185,3 +185,38 @@ test('test getMangaId with valid parameters', () => {
 
     spyOn.mockRestore();
 });
+
+test('test getMangaIdReadMarkers with no parameters', () => {
+    const spyOn = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = manga.getMangaIdReadMarkers();
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be undefined');
+
+    spyOn.mockRestore();
+});
+
+test('test getMangaIdReadMarkers with blank parameters', () => {
+    const spyOn = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = manga.getMangaIdReadMarkers('');
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be blank');
+
+    spyOn.mockRestore();
+});
+
+test('test getMangaIdReadMarkers with valid parameters', () => {
+    const spyOn = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = manga.getMangaIdReadMarkers('manga-id').then((res) => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/manga/manga-id/read');
+
+    spyOn.mockRestore();
+});

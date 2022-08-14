@@ -223,6 +223,13 @@ declare namespace MangaAPI {
     /** Response from `GET /manga/{id}` */
     type GetMangaIdResponse = Schema.MangaResponse;
 
+    /** Response from `GET /manga/{id}/read` */
+    type GetMangaIdReadMarkersResponse = {
+        result: 'ok'
+        /** UUID formatted strings */
+        data: string[]
+    };
+
     /**
      * Search for manga.
      * 
@@ -267,6 +274,14 @@ declare namespace MangaAPI {
      * @returns {Promise<GetMangaIdResponse | Schema.ErrorResponse>} A promise that resolves to a {@link GetMangaIdResponse} object
      */
     function getMangaId(mangaId: string, options?: GetMangaIdRequestOptions): Promise<GetMangaIdResponse | Schema.ErrorResponse>;
+
+    /**
+     * Get a list of chapters that have been marked as read for a given manga.
+     * 
+     * @param {string} mangaId UUID formatted string
+     * @returns {Promise<GetMangaIdReadMarkersResponse>} A promise that resolves to a {@link GetMangaIdReadMarkersResponse} object
+     */
+    function getMangaIdReadMarkers(mangaId: string): Promise<GetMangaIdReadMarkersResponse>;
 }
 
 export = MangaAPI;
