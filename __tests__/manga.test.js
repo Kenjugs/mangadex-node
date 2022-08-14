@@ -46,26 +46,6 @@ test('test getSearchManga with valid parameters', () => {
     spyOn.mockRestore();
 });
 
-test('test getMangaStatus with no parameters', () => {
-    const spyOn = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = manga.getMangaStatus();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaStatus: Parameter `token` cannot be undefined');
-
-    spyOn.mockRestore();
-});
-
-test('test getMangaStatus with blank parameters', () => {
-    const spyOn = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = manga.getMangaStatus({}, '');
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaStatus: Parameter `token` missing required property `session`');
-
-    spyOn.mockRestore();
-});
-
 test('test getMangaStatus with valid parameters', () => {
     const spyOn = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
         return Promise.resolve({ result: 'ok' });
@@ -186,20 +166,20 @@ test('test getMangaId with valid parameters', () => {
     spyOn.mockRestore();
 });
 
-test('test getMangaIdReadMarkers with no parameters', () => {
+test('test getMangaIdReadMarkers with no id parameter', () => {
     const spyOn = jest.spyOn(console, 'error').mockImplementation();
 
-    const p = manga.getMangaIdReadMarkers();
+    const p = manga.getMangaIdReadMarkers({ session: 'test' });
     expect(p).toBe(undefined);
     expect(console.error).toHaveBeenCalledWith('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be undefined');
 
     spyOn.mockRestore();
 });
 
-test('test getMangaIdReadMarkers with blank parameters', () => {
+test('test getMangaIdReadMarkers with blank id parameter', () => {
     const spyOn = jest.spyOn(console, 'error').mockImplementation();
 
-    const p = manga.getMangaIdReadMarkers('');
+    const p = manga.getMangaIdReadMarkers({ session: 'test' }, '');
     expect(p).toBe(undefined);
     expect(console.error).toHaveBeenCalledWith('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be blank');
 
@@ -211,12 +191,47 @@ test('test getMangaIdReadMarkers with valid parameters', () => {
         return Promise.resolve({ result: 'ok' });
     });
 
-    const p = manga.getMangaIdReadMarkers('manga-id').then((res) => {
+    const p = manga.getMangaIdReadMarkers({ session: 'test' }, 'manga-id').then((res) => {
         expect(res).toEqual({ result: 'ok' });
     });
 
     expect(p).toBeInstanceOf(Promise);
-    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/manga/manga-id/read');
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/manga/manga-id/read', { headers: { Authorization: 'Bearer test' } });
+
+    spyOn.mockRestore();
+});
+
+test('test getMangaReadMarkers with no id parameter', () => {
+    const spyOn = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = manga.getMangaReadMarkers({ session: 'test' });
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaReadMarkers: Parameter `options` cannot be undefined');
+
+    spyOn.mockRestore();
+});
+
+test('test getMangaReadMarkers with blank id parameter', () => {
+    const spyOn = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = manga.getMangaReadMarkers({ session: 'test' }, {});
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaReadMarkers: Parameter `options` missing required property `ids`');
+
+    spyOn.mockRestore();
+});
+
+test('test getMangaReadMarkers with valid parameters', () => {
+    const spyOn = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = manga.getMangaReadMarkers({ session: 'test' }, { ids: ['id1', 'id2'] }).then((res) => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/manga/read?ids[]=id1&ids[]=id2', { headers: { Authorization: 'Bearer test' } });
 
     spyOn.mockRestore();
 });

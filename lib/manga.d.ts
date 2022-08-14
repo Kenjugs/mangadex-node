@@ -230,6 +230,40 @@ declare namespace MangaAPI {
         data: string[]
     };
 
+    type GetMangaReadMarkersRequestOptions = {
+        /** UUID formatted strings */
+        ids: string[]
+        /** Group results by manga ID */
+        grouped?: boolean
+    };
+
+    /** Response from `GET /manga/read` */
+    type GetMangaReadMarkersResponse = {
+        result: 'ok'
+        /**
+         * Type is dependent on value passed into request options `grouped`
+         * 
+         * For example:
+         * 
+         * ```console
+         * grouped: true
+         * data: {
+         *     1234abcd-0000-0000-0000-1234abcd5678: [
+         *         'abcd1234-1111-1111-1111-abcd1234efab',
+         *         'abcd1234-2222-2222-2222-2468acea0246'
+         *     ]
+         * }
+         * 
+         * grouped: false
+         * data: [
+         *     'abcd1234-1111-1111-1111-abcd1234efab',
+         *     'abcd1234-2222-2222-2222-2468acea0246'
+         * ]
+         * ```
+         */
+        data: string[] | Record<string, string>[];
+    };
+
     /**
      * Search for manga.
      * 
@@ -278,10 +312,19 @@ declare namespace MangaAPI {
     /**
      * Get a list of chapters that have been marked as read for a given manga.
      * 
+     * @param {AuthAPI.AuthenticationToken} token See {@link AuthAPI.AuthenticationToken}
      * @param {string} mangaId UUID formatted string
      * @returns {Promise<GetMangaIdReadMarkersResponse>} A promise that resolves to a {@link GetMangaIdReadMarkersResponse} object
      */
-    function getMangaIdReadMarkers(mangaId: string): Promise<GetMangaIdReadMarkersResponse>;
+    function getMangaIdReadMarkers(token: AuthAPI.AuthenticationToken, mangaId: string): Promise<GetMangaIdReadMarkersResponse>;
+
+    /**
+     * Get a list of chapters that have been marked as read grouped by manga.
+     * 
+     * @param {GetMangaReadMarkersRequestOptions} [options] See {@link GetMangaReadMarkersRequestOptions}
+     * @returns {Promise<GetMangaReadMarkersResponse>} A promise that resolves to a {@link GetMangaReadMarkersResponse} object
+     */
+    function getMangaReadMarkers(options?: GetMangaReadMarkersRequestOptions): Promise<GetMangaReadMarkersResponse>;
 }
 
 export = MangaAPI;
