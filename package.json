@@ -4,13 +4,17 @@
   "description": "A library module for Mangadex API v5",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "npx tsc"
   },
   "author": "Kenjugs",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^17.0.36",
-    "jest": "^28.1.0",
+    "@types/jest": "^28.1.6",
+    "@types/node": "^16.11.48",
+    "jest": "^28.1.3",
+    "ts-jest": "^28.0.7",
+    "ts-node": "^10.9.1",
     "typescript": "^4.7.2"
   }
 }

@@ -16,7 +16,7 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm install --save-dev jest-junit
+          command: npm install --save-dev jest-junit ts-node ts-jest
           name: Install JUnit coverage reporter
       - run:
           command: npx jest --ci --runInBand --reporters=default --reporters=jest-junit

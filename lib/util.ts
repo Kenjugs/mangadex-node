@@ -2,7 +2,18 @@
  * IMPORT STATEMENTS
  ********************/
 
-const https = require('https');
+import { AuthenticationToken } from './authentication';
+import https from 'https';
+import { ErrorResponse } from './schema';
+
+/*******************
+ * TYPE DEFINITIONS
+ *******************/
+
+/** HTTPS request options with an optional body property */
+export type RequestOptions = https.RequestOptions & {
+    body?: object
+};
 
 /************************
  * CONSTANT DECLARATIONS
@@ -22,7 +33,7 @@ const HOSTNAME = 'api.mangadex.org';
  * @param {string[]} [array]
  * @returns {string} Formatted query string params
  */
-const transformArrayForQueryString = function (name, array) {
+const transformArrayForQueryString = function (name: string, array?: string[]) {
     let qs = '';
 
     if (array === undefined || array.length === 0) {
@@ -41,12 +52,12 @@ const transformArrayForQueryString = function (name, array) {
 };
 
 /**
- * Build a query string from a request options object
+ * Build a query string from a request options object.
  * 
  * @param {object} [options] A request options object to parse
  * @returns {string} The query string, including the starting '?' character
  */
-exports.buildQueryStringFromOptions = function (options) {
+export const buildQueryStringFromOptions = function (options?: { [key: string]: any }) {
     const queryParams = [];
 
     if (options === undefined || Object.keys(options).length === 0) {
@@ -79,12 +90,12 @@ exports.buildQueryStringFromOptions = function (options) {
 
 /**
  * @template T
- * @param {string} method The HTTP method
- * @param {string} path The endpoint path
+ * @param {string} method The HTTP method.
+ * @param {string} path The endpoint path.
  * @param {RequestOptions} [options] Additional request options (such as request body, headers, etc.)
- * @returns {Promise<T | ErrorResponse>} A promise that resolves to a specific response object T
+ * @returns A promise that resolves to a specific response object T.
  */
-exports.createHttpsRequestPromise = function (method, path, options) {
+export const createHttpsRequestPromise = function <T>(method: string, path: string, options?: RequestOptions) {
     if (method === undefined) {
         console.error('ERROR - createHttpsRequestPromise: Parameter `method` cannot be undefined');
         return;
@@ -106,7 +117,7 @@ exports.createHttpsRequestPromise = function (method, path, options) {
     };
 
     // extract request body if we have one
-    let body = null;
+    let body: object | undefined | null = null;
 
     if (options && ('body' in options)) {
         body = options.body;
@@ -118,22 +129,23 @@ exports.createHttpsRequestPromise = function (method, path, options) {
         Object.assign(httpsRequestOptions, options);
     }
 
-    /** @type {Promise<T | ErrorResponse>} */
-    return new Promise((resolve, reject) => {
+    return new Promise<T | ErrorResponse>((resolve, reject) => {
         const req = https.request(httpsRequestOptions, res => {
-            const chunks = [];
+            const chunks: Buffer[] = [];
+
             res.on('data', chunk => {
                 chunks.push(Buffer.from(chunk));
             });
+
             res.on('error', err => {
                 reject(err);
             });
+
             res.on('end', () => {
                 const s = Buffer.concat(chunks).toString('utf8');
+
                 if (['{', '['].includes(s.charAt(0))) {
-                    resolve(JSON.parse(Buffer.concat(chunks).toString('utf8')));
-                } else {
-                    resolve(Buffer.concat(chunks).toString('utf8'));
+                    resolve(JSON.parse(s));
                 }
             });
         });
@@ -147,13 +159,13 @@ exports.createHttpsRequestPromise = function (method, path, options) {
 };
 
 /**
- * Adds an authorization token header to a request options object.
+ * Adds an authorization header to a request options object.
  * 
  * @param {AuthenticationToken} token See {@link AuthenticationToken}
  * @param {RequestOptions} [request] RequestOptions object to add the token to
- * @returns {RequestOptions} A new {@link RequestOptions} object with the added authorization token
+ * @returns A new {@link RequestOptions} object with the added authorization token
  */
-exports.addTokenAuthorization = function (token, request) {
+export const addTokenAuthorization = function (token: AuthenticationToken, request?: RequestOptions) {
     if (token === undefined) {
         console.error('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
         return;
@@ -167,6 +179,6 @@ exports.addTokenAuthorization = function (token, request) {
             Authorization: `Bearer ${token.session}`,
         },
     }, request ? request : {});
-    
+
     return o;
 };

@@ -1,12 +1,56 @@
-const util = require('./util');
+/********************
+ * IMPORT STATEMENTS
+ ********************/
+
+import { Login, LoginResponse, CheckResponse, LogoutResponse, RefreshResponse, ErrorResponse } from './schema';
+import * as util from './util';
+
+/*******************
+ * TYPE DEFINITIONS
+ *******************/
+
+/** Authentication token issued when logging into a user account */
+export type AuthenticationToken = {
+    session: string
+    refresh: string
+};
+
+/***********************
+ * API REQUEST/RESPONSE
+ ***********************/
+
+/**
+ * Request body for `POST /auth/login`
+ * 
+ * Login object for logging in and obtaining an auth token object.
+ * At least one of username or email is required.
+ */
+export type AuthLoginRequestOptions = Login;
+
+/** Response from `POST /auth/login` */
+export type AuthLoginResponse = LoginResponse;
+
+/** Response from `GET /auth/check` */
+export type GetAuthCheckResponse = CheckResponse;
+
+/** Response from `POST /auth/logout` */
+export type AuthLogoutResponse = LogoutResponse;
+
+/** Response from `POST /auth/refresh` */
+export type AuthRefreshResponse = RefreshResponse;
+
+
+/***********************
+ * FUNCTION DEFINITIONS
+ ***********************/
 
 /**
  * Send account credentials and receive an authentication token.
  * 
  * @param {AuthLoginRequestOptions} login Login object containing username/email and password
- * @returns {Promise<AuthLoginResponse | ErrorResponse>} A promise that resolves to an {@link AuthLoginResponse} object
+ * @returns A promise that resolves to an {@link AuthLoginResponse} object.
  */
-exports.authLogin = function (login) {
+export const authLogin = function (login: AuthLoginRequestOptions) {
     if (login === undefined) {
         console.error('ERROR - authLogin: Parameter `login` cannot be undefined');
         return;
@@ -27,37 +71,38 @@ exports.authLogin = function (login) {
         },
     };
 
-    return util.createHttpsRequestPromise('POST', path, options);
+    return util.createHttpsRequestPromise<AuthLoginResponse>('POST', path, options);
 };
 
 /**
  * Check if a session token is still valid.
  * 
  * @param {AuthenticationToken} token See {@link AuthenticationToken}
- * @returns {Promise<GetAuthCheckResponse>} A promise that resolves to a {@link GetAuthCheckResponse} object
+ * @returns A promise that resolves to a {@link GetAuthCheckResponse} object.
  */
-exports.getAuthCheck = function (token) {
+export const getAuthCheck = function (token: AuthenticationToken) {
     const path = '/auth/check';
     const httpsRequestOptions = util.addTokenAuthorization(token);
 
     if (!httpsRequestOptions) return;
 
-    return util.createHttpsRequestPromise('GET', path, httpsRequestOptions);
+    return util.createHttpsRequestPromise<GetAuthCheckResponse>('GET', path, httpsRequestOptions);
 };
 
 /**
  * Logs out of a currently valid session.
  * 
  * @param {AuthenticationToken} token See {@link AuthenticationToken}
- * @returns {Promise<AuthLogoutResponse | ErrorResponse>} A promise that resolves to an {@link AuthLogoutResponse} object
+ * @returns A promise that resolves to an {@link AuthLogoutResponse} object.
+ * Will resolve to a {@link ErrorResponse} object on error.
  */
-exports.authLogout = function (token) {
+export const authLogout = function (token: AuthenticationToken) {
     const path = '/auth/logout';
     const httpsRequestOptions = util.addTokenAuthorization(token);
 
     if (!httpsRequestOptions) return;
 
-    return util.createHttpsRequestPromise('POST', path, httpsRequestOptions);
+    return util.createHttpsRequestPromise<AuthLogoutResponse>('POST', path, httpsRequestOptions);
 };
 
 /**
@@ -67,9 +112,10 @@ exports.authLogout = function (token) {
  * will need to log in again; you cannot refresh a refresh token any other way.
  * 
  * @param {AuthenticationToken} token See {@link AuthenticationToken}
- * @returns {Promise<AuthRefreshResponse | ErrorResponse>} A promise that resolves to an {@link AuthRefreshResponse} object
+ * @returns A promise that resolves to an {@link AuthRefreshResponse} object.
+ * Will resolve to a {@link ErrorResponse} object on error.
  */
-exports.authRefresh = function (token) {
+export const authRefresh = function (token: AuthenticationToken) {
     if (token === undefined) {
         console.error('ERROR - authRefresh: Parameter `token` cannot be undefined');
         return;
@@ -89,5 +135,5 @@ exports.authRefresh = function (token) {
         },
     };
 
-    return util.createHttpsRequestPromise('POST', path, httpsRequestOptions);
+    return util.createHttpsRequestPromise<AuthRefreshResponse>('POST', path, httpsRequestOptions);
 };
