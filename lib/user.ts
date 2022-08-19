@@ -4,7 +4,7 @@
 
 import { AuthenticationToken } from './authentication';
 import { MangaContentRating } from './manga';
-import { UserList, UserResponse, ChapterList, ErrorResponse } from './schema';
+import { UserList, UserResponse, ChapterList, MangaList, ErrorResponse } from './schema';
 import { Order, Includes } from './static';
 import * as util from './util';
 
@@ -49,13 +49,13 @@ export type GetUsersRequestOptions = {
 };
 
 /** Response from `GET /user` */
-type GetUsersResponse = UserList;
+export type GetUsersResponse = UserList;
 
 /** Response from `GET /user/{id}` */
-type GetUserIdResponse = UserResponse;
+export type GetUserIdResponse = UserResponse;
 
 /** Request parameters for `GET /user/follows/manga/feed` */
-type GetUserFollowedMangaFeedRequestOptions = {
+export type GetUserFollowedMangaFeedRequestOptions = {
     /**
      * ```console
      * Default: 100
@@ -88,7 +88,22 @@ type GetUserFollowedMangaFeedRequestOptions = {
 };
 
 /** Response from `GET /user/follows/manga/feed` */
-type GetUserFollowedMangaFeedResponse = ChapterList;
+export type GetUserFollowedMangaFeedResponse = ChapterList;
+
+/** Request parameters for `GET /user/follows/manga` */
+export type GetUserFollowedMangaRequestOptions = {
+    /** ```console
+     * Default: 10
+     * Minimum: 1
+     * Maximum: 100
+     * ``` */
+    limit?: number
+    /** Minimum: 0 */
+    offset?: number
+    includes?: Includes[]
+};
+
+export type GetUserFollowedMangaResponse = MangaList;
 
 /***********************
  * FUNCTION DEFINITIONS
@@ -146,7 +161,7 @@ export const getUserId = function (id: string) {
 /**
  * Gets a chapter feed from currently logged in user's list of followed manga.
  * 
- * @param {AuthenticationToken} token 
+ * @param {AuthenticationToken} token See {@link AuthenticationToken}
  * @param {GetUserFollowedMangaFeedRequestOptions} [options] See {@link GetUserFollowedMangaFeedRequestOptions}
  * @returns A promise that resolves to a {@link GetUserFollowedMangaFeedResponse} object.
  * Will resolve to a {@link ErrorResponse} object on error.
@@ -159,4 +174,21 @@ export const getUserFollowedMangaFeed = function (token: AuthenticationToken, op
     if (!httpsRequestOptions) return;
 
     return util.createHttpsRequestPromise<GetUserFollowedMangaFeedResponse>('GET', path, httpsRequestOptions);
+};
+
+/**
+ * Gets the currently logged in user's followed manga list.
+ * 
+ * @param {AuthenticationToken} token See {@link AuthenticationToken}
+ * @param {GetUserFollowedMangaRequestOptions} [options] See {@link GetUserFollowedMangaRequestOptions}
+ * @returns A promise that resolves to a {@link GetUserFollowedMangaResponse} object.
+ */
+export const getUserFollowedManga = function (token: AuthenticationToken, options?: GetUserFollowedMangaRequestOptions) {
+    const qs = util.buildQueryStringFromOptions(options);
+    const path = `/user/follows/manga${qs}`;
+    const httpsRequestOptions = util.addTokenAuthorization(token);
+
+    if (!httpsRequestOptions) return;
+
+    return util.createHttpsRequestPromise<GetUserFollowedMangaResponse>('GET', path, httpsRequestOptions);
 };
