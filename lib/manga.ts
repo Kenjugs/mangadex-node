@@ -188,7 +188,7 @@ export type GetMangaIdFeedRequestOptions = {
     originalLanguage?: string[]
     /** ISO 639-1 standard two or five letter language code */
     excludedOriginalLanguage?: string[]
-    contentRating?: MangaContentRating
+    contentRating?: MangaContentRating[]
     /** UUID formatted strings */
     excludedGroups?: string[]
     /** UUID formatted strings */

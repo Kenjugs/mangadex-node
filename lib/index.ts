@@ -6,6 +6,7 @@ export * as Cover from './cover';
 export * as Group from './group';
 export * as List from './list';
 export * as Manga from './manga';
+export * as Schema from './schema';
 export * as Static from './static';
 export * as User from './user';
 export { RequestOptions, isErrorResponse } from './util';

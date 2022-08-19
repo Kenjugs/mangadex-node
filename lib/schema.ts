@@ -1,3 +1,4 @@
+import { AuthenticationToken } from './authentication';
 import { Links } from './static';
 
 export type RequiredPick<T, K extends keyof T> = Partial<Omit<T, K>> & Required<Pick<T, K>>;
@@ -206,7 +207,7 @@ export type Login = RequireAtLeastOne<{
 
 export type LoginResponse = {
     result: 'ok' | 'error'
-    token: { session: string, refresh: string }
+    token: AuthenticationToken
 };
 
 export type CheckResponse = {
@@ -230,7 +231,7 @@ export type RefreshToken = {
 
 export type RefreshResponse = {
     result: 'ok' | 'error'
-    token?: { session: string, refresh: string }
+    token?: AuthenticationToken
     message?: string
 };
 
