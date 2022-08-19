@@ -1,23 +1,11 @@
-import * as account from './account';
-import * as auth from './authentication';
-import * as author from './author';
-import * as chapter from './chapter';
-import * as common from './static';
-import * as cover from './cover';
-import * as group from './group';
-import * as list from './list';
-import * as manga from './manga';
-import * as user from './user';
-
-export default {
-    account: account,
-    auth: auth,
-    author: author,
-    chapter: chapter,
-    common: common,
-    cover: cover,
-    group: group,
-    list: list,
-    manga: manga,
-    user: user,
-};
+export * as Account from './account';
+export * as Authentication from './authentication';
+export * as Author from './author';
+export * as Chapter from './chapter';
+export * as Cover from './cover';
+export * as Group from './group';
+export * as List from './list';
+export * as Manga from './manga';
+export * as Static from './static';
+export * as User from './user';
+export { RequestOptions, isErrorResponse } from './util';

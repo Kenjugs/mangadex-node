@@ -1,8 +1,12 @@
 {
   "name": "mangadex-node",
-  "version": "0.0.1",
+  "version": "5.6.0",
   "description": "A library module for Mangadex API v5",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "test": "jest",
     "build": "npx tsc"
