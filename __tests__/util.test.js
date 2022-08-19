@@ -228,3 +228,19 @@ test('test addTokenAuthorization with valid parameters', () => {
         },
     });
 });
+
+test('test isErrorResponse with non-matching type', () => {
+    const s = 'hello';
+    const t = util.isErrorResponse(s);
+    expect(t).toBe(false);
+});
+
+test('test isErrorResponse with matching type', () => {
+    const fn = jest.fn(() => {
+        return { result: 'error', errors: ['error1', 'error2', 'error3'] };
+    });
+
+    const x = fn();
+    const t = util.isErrorResponse(x);
+    expect(t).toBe(true);
+});

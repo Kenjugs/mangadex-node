@@ -182,3 +182,13 @@ export const addTokenAuthorization = function (token: AuthenticationToken, reque
 
     return o;
 };
+
+/**
+ * Type guarding function for checking if a response is an ErrorResponse.
+ * 
+ * @param {ErrorResponse | any} res The response to check
+ * @returns A boolean value indicating if the response is an ErrorResponse
+ */
+export const isErrorResponse = function (res: ErrorResponse | any): res is ErrorResponse {
+    return (res as ErrorResponse).errors !== undefined;
+};
