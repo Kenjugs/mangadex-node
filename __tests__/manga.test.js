@@ -235,3 +235,18 @@ test('test getMangaReadMarkers with valid parameters', () => {
 
     spyOn.mockRestore();
 });
+
+test('test getMangaRandom with valid parameters', () => {
+    const spyOn = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = manga.getMangaRandom({ contentRating: [manga.MangaContentRating.SAFE] }).then(res => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/manga/random?contentRating[]=safe');
+
+    spyOn.mockRestore();
+});

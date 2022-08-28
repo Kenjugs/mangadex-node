@@ -274,6 +274,15 @@ export type GetMangaReadMarkersResponse = {
     data: string[] | Record<string, string>[];
 };
 
+/** Request parameters for `GET /manga/random` */
+export type GetMangaRandomRequestOptions = {
+    includes?: Includes[]
+    contentRating?: MangaContentRating[]
+};
+
+/** Response from `GET /manga/random` */
+export type GetMangaRandomResponse = MangaResponse;
+
 /***********************
  * FUNCTION DEFINITIONS
  ***********************/
@@ -434,4 +443,16 @@ export const getMangaReadMarkers = function (token: AuthenticationToken, options
 
     const path = `/manga/read${qs}`;
     return util.createHttpsRequestPromise<GetMangaReadMarkersResponse>('GET', path, httpsRequestOptions);
+};
+
+/**
+ * Get a random manga.
+ * 
+ * @param {GetMangaRandomRequestOptions} [options] See {@link GetMangaRandomRequestOptions}
+ * @returns A promise that resolves to a {@link GetMangaRandomResponse} object
+ */
+export const getMangaRandom = function (options?: GetMangaRandomRequestOptions) {
+    const qs = util.buildQueryStringFromOptions(options);
+    const path = `/manga/random${qs}`;
+    return util.createHttpsRequestPromise<GetMangaRandomResponse>('GET', path);
 };
