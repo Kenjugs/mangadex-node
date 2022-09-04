@@ -103,7 +103,11 @@ export type GetUserFollowedMangaRequestOptions = {
     includes?: Includes[]
 };
 
+/** Response from `GET /user/follows/manga` */
 export type GetUserFollowedMangaResponse = MangaList;
+
+/** Response from `GET /user/me` */
+export type GetUserMeResponse = UserResponse;
 
 /***********************
  * FUNCTION DEFINITIONS
@@ -191,4 +195,19 @@ export const getUserFollowedManga = function (token: AuthenticationToken, option
     if (!httpsRequestOptions) return;
 
     return util.createHttpsRequestPromise<GetUserFollowedMangaResponse>('GET', path, httpsRequestOptions);
+};
+
+/**
+ * Gets the currently logged in user's details.
+ * 
+ * @param {AuthenticationToken} token See {@link AuthenticationToken}
+ * @returns A promise that resolves to a {@link GetUserMeResponse} object
+ */
+export const getUserMe = function (token: AuthenticationToken) {
+    const path = `/user/me`;
+    const httpsRequestOptions = util.addTokenAuthorization(token);
+
+    if (!httpsRequestOptions) return;
+
+    return util.createHttpsRequestPromise<GetUserMeResponse>('GET', path, httpsRequestOptions);
 };

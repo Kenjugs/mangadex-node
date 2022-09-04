@@ -130,3 +130,29 @@ test('test getUserFollowedManga with valid parameters', () => {
 
     spy.mockRestore();
 });
+
+test('test getUserMe with no parameters', () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const p = user.getUserMe();
+
+    expect(p).toBe(undefined);
+    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+
+    spy.mockRestore();
+});
+
+test('test getUserMe with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = user.getUserMe({ session: 'test' }).then(res => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/user/me', { headers: { Authorization: 'Bearer test'}});
+
+    spy.mockRestore();
+});
