@@ -3,7 +3,7 @@
  ********************/
 
 import { AuthenticationToken } from './authentication';
-import { MangaList, ChapterList, MangaResponse, ErrorResponse } from './schema';
+import { MangaList, ChapterList, MangaResponse, TagResponse, ErrorResponse } from './schema';
 import { Order, Includes } from './static';
 import * as util from './util';
 
@@ -283,6 +283,9 @@ export type GetMangaRandomRequestOptions = {
 /** Response from `GET /manga/random` */
 export type GetMangaRandomResponse = MangaResponse;
 
+/** Response from `GET /manga/tag` */
+export type GetMangaTagResponse = TagResponse;
+
 /***********************
  * FUNCTION DEFINITIONS
  ***********************/
@@ -455,4 +458,14 @@ export const getMangaRandom = function (options?: GetMangaRandomRequestOptions) 
     const qs = util.buildQueryStringFromOptions(options);
     const path = `/manga/random${qs}`;
     return util.createHttpsRequestPromise<GetMangaRandomResponse>('GET', path);
+};
+
+/**
+ * Get manga tag list. This function takes no parameters.
+ * 
+ * @returns A promise that resolves to a {@link GetMangaTagResponse} object
+ */
+export const getMangaTag = function () {
+    const path = `/manga/tag`;
+    return util.createHttpsRequestPromise<GetMangaTagResponse>('GET', path);
 };

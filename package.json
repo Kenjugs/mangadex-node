@@ -1,6 +1,6 @@
 {
   "name": "mangadex-node",
-  "version": "5.6.0",
+  "version": "5.6.1",
   "description": "A library module for Mangadex API v5",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
