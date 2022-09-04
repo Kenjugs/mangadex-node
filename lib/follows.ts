@@ -3,7 +3,7 @@
  ********************/
 
 import { AuthenticationToken } from './authentication';
-import { ScanlationGroupList } from './schema';
+import { ScanlationGroupList, Response } from './schema';
 import { Includes } from './static';
 import * as util from './util';
 
@@ -29,6 +29,9 @@ export type GetUserFollowsGroupRequestOptions = {
 /** Response from `GET /user/follows/group` */
 export type GetUserFollowsGroupResponse = ScanlationGroupList;
 
+/** Response from `GET /user/follows/group/{id}` */
+export type GetUserFollowsGroupIdResponse = Response;
+
 /***********************
  * FUNCTION DEFINITIONS
  ***********************/
@@ -47,5 +50,29 @@ export const getUserFollowsGroup = function (token: AuthenticationToken, options
 
     if (!httpsRequestOptions) return;
 
-    return util.createHttpsRequestPromise('GET', path, httpsRequestOptions);
+    return util.createHttpsRequestPromise<GetUserFollowsGroupResponse>('GET', path, httpsRequestOptions);
+};
+
+/**
+ * Check if logged user follows a group.
+ * 
+ * @param {string} id UUID formatted string
+ * @param {AuthenticationToken} token See {@link AuthenticationToken}
+ * @returns A promise that resolves to a {@link GetUserFollowsGroupIdResponse} object
+ */
+export const getUserFollowsGroupId = function (id: string, token: AuthenticationToken) {
+    if (id === undefined) {
+        console.error('ERROR - getUserFollowsGroupId: Parameter `id` cannot be undefined');
+        return;
+    } else if (id === '') {
+        console.error('ERROR - getUserFollowsGroupId: Parameter `id` cannot be blank');
+        return;
+    }
+
+    const path = `/user/follows/group/${id}`;
+    const httpsRequestOptions = util.addTokenAuthorization(token);
+
+    if (!httpsRequestOptions) return;
+
+    return util.createHttpsRequestPromise<GetUserFollowsGroupIdResponse>('GET', path, httpsRequestOptions);
 };
