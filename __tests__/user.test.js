@@ -152,7 +152,7 @@ test('test getUserMe with valid parameters', () => {
     });
 
     expect(p).toBeInstanceOf(Promise);
-    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/user/me', { headers: { Authorization: 'Bearer test'}});
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/user/me', { headers: { Authorization: 'Bearer test' } });
 
     spy.mockRestore();
 });
