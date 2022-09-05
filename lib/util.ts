@@ -129,7 +129,7 @@ export const createHttpsRequestPromise = function <T>(method: string, path: stri
         Object.assign(httpsRequestOptions, options);
     }
 
-    return new Promise<T | ErrorResponse>((resolve, reject) => {
+    return new Promise<{ data: T | ErrorResponse, statusCode?: number, statusMessage?: string }>((resolve, reject) => {
         const req = https.request(httpsRequestOptions, res => {
             const chunks: Buffer[] = [];
 
@@ -145,7 +145,12 @@ export const createHttpsRequestPromise = function <T>(method: string, path: stri
                 const s = Buffer.concat(chunks).toString('utf8');
 
                 if (['{', '['].includes(s.charAt(0))) {
-                    resolve(JSON.parse(s));
+                    const resObj = {
+                        data: JSON.parse(s),
+                        statusCode: res.statusCode,
+                        statusMessage: res.statusMessage,
+                    }
+                    resolve(resObj);
                 }
             });
         });

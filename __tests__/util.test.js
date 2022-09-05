@@ -140,7 +140,7 @@ test('test createHttpsRequestPromise successful resolve', () => {
     };
 
     const p = util.createHttpsRequestPromise('POST', '/path', options).then(data => {
-        const expected = JSON.parse('{ "result": "ok", "status": "dummy API call" }');
+        const expected = JSON.parse('{ "data": { "result": "ok", "status": "dummy API call" } }');
         expect(data).toEqual(expected);
     });
 
