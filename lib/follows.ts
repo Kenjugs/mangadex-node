@@ -3,7 +3,7 @@
  ********************/
 
 import { AuthenticationToken } from './authentication';
-import { ScanlationGroupList, Response } from './schema';
+import { ScanlationGroupList, Response, UserList } from './schema';
 import { Includes } from './static';
 import * as util from './util';
 
@@ -31,6 +31,23 @@ export type GetUserFollowsGroupResponse = ScanlationGroupList;
 
 /** Response from `GET /user/follows/group/{id}` */
 export type GetUserFollowsGroupIdResponse = Response;
+
+/** Request parameters for `GET /user/follows/user` */
+export type GetUserFollowsUserRequestOptions = {
+    /** ```console
+     * Default: 10
+     * Minimum: 1
+     * Maximum: 100
+     * ``` */
+    limit?: number
+    /** ```console
+     * Minimum: 0
+     * ``` */
+    offset?: number
+};
+
+/** Response from `GET /user/follows/user` */
+export type GetUserFollowsUserResponse = UserList;
 
 /***********************
  * FUNCTION DEFINITIONS
@@ -75,4 +92,21 @@ export const getUserFollowsGroupId = function (id: string, token: Authentication
     if (!httpsRequestOptions) return;
 
     return util.createHttpsRequestPromise<GetUserFollowsGroupIdResponse>('GET', path, httpsRequestOptions);
+};
+
+/**
+ * Gets a list of users that the current logged in user follows.
+ * 
+ * @param {AuthenticationToken} token See {@link AuthenticationToken}
+ * @param {GetUserFollowsUserRequestOptions} [options] See {@link GetUserFollowsUserRequestOptions}
+ * @returns A promise that resolves to a {@link GetUserFollowsUserResponse} object
+ */
+export const getUserFollowsUser = function (token: AuthenticationToken, options?: GetUserFollowsUserRequestOptions) {
+    const qs = util.buildQueryStringFromOptions(options);
+    const path = `/user/follows/user${qs}`;
+    const httpsRequestOptions = util.addTokenAuthorization(token);
+
+    if (!httpsRequestOptions) return;
+
+    return util.createHttpsRequestPromise<GetUserFollowsUserResponse>('GET', path, httpsRequestOptions);
 };
