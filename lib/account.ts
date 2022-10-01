@@ -27,11 +27,9 @@ export type GetAccountAvailableResponse = {
  */
 export const getAccountAvailable = function (username: string) {
     if (username === undefined) {
-        console.error('ERROR - getAccountAvailable: Parameter `username` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getAccountAvailable: Parameter `username` cannot be undefined');
     } else if (username === '') {
-        console.error('ERROR - getAccountAvailable: Parameter `username` cannot be empty');
-        return;
+        return Promise.reject('ERROR - getAccountAvailable: Parameter `username` cannot be empty');
     }
 
     const qs = util.buildQueryStringFromOptions({ username: username });

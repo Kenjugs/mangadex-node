@@ -2,33 +2,27 @@ const auth = require('../lib/authentication');
 const util = require('../lib/util');
 
 test('test authLogin with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = auth.authLogin();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - authLogin: Parameter `login` cannot be undefined');
-
-    spy.mockRestore();
+    const p = auth.authLogin().catch(r => {
+        expect(r).toBe('ERROR - authLogin: Parameter `login` cannot be undefined');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test authLogin with missing email and username', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = auth.authLogin({ password: 'a' });
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - authLogin: Parameter `login` missing both `login.username` and `login.email`');
-
-    spy.mockRestore();
+    const p = auth.authLogin({ password: 'a' }).catch(r => {
+        expect(r).toBe('ERROR - authLogin: Parameter `login` missing both `login.username` and `login.email`');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test authLogin with missing password', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = auth.authLogin({ username: 'a', email: 'b' });
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - authLogin: Parameter `login` missing required property `login.password`');
-
-    spy.mockRestore();
+    const p = auth.authLogin({ username: 'a', email: 'b' }).catch(r => {
+        expect(r).toBe('ERROR - authLogin: Parameter `login` missing required property `login.password`');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test authLogin with valid parameters', () => {
@@ -52,23 +46,21 @@ test('test authLogin with valid parameters', () => {
 });
 
 test('test getAuthCheck with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = auth.getAuthCheck();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
-
-    spy.mockRestore();
+    const p = auth.getAuthCheck().catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getAuthCheck with missing required property', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = auth.getAuthCheck({ refresh: 'abcd' });
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
-
-    spy.mockRestore();
+    const p = auth.getAuthCheck({ refresh: 'abcd' }).catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getAuthCheck with valid parameters', () => {
@@ -92,23 +84,21 @@ test('test getAuthCheck with valid parameters', () => {
 });
 
 test('test authLogout with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = auth.authLogout();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
-
-    spy.mockRestore();
+    const p = auth.authLogout().catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test authLogout with missing required parameter', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = auth.authLogout({ refresh: 'abcd' });
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
-
-    spy.mockRestore();
+    const p = auth.authLogout({ refresh: 'abcd' }).catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test authLogout with valid parameters', () => {
@@ -132,23 +122,19 @@ test('test authLogout with valid parameters', () => {
 });
 
 test('test authRefresh with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = auth.authRefresh().catch(r => {
+        expect(r).toBe('ERROR - authRefresh: Parameter `token` cannot be undefined');
+    });
 
-    const p = auth.authRefresh();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - authRefresh: Parameter `token` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test authRefresh with missing required parameter', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = auth.authRefresh({ session: 'expired' }).catch(r => {
+        expect(r).toBe('ERROR - authRefresh: Parameter `token` missing required property `refresh`');
+    });
 
-    const p = auth.authRefresh({ session: 'expired' });
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - authRefresh: Parameter `token` missing required property `refresh`');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test authRefresh with valid parameters', () => {

@@ -31,23 +31,19 @@ test('test getChapters with non-blank parameters', () => {
 });
 
 test('test getChapterId with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = chapter.getChapterId().catch(r => {
+        expect(r).toBe('ERROR - getChapterId: Parameter `id` cannot be undefined');
+    });
 
-    const p = chapter.getChapterId();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getChapterId: Parameter `id` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getChapterId with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = chapter.getChapterId('', {}).catch(r => {
+        expect(r).toBe('ERROR - getChapterId: Parameter `id` cannot be blank');
+    });
 
-    const p = chapter.getChapterId('', {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getChapterId: Parameter `id` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getChapterId with valid parameters', () => {
@@ -66,23 +62,19 @@ test('test getChapterId with valid parameters', () => {
 });
 
 test('test getAtHomeServerChapterId with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = chapter.getAtHomeServerChapterId().catch(r => {
+        expect(r).toBe('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be undefined');
+    });
 
-    const p = chapter.getAtHomeServerChapterId();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getAtHomeServerChapterId with invalid parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = chapter.getAtHomeServerChapterId('',{}).catch(r => {
+        expect(r).toBe('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be blank');
+    });
 
-    const p = chapter.getAtHomeServerChapterId('',{});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getAtHomeServerChapterId with valid parameters', () => {

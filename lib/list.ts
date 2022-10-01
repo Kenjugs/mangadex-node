@@ -107,11 +107,9 @@ export type GetListIdFeedResponse = ChapterList;
  */
 export const getListId = function (listId: string) {
     if (listId === undefined) {
-        console.error('ERROR - getListId: Parameter `listId` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getListId: Parameter `listId` cannot be undefined');
     } else if (listId === '') {
-        console.error('ERROR - getListId: Parameter `listId` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getListId: Parameter `listId` cannot be blank');
     }
 
     const path = `/list/${listId}`;
@@ -147,11 +145,13 @@ export const getListId = function (listId: string) {
 export const getUserList = function (token: AuthenticationToken, options?: GetUserListRequestOptions) {
     const qs = util.buildQueryStringFromOptions(options);
     const path = `/user/list${qs}`;
-    const httpsRequestOptions = util.addTokenAuthorization(token);
 
-    if (!httpsRequestOptions) return;
-
-    return util.createHttpsRequestPromise<GetUserListResponse>('GET', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetUserListResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**
@@ -163,11 +163,9 @@ export const getUserList = function (token: AuthenticationToken, options?: GetUs
  */
 export const getUserIdList = function (id: string, options?: GetUserIdListRequestOptions) {
     if (id === undefined) {
-        console.error('ERROR - getUserIdList: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getUserIdList: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getUserIdList: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getUserIdList: Parameter `id` cannot be blank');
     }
 
     const qs = util.buildQueryStringFromOptions(options);
@@ -186,11 +184,9 @@ export const getUserIdList = function (id: string, options?: GetUserIdListReques
  */
 export const getListIdFeed = function (id: string, options?: GetListIdFeedRequestOptions) {
     if (id === undefined) {
-        console.error('ERROR - getListIdFeed: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getListIdFeed: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getListIdFeed: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getListIdFeed: Parameter `id` cannot be blank');
     }
 
     const qs = util.buildQueryStringFromOptions(options);

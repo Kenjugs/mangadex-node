@@ -2,23 +2,21 @@ const util = require('../lib/util');
 const user = require('../lib/user');
 
 test('test getUsers with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = user.getUsers().catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
 
-    const p = user.getUsers();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUsers with missing required parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = user.getUsers({ test: 'test' }).catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    });
 
-    const p = user.getUsers({ test: 'test' });
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUsers with valid parameters', () => {
@@ -37,23 +35,19 @@ test('test getUsers with valid parameters', () => {
 });
 
 test('test getUserId with no parameter', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = user.getUserId().catch(r => {
+        expect(r).toBe('ERROR - getUserId: Parameter `id` cannot be undefined');
+    });
 
-    const p = user.getUserId();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUserId: Parameter `id` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserId with blank parameter', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = user.getUserId('').catch(r => {
+        expect(r).toBe('ERROR - getUserId: Parameter `id` cannot be blank');
+    });
 
-    const p = user.getUserId('');
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUserId: Parameter `id` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserId with valid parameters', () => {
@@ -72,23 +66,21 @@ test('test getUserId with valid parameters', () => {
 });
 
 test('test getUserFollowedMangaFeed with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = user.getUserFollowedMangaFeed();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
-
-    spy.mockRestore();
+    const p = user.getUserFollowedMangaFeed().catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserFollowedMangaFeed with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = user.getUserFollowedMangaFeed({}, {}).catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    });
 
-    const p = user.getUserFollowedMangaFeed({}, {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserFollowedMangaFeed with valid parameters', () => {
@@ -107,13 +99,21 @@ test('test getUserFollowedMangaFeed with valid parameters', () => {
 });
 
 test('test getUserFollowedManga with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = user.getUserFollowedManga().catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
 
-    const p = user.getUserFollowedManga();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    expect(p).toBeInstanceOf(Promise);
+});
 
-    spy.mockRestore();
+test('test getUserFollowedManga with blank parameters', () => {
+    const p = user.getUserFollowedManga({}, {}).catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserFollowedManga with valid parameters', () => {
@@ -132,14 +132,21 @@ test('test getUserFollowedManga with valid parameters', () => {
 });
 
 test('test getUserMe with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = user.getUserMe().catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
 
-    const p = user.getUserMe();
+    expect(p).toBeInstanceOf(Promise);
+});
 
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+test('test getUserMe with blank parameters', () => {
+    const p = user.getUserMe({}).catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    });
 
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserMe with valid parameters', () => {

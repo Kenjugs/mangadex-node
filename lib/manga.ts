@@ -317,9 +317,12 @@ export const getMangaStatus = function (token: AuthenticationToken, status?: Man
     const qs = util.buildQueryStringFromOptions({ status: status });
     const path = `/manga/status${qs}`;
 
-    const httpsRequestOptions = util.addTokenAuthorization(token);
-
-    return util.createHttpsRequestPromise<GetMangaStatusResponse>('GET', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetMangaStatusResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**
@@ -332,11 +335,9 @@ export const getMangaStatus = function (token: AuthenticationToken, status?: Man
  */
 export const getMangaIdFeed = function (id: string, options?: GetMangaIdFeedRequestOptions) {
     if (id === undefined) {
-        console.error('ERROR - getMangaIdFeed: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getMangaIdFeed: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getMangaIdFeed: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getMangaIdFeed: Parameter `id` cannot be blank');
     }
 
     const qs = util.buildQueryStringFromOptions(options);
@@ -355,11 +356,9 @@ export const getMangaIdFeed = function (id: string, options?: GetMangaIdFeedRequ
  */
 export const getMangaIdAggregate = function (id: string, options?: GetMangaIdAggregateRequestOptions) {
     if (id === undefined) {
-        console.error('ERROR - getMangaIdAggregate: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getMangaIdAggregate: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getMangaIdAggregate: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getMangaIdAggregate: Parameter `id` cannot be blank');
     }
 
     const qs = util.buildQueryStringFromOptions(options);
@@ -378,11 +377,9 @@ export const getMangaIdAggregate = function (id: string, options?: GetMangaIdAgg
  */
 export const getMangaId = function (id: string, options?: GetMangaIdRequestOptions) {
     if (id === undefined) {
-        console.error('ERROR - getMangaId: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getMangaId: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getMangaId: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getMangaId: Parameter `id` cannot be blank');
     }
 
     const qs = util.buildQueryStringFromOptions(options);
@@ -412,17 +409,19 @@ export const getMangaId = function (id: string, options?: GetMangaIdRequestOptio
  */
 export const getMangaIdReadMarkers = function (token: AuthenticationToken, id: string) {
     if (id === undefined) {
-        console.error('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be blank');
     }
 
-    const httpsRequestOptions = util.addTokenAuthorization(token);
-
     const path = `/manga/${id}/read`;
-    return util.createHttpsRequestPromise<GetMangaIdReadMarkersResponse>('GET', path, httpsRequestOptions);
+
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetMangaIdReadMarkersResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**
@@ -434,18 +433,20 @@ export const getMangaIdReadMarkers = function (token: AuthenticationToken, id: s
  */
 export const getMangaReadMarkers = function (token: AuthenticationToken, options: GetMangaReadMarkersRequestOptions) {
     if (options === undefined) {
-        console.error('ERROR - getMangaReadMarkers: Parameter `options` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getMangaReadMarkers: Parameter `options` cannot be undefined');
     } else if (!('ids' in options)) {
-        console.error('ERROR - getMangaReadMarkers: Parameter `options` missing required property `ids`');
-        return;
+        return Promise.reject('ERROR - getMangaReadMarkers: Parameter `options` missing required property `ids`');
     }
 
-    const httpsRequestOptions = util.addTokenAuthorization(token);
     const qs = util.buildQueryStringFromOptions(options);
-
     const path = `/manga/read${qs}`;
-    return util.createHttpsRequestPromise<GetMangaReadMarkersResponse>('GET', path, httpsRequestOptions);
+
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetMangaReadMarkersResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**

@@ -100,11 +100,9 @@ export const getCover = function (options?: GetCoverRequestOptions) {
  */
 export const getCoverId = function (id: string, options?: GetCoverIdRequestOptions) {
     if (id === undefined) {
-        console.error('ERROR - getCoverId: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getCoverId: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getCoverId: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getCoverId: Parameter `id` cannot be blank');
     }
 
     const qs = util.buildQueryStringFromOptions(options);

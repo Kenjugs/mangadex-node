@@ -2,13 +2,12 @@ const follows = require('../lib/follows');
 const util = require('../lib/util');
 
 test('test getUserFollowsGroup with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = follows.getUserFollowsGroup();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
-
-    spy.mockRestore();
+    const p = follows.getUserFollowsGroup().catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserFollowsGroup with valid parameters', () => {
@@ -27,33 +26,28 @@ test('test getUserFollowsGroup with valid parameters', () => {
 });
 
 test('test getUserFollowsGroupId with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = follows.getUserFollowsGroupId().catch(r => {
+        expect(r).toBe('ERROR - getUserFollowsGroupId: Parameter `id` cannot be undefined');
+    });
 
-    const p = follows.getUserFollowsGroupId();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUserFollowsGroupId: Parameter `id` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserFollowsGroupId with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = follows.getUserFollowsGroupId('', {}).catch(r => {
+        expect(r).toBe('ERROR - getUserFollowsGroupId: Parameter `id` cannot be blank');
+    });
 
-    const p = follows.getUserFollowsGroupId('', {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUserFollowsGroupId: Parameter `id` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserFollowsGroupId with blank authorization token', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = follows.getUserFollowsGroupId('group-id', {}).catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    });
 
-    const p = follows.getUserFollowsGroupId('group-id', {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserFollowsGroupId with valid parameters', () => {
@@ -72,13 +66,12 @@ test('test getUserFollowsGroupId with valid parameters', () => {
 });
 
 test('test getUserFollowsUser with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = follows.getUserFollowsUser().catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
 
-    const p = follows.getUserFollowsUser();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserFollowsUser with valid parameters', () => {

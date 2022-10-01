@@ -36,23 +36,19 @@ test('test getSearchGroup with valid parameters', () => {
 });
 
 test('test getGroupId with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = group.getGroupId().catch(r => {
+        expect(r).toBe('ERROR - getGroupId: Parameter `groupId` cannot be undefined');
+    });
 
-    const p = group.getGroupId();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getGroupId: Parameter `groupId` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getGroupId with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = group.getGroupId('', {}).catch(r => {
+        expect(r).toBe('ERROR - getGroupId: Parameter `groupId` cannot be blank');
+    });
 
-    const p = group.getGroupId('', {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getGroupId: Parameter `groupId` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getGroupId with valid parameters', () => {

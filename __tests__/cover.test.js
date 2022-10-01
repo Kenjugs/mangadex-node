@@ -32,23 +32,19 @@ test('test getCover with valid parameters', () => {
 });
 
 test('test getCoverId with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-    
-    const p = cover.getCoverId();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getCoverId: Parameter `id` cannot be undefined');
-    
-    spy.mockRestore();
+    const p = cover.getCoverId().catch(r => {
+        expect(r).toBe('ERROR - getCoverId: Parameter `id` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getCoverId with bad id parameter', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = cover.getCoverId('').catch(r => {
+        expect(r).toBe('ERROR - getCoverId: Parameter `id` cannot be blank');
+    });
 
-    const p = cover.getCoverId('');
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getCoverId: Parameter `id` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getCoverId with good parameters', () => {

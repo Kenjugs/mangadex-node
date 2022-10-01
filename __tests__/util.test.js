@@ -81,37 +81,33 @@ test('test buildQueryStringFromOptions with blank options', () => {
 });
 
 test('test createHttpsRequestPromise with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = util.createHttpsRequestPromise();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - createHttpsRequestPromise: Parameter `method` cannot be undefined');
-
-    spy.mockRestore();
+    const p = util.createHttpsRequestPromise().catch(r => {
+        expect(r).toBe('ERROR - createHttpsRequestPromise: Parameter `method` cannot be undefined');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test createHttpsRequestPromise with missing required parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const p = util.createHttpsRequestPromise('get');
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - createHttpsRequestPromise: Parameter `path` cannot be undefined');
-
-    spy.mockRestore();
+    const p = util.createHttpsRequestPromise('get').catch(r => {
+        expect(r).toBe('ERROR - createHttpsRequestPromise: Parameter `path` cannot be undefined');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test createHttpsRequestPromise with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = util.createHttpsRequestPromise('').catch(r => {
+        expect(r).toBe('ERROR - createHttpsRequestPromise: Parameter `method` cannot be blank');
+    });
+    
+    expect(p).toBeInstanceOf(Promise);
 
-    const p = util.createHttpsRequestPromise('');
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - createHttpsRequestPromise: Parameter `method` cannot be blank');
-
-    const q = util.createHttpsRequestPromise('test', '');
-    expect(q).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - createHttpsRequestPromise: Parameter `path` cannot be blank');
-
-    spy.mockRestore();
+    const q = util.createHttpsRequestPromise('test', '').catch(r => {
+        expect(r).toBe('ERROR - createHttpsRequestPromise: Parameter `path` cannot be blank');
+    });
+    
+    expect(q).toBeInstanceOf(Promise);
 });
 
 test('test createHttpsRequestPromise successful resolve', () => {
@@ -182,23 +178,13 @@ test('test createHttpsRequestPromise error', () => {
 });
 
 test('test addTokenAuthorization with no parameters', () => {
-    const spyOn = jest.spyOn(console, 'error').mockImplementation();
-    
-    const o = util.addTokenAuthorization();
-    expect(o).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
-    
-    spyOn.mockRestore();
+    expect(util.addTokenAuthorization)
+        .toThrowError('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
 });
 
 test('test addTokenAuthorization with missing session property on token', () => {
-    const spyOn = jest.spyOn(console, 'error').mockImplementation();
-    
-    const o = util.addTokenAuthorization({});
-    expect(o).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
-    
-    spyOn.mockRestore();
+    expect(() => { util.addTokenAuthorization({}); })
+        .toThrowError('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
 });
 
 test('test addTokenAuthorization with valid parameters', () => {
@@ -227,6 +213,13 @@ test('test addTokenAuthorization with valid parameters', () => {
             limit: 10,
         },
     });
+});
+
+test('test isErrorResponse with undefined input', () => {
+    let s;
+    const t = util.isErrorResponse(s);
+    expect(s).toBe(undefined);
+    expect(t).toBe(false);
 });
 
 test('test isErrorResponse with non-matching type', () => {

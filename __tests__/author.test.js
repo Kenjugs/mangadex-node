@@ -32,23 +32,19 @@ test('test getAuthor with valid parameters', () => {
 });
 
 test('test getAuthorId with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-    
-    const p = author.getAuthorId();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getAuthorId: Parameter `id` cannot be undefined');
-    
-    spy.mockRestore();
+    const p = author.getAuthorId().catch(r => {
+        expect(r).toBe('ERROR - getAuthorId: Parameter `id` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getAuthorId with invalid parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-    
-    const p = author.getAuthorId('', {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getAuthorId: Parameter `id` cannot be blank');
-    
-    spy.mockRestore();
+    const p = author.getAuthorId('', {}).catch(r => {
+        expect(r).toBe('ERROR - getAuthorId: Parameter `id` cannot be blank');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getAuthorId with valid parameters', () => {

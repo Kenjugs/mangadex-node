@@ -63,11 +63,13 @@ export type GetUserFollowsUserResponse = UserList;
 export const getUserFollowsGroup = function (token: AuthenticationToken, options?: GetUserFollowsGroupRequestOptions) {
     const qs = util.buildQueryStringFromOptions(options);
     const path = `/user/follows/group${qs}`;
-    const httpsRequestOptions = util.addTokenAuthorization(token);
 
-    if (!httpsRequestOptions) return;
-
-    return util.createHttpsRequestPromise<GetUserFollowsGroupResponse>('GET', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetUserFollowsGroupResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**
@@ -79,19 +81,19 @@ export const getUserFollowsGroup = function (token: AuthenticationToken, options
  */
 export const getUserFollowsGroupId = function (id: string, token: AuthenticationToken) {
     if (id === undefined) {
-        console.error('ERROR - getUserFollowsGroupId: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getUserFollowsGroupId: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getUserFollowsGroupId: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getUserFollowsGroupId: Parameter `id` cannot be blank');
     }
 
     const path = `/user/follows/group/${id}`;
-    const httpsRequestOptions = util.addTokenAuthorization(token);
 
-    if (!httpsRequestOptions) return;
-
-    return util.createHttpsRequestPromise<GetUserFollowsGroupIdResponse>('GET', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetUserFollowsGroupIdResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**
@@ -104,9 +106,11 @@ export const getUserFollowsGroupId = function (id: string, token: Authentication
 export const getUserFollowsUser = function (token: AuthenticationToken, options?: GetUserFollowsUserRequestOptions) {
     const qs = util.buildQueryStringFromOptions(options);
     const path = `/user/follows/user${qs}`;
-    const httpsRequestOptions = util.addTokenAuthorization(token);
 
-    if (!httpsRequestOptions) return;
-
-    return util.createHttpsRequestPromise<GetUserFollowsUserResponse>('GET', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetUserFollowsUserResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };

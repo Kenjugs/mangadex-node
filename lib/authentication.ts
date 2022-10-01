@@ -2,6 +2,7 @@
  * IMPORT STATEMENTS
  ********************/
 
+import { isNativeError } from 'util/types';
 import { Login, LoginResponse, CheckResponse, LogoutResponse, RefreshResponse, ErrorResponse } from './schema';
 import * as util from './util';
 
@@ -52,14 +53,11 @@ export type AuthRefreshResponse = RefreshResponse;
  */
 export const authLogin = function (login: AuthLoginRequestOptions) {
     if (login === undefined) {
-        console.error('ERROR - authLogin: Parameter `login` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - authLogin: Parameter `login` cannot be undefined');
     } else if (!('username' in login) && !('email' in login)) {
-        console.error('ERROR - authLogin: Parameter `login` missing both `login.username` and `login.email`');
-        return;
+        return Promise.reject('ERROR - authLogin: Parameter `login` missing both `login.username` and `login.email`');
     } else if (!('password' in login)) {
-        console.error('ERROR - authLogin: Parameter `login` missing required property `login.password`');
-        return;
+        return Promise.reject('ERROR - authLogin: Parameter `login` missing required property `login.password`');
     }
 
     const path = '/auth/login';
@@ -82,11 +80,13 @@ export const authLogin = function (login: AuthLoginRequestOptions) {
  */
 export const getAuthCheck = function (token: AuthenticationToken) {
     const path = '/auth/check';
-    const httpsRequestOptions = util.addTokenAuthorization(token);
 
-    if (!httpsRequestOptions) return;
-
-    return util.createHttpsRequestPromise<GetAuthCheckResponse>('GET', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetAuthCheckResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**
@@ -98,11 +98,13 @@ export const getAuthCheck = function (token: AuthenticationToken) {
  */
 export const authLogout = function (token: AuthenticationToken) {
     const path = '/auth/logout';
-    const httpsRequestOptions = util.addTokenAuthorization(token);
 
-    if (!httpsRequestOptions) return;
-
-    return util.createHttpsRequestPromise<AuthLogoutResponse>('POST', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<AuthLogoutResponse>('POST', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**
@@ -117,11 +119,9 @@ export const authLogout = function (token: AuthenticationToken) {
  */
 export const authRefresh = function (token: AuthenticationToken) {
     if (token === undefined) {
-        console.error('ERROR - authRefresh: Parameter `token` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - authRefresh: Parameter `token` cannot be undefined');
     } else if (!('refresh' in token)) {
-        console.error('ERROR - authRefresh: Parameter `token` missing required property `refresh`');
-        return;
+        return Promise.reject('ERROR - authRefresh: Parameter `token` missing required property `refresh`');
     }
 
     const path = '/auth/refresh';

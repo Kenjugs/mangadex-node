@@ -81,11 +81,9 @@ export const getAuthor = function (options?: GetAuthorRequestOptions) {
  */
 export const getAuthorId = function (id: string, options?: GetAuthorIdRequestOptions) {
     if (id === undefined) {
-        console.error('ERROR - getAuthorId: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getAuthorId: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getAuthorId: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getAuthorId: Parameter `id` cannot be blank');
     }
 
     const qs = util.buildQueryStringFromOptions(options);

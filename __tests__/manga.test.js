@@ -46,6 +46,15 @@ test('test getSearchManga with valid parameters', () => {
     spy.mockRestore();
 });
 
+test('test getMangaStatus with no parameters', () => {
+    const p = manga.getMangaStatus().catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
 test('test getMangaStatus with valid parameters', () => {
     const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
         return Promise.resolve({ result: 'ok' });
@@ -62,23 +71,19 @@ test('test getMangaStatus with valid parameters', () => {
 });
 
 test('test getMangaIdFeed with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = manga.getMangaIdFeed().catch(r => {
+        expect(r).toBe('ERROR - getMangaIdFeed: Parameter `id` cannot be undefined');
+    });
 
-    const p = manga.getMangaIdFeed();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaIdFeed: Parameter `id` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getMangaIdFeed with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = manga.getMangaIdFeed('', {}).catch(r => {
+        expect(r).toBe('ERROR - getMangaIdFeed: Parameter `id` cannot be blank');
+    });
 
-    const p = manga.getMangaIdFeed('', {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaIdFeed: Parameter `id` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getMangaIdFeed with valid parameters', () => {
@@ -97,23 +102,19 @@ test('test getMangaIdFeed with valid parameters', () => {
 });
 
 test('test getMangaIdAggregate with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = manga.getMangaIdAggregate().catch(r => {
+        expect(r).toBe('ERROR - getMangaIdAggregate: Parameter `id` cannot be undefined');
+    });
 
-    const p = manga.getMangaIdAggregate();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaIdAggregate: Parameter `id` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getMangaIdAggregate with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = manga.getMangaIdAggregate('', {}).catch(r => {
+        expect(r).toBe('ERROR - getMangaIdAggregate: Parameter `id` cannot be blank');
+    });
 
-    const p = manga.getMangaIdAggregate('', {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaIdAggregate: Parameter `id` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getMangaIdAggregate with valid parameters', () => {
@@ -132,23 +133,19 @@ test('test getMangaIdAggregate with valid parameters', () => {
 });
 
 test('test getMangaId with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = manga.getMangaId().catch(r => {
+        expect(r).toBe('ERROR - getMangaId: Parameter `id` cannot be undefined');
+    });
 
-    const p = manga.getMangaId();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaId: Parameter `id` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getMangaId with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = manga.getMangaId('', {}).catch(r => {
+        expect(r).toBe('ERROR - getMangaId: Parameter `id` cannot be blank');
+    });
 
-    const p = manga.getMangaId('', {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaId: Parameter `id` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getMangaId with valid parameters', () => {
@@ -166,24 +163,29 @@ test('test getMangaId with valid parameters', () => {
     spy.mockRestore();
 });
 
+test('test getMangaIdReadMarkers with no token', () => {
+    const p = manga.getMangaIdReadMarkers({}, 'test-id').catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
 test('test getMangaIdReadMarkers with no id parameter', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = manga.getMangaIdReadMarkers({ session: 'test' }).catch(r => {
+        expect(r).toBe('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be undefined');
+    });
 
-    const p = manga.getMangaIdReadMarkers({ session: 'test' });
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getMangaIdReadMarkers with blank id parameter', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = manga.getMangaIdReadMarkers({ session: 'test' }, '').catch(r => {
+        expect(r).toBe('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be blank');
+    });
 
-    const p = manga.getMangaIdReadMarkers({ session: 'test' }, '');
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaIdReadMarkers: Parameter `id` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getMangaIdReadMarkers with valid parameters', () => {
@@ -201,24 +203,29 @@ test('test getMangaIdReadMarkers with valid parameters', () => {
     spy.mockRestore();
 });
 
+test('test getMangaReadMarkers with no token', () => {
+    const p = manga.getMangaReadMarkers({}, { ids: ['id1'] }).catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
 test('test getMangaReadMarkers with no id parameter', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = manga.getMangaReadMarkers({ session: 'test' }).catch(r => {
+        expect(r).toBe('ERROR - getMangaReadMarkers: Parameter `options` cannot be undefined');
+    });
 
-    const p = manga.getMangaReadMarkers({ session: 'test' });
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaReadMarkers: Parameter `options` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getMangaReadMarkers with blank id parameter', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = manga.getMangaReadMarkers({ session: 'test' }, {}).catch(r => {
+        expect(r).toBe('ERROR - getMangaReadMarkers: Parameter `options` missing required property `ids`');
+    });
 
-    const p = manga.getMangaReadMarkers({ session: 'test' }, {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getMangaReadMarkers: Parameter `options` missing required property `ids`');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getMangaReadMarkers with valid parameters', () => {

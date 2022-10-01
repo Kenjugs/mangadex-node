@@ -97,17 +97,13 @@ export const buildQueryStringFromOptions = function (options?: { [key: string]: 
  */
 export const createHttpsRequestPromise = function <T>(method: string, path: string, options?: RequestOptions) {
     if (method === undefined) {
-        console.error('ERROR - createHttpsRequestPromise: Parameter `method` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - createHttpsRequestPromise: Parameter `method` cannot be undefined');
     } else if (method === '') {
-        console.error('ERROR - createHttpsRequestPromise: Parameter `method` cannot be blank');
-        return;
+        return Promise.reject('ERROR - createHttpsRequestPromise: Parameter `method` cannot be blank');
     } else if (path === undefined) {
-        console.error('ERROR - createHttpsRequestPromise: Parameter `path` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - createHttpsRequestPromise: Parameter `path` cannot be undefined');
     } else if (path === '') {
-        console.error('ERROR - createHttpsRequestPromise: Parameter `path` cannot be blank');
-        return;
+        return Promise.reject('ERROR - createHttpsRequestPromise: Parameter `path` cannot be blank');
     }
 
     const httpsRequestOptions = {
@@ -172,11 +168,9 @@ export const createHttpsRequestPromise = function <T>(method: string, path: stri
  */
 export const addTokenAuthorization = function (token: AuthenticationToken, request?: RequestOptions) {
     if (token === undefined) {
-        console.error('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
-        return;
+        throw new Error('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
     } else if (!('session' in token)) {
-        console.error('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
-        return;
+        throw new Error('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
     }
 
     const o = Object.assign({
@@ -195,5 +189,6 @@ export const addTokenAuthorization = function (token: AuthenticationToken, reque
  * @returns A boolean value indicating if the response is an ErrorResponse
  */
 export const isErrorResponse = function (res: ErrorResponse | any): res is ErrorResponse {
+    if (!res) return false;
     return (res as ErrorResponse).errors !== undefined;
 };

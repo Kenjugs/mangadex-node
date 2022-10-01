@@ -142,11 +142,9 @@ export const getChapters = function (options?: GetChaptersRequestOptions) {
  */
 export const getChapterId = function (id: string, options?: GetChapterIdRequestOptions) {
     if (id === undefined) {
-        console.error('ERROR - getChapterId: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getChapterId: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getChapterId: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getChapterId: Parameter `id` cannot be blank');
     }
 
     const qs = util.buildQueryStringFromOptions(options);
@@ -170,11 +168,9 @@ export const getChapterId = function (id: string, options?: GetChapterIdRequestO
  */
 export const getAtHomeServerChapterId = function (chapterId: string, options?: GetAtHomeServerChapterIdRequestOptions) {
     if (chapterId === undefined) {
-        console.error('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be undefined');
     } else if (chapterId === '') {
-        console.error('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be blank');
     }
     
     const qs = util.buildQueryStringFromOptions(options);

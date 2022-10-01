@@ -2,23 +2,19 @@ const util = require('../lib/util');
 const list = require('../lib/list');
 
 test('test getListId with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = list.getListId().catch(r => {
+        expect(r).toBe('ERROR - getListId: Parameter `listId` cannot be undefined');
+    });
 
-    const p = list.getListId();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getListId: Parameter `listId` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getListId with blank parameter', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = list.getListId('').catch(r => {
+        expect(r).toBe('ERROR - getListId: Parameter `listId` cannot be blank');
+    });
 
-    const p = list.getListId('');
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getListId: Parameter `listId` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getListId with valid parameters', () => {
@@ -37,23 +33,21 @@ test('test getListId with valid parameters', () => {
 });
 
 test('test getUserList with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = list.getUserList().catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
 
-    const p = list.getUserList();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserList with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = list.getUserList({}, {}).catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
+    });
 
-    const p = list.getUserList({}, {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserList with valid parameters', () => {
@@ -72,23 +66,19 @@ test('test getUserList with valid parameters', () => {
 });
 
 test('test getUserIdList with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = list.getUserIdList().catch(r => {
+        expect(r).toBe('ERROR - getUserIdList: Parameter `id` cannot be undefined');
+    });
 
-    const p = list.getUserIdList();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUserIdList: Parameter `id` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserIdList with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = list.getUserIdList('', {}).catch(r => {
+        expect(r).toBe('ERROR - getUserIdList: Parameter `id` cannot be blank');
+    });
 
-    const p = list.getUserIdList('', {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getUserIdList: Parameter `id` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getUserIdList with valid parameters', () => {
@@ -107,23 +97,19 @@ test('test getUserIdList with valid parameters', () => {
 });
 
 test('test getListIdFeed with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = list.getListIdFeed().catch(r => {
+        expect(r).toBe('ERROR - getListIdFeed: Parameter `id` cannot be undefined');
+    });
 
-    const p = list.getListIdFeed();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getListIdFeed: Parameter `id` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getListIdFeed with blank parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = list.getListIdFeed('', {}).catch(r => {
+        expect(r).toBe('ERROR - getListIdFeed: Parameter `id` cannot be blank');
+    });
 
-    const p = list.getListIdFeed('', {});
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getListIdFeed: Parameter `id` cannot be blank');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getListIdFeed with valid parameters', () => {

@@ -123,11 +123,13 @@ export type GetUserMeResponse = UserResponse;
 export const getUsers = function (token: AuthenticationToken, options?: GetUsersRequestOptions) {
     const qs = util.buildQueryStringFromOptions(options);
     const path = `/user${qs}`;
-    const httpsRequestOptions = util.addTokenAuthorization(token);
 
-    if (!httpsRequestOptions) return;
-
-    return util.createHttpsRequestPromise<GetUsersResponse>('GET', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetUsersResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**
@@ -138,11 +140,9 @@ export const getUsers = function (token: AuthenticationToken, options?: GetUsers
  */
 export const getUserId = function (id: string) {
     if (id === undefined) {
-        console.error('ERROR - getUserId: Parameter `id` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getUserId: Parameter `id` cannot be undefined');
     } else if (id === '') {
-        console.error('ERROR - getUserId: Parameter `id` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getUserId: Parameter `id` cannot be blank');
     }
 
     const path = `/user/${id}`;
@@ -173,11 +173,13 @@ export const getUserId = function (id: string) {
 export const getUserFollowedMangaFeed = function (token: AuthenticationToken, options?: GetUserFollowedMangaFeedRequestOptions) {
     const qs = util.buildQueryStringFromOptions(options);
     const path = `/user/follows/manga/feed${qs}`;
-    const httpsRequestOptions = util.addTokenAuthorization(token);
 
-    if (!httpsRequestOptions) return;
-
-    return util.createHttpsRequestPromise<GetUserFollowedMangaFeedResponse>('GET', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetUserFollowedMangaFeedResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**
@@ -190,11 +192,13 @@ export const getUserFollowedMangaFeed = function (token: AuthenticationToken, op
 export const getUserFollowedManga = function (token: AuthenticationToken, options?: GetUserFollowedMangaRequestOptions) {
     const qs = util.buildQueryStringFromOptions(options);
     const path = `/user/follows/manga${qs}`;
-    const httpsRequestOptions = util.addTokenAuthorization(token);
 
-    if (!httpsRequestOptions) return;
-
-    return util.createHttpsRequestPromise<GetUserFollowedMangaResponse>('GET', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetUserFollowedMangaResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };
 
 /**
@@ -205,9 +209,11 @@ export const getUserFollowedManga = function (token: AuthenticationToken, option
  */
 export const getUserMe = function (token: AuthenticationToken) {
     const path = `/user/me`;
-    const httpsRequestOptions = util.addTokenAuthorization(token);
 
-    if (!httpsRequestOptions) return;
-
-    return util.createHttpsRequestPromise<GetUserMeResponse>('GET', path, httpsRequestOptions);
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<GetUserMeResponse>('GET', path, httpsRequestOptions);
+    } catch (err: any) {
+        return Promise.reject(err);
+    }
 };

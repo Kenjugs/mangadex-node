@@ -90,11 +90,9 @@ export const getSearchGroup = function (options?: GetSearchGroupRequestOptions) 
  */
 export const getGroupId = function (groupId: string, options?: GetGroupIdRequestOptions) {
     if (groupId === undefined) {
-        console.error('ERROR - getGroupId: Parameter `groupId` cannot be undefined');
-        return;
+        return Promise.reject('ERROR - getGroupId: Parameter `groupId` cannot be undefined');
     } else if (groupId === '') {
-        console.error('ERROR - getGroupId: Parameter `groupId` cannot be blank');
-        return;
+        return Promise.reject('ERROR - getGroupId: Parameter `groupId` cannot be blank');
     }
 
     const qs = util.buildQueryStringFromOptions(options);

@@ -2,23 +2,19 @@ const util = require('../lib/util');
 const account = require('../lib/account');
 
 test('test getAccountAvailable with no parameters', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = account.getAccountAvailable().catch(r => {
+        expect(r).toBe('ERROR - getAccountAvailable: Parameter `username` cannot be undefined');
+    });
 
-    const p = account.getAccountAvailable();
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getAccountAvailable: Parameter `username` cannot be undefined');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getAccountAvailable with empty username', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const p = account.getAccountAvailable('').catch(r => {
+        expect(r).toBe('ERROR - getAccountAvailable: Parameter `username` cannot be empty');
+    });
 
-    const p = account.getAccountAvailable('');
-    expect(p).toBe(undefined);
-    expect(console.error).toHaveBeenCalledWith('ERROR - getAccountAvailable: Parameter `username` cannot be empty');
-
-    spy.mockRestore();
+    expect(p).toBeInstanceOf(Promise);
 });
 
 test('test getAccountAvailable with valid parameter', () => {
