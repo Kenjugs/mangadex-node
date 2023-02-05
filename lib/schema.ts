@@ -1,7 +1,39 @@
 import { AuthenticationToken } from './authentication';
 import { Links } from './static';
 
+/**
+ * Makes named properties required in pre-existing type. All other properties are made optional.
+ * E.g.:
+ * type foo = {
+ *   prop1?: string
+ *   prop2?: string
+ * };
+ * type bar = RequiredPick<foo, 'prop1'>;
+ * 
+ * Then, bar === {
+ *   prop1: string
+ *   prop2?: string
+ * }
+ */
 export type RequiredPick<T, K extends keyof T> = Partial<Omit<T, K>> & Required<Pick<T, K>>;
+
+/**
+ * Makes at least one property required in the absence of the others.
+ * E.g.:
+ * type foo = {
+ *   prop1?: string
+ *   prop2?: string
+ * };
+ * type bar = RequireAtLeastOne<foo, 'prop1' | 'prop2'>;
+ * 
+ * bar === {
+ *   prop1: string
+ *   prop2?: string
+ * } & {
+ *   prop1?: string
+ *   prop2: string
+ * }
+ */
 export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> & {
     [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>
 }[Keys];
@@ -73,7 +105,7 @@ export type Relationship = {
     /** Only present if you are on a Manga entity and a Manga relationship */
     related: 'monochrome' | 'main_story' | 'adapted_from' | 'based_on' | 'prequel' | 'side_story' | 'doujinshi' | 'same_franchise' | 'shared_universe' | 'sequel' | 'spin_off' | 'alternate_story' | 'alternate_version' | 'preserialization' | 'colored' | 'serialization'
     /** If Reference Expansion is applied, contains objects attributes */
-    attributes: object | null
+    attributes: any | null
 };
 
 export type Chapter = {
