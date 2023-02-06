@@ -1,4 +1,4 @@
-[![Kenjugs](https://circleci.com/gh/Kenjugs/mangadex-node.svg?style=svg&circle-token=6ac55e3f712509beaf7f35a1cc3411f15bdb8d5e)](https://app.circleci.com/pipelines/github/Kenjugs/mangadex-node?branch=main&filter=all)
+[![Kenjugs](https://dl.circleci.com/status-badge/img/gh/Kenjugs/mangadex-node/tree/main.svg?style=svg&circle-token=ff5f3b7d1d203386a31b9fba946496865c3c02c9)](https://dl.circleci.com/status-badge/redirect/gh/Kenjugs/mangadex-node/tree/main)
 [![codecov](https://codecov.io/gh/Kenjugs/mangadex-node/branch/main/graph/badge.svg?token=SQ66OG3OVZ)](https://codecov.io/gh/Kenjugs/mangadex-node)
 
 Low-level Mangadex v5 API Node Library
