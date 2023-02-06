@@ -74,7 +74,9 @@ export const getAccountAvailable = function (username: string) {
  * Can also resolve to an {@link ErrorResponse} object.
  */
 export const postAccountCreate = function (options: PostAccountCreateRequestOptions) {
-    if (!options.username || options.username === '') {
+    if (!options) {
+        return Promise.reject('ERROR - postAccountCreate: Parameter `options` cannot be undefined');
+    } else if (!options.username || options.username === '') {
         return Promise.reject('ERROR - postAccountCreate: Request missing required value `username`');
     } else if (!options.password || options.password === '') {
         return Promise.reject('ERROR - postAccountCreate: Request missing required value `password`');

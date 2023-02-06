@@ -34,7 +34,7 @@ test('test getAccountAvailable with valid parameter', () => {
 
 test('test postAccountCreate with no parameters', () => {
     const p = account.postAccountCreate().catch(r => {
-        expect(r).toBe('ERROR - postAccountCreate: Request missing required value `username`');
+        expect(r).toBe('ERROR - postAccountCreate: Parameter `options` cannot be undefined');
     });
 
     expect(p).toBeInstanceOf(Promise);
@@ -66,11 +66,11 @@ test('test postAccountCreate with empty email', () => {
 
 test('test postAccountCreate with valid parameters', () => {
     const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
-        return Promise.resolve({  });
+        return Promise.resolve({ result: 'ok' });
     });
 
     const p = account.postAccountCreate({ username: 'test', password: 'test', email: 'test' }).then(res => {
-        expect(res).toEqual({ });
+        expect(res).toEqual({ result: 'ok' });
     });
 
     expect(p).toBeInstanceOf(Promise);
