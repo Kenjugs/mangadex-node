@@ -86,3 +86,34 @@ test('test postAccountCreate with valid parameters', () => {
 
     spy.mockRestore();
 });
+
+test('test getAccountActivateCode with no parameters', () => {
+    const p = account.getAccountActivateCode().catch(r => {
+        expect(r).toBe('ERROR - getAccountActivateCode: Parameter `code` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test getAccountActivateCode with invalid format code', () => {
+    const p = account.getAccountActivateCode('abcdefg').catch(r => {
+        expect(r).toBe('ERROR - getAccountActivateCode: Invalid format for parameter `code`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test getAccountActivateCode with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = account.getAccountActivateCode('0acb9-45e1c-22e89b').then(res => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('POST', '/account/activate/0acb9-45e1c-22e89b');
+
+    spy.mockRestore();
+});
