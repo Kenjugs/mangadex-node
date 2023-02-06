@@ -31,3 +31,58 @@ test('test getAccountAvailable with valid parameter', () => {
 
     spy.mockRestore();
 });
+
+test('test postAccountCreate with no parameters', () => {
+    const p = account.postAccountCreate().catch(r => {
+        expect(r).toBe('ERROR - postAccountCreate: Request missing required value `username`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountCreate with empty username', () => {
+    const p = account.postAccountCreate({ password: 'test', email: 'test' }).catch(r => {
+        expect(r).toBe('ERROR - postAccountCreate: Request missing required value `username`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountCreate with empty password', () => {
+    const p = account.postAccountCreate({ username: 'test', email: 'test' }).catch(r => {
+        expect(r).toBe('ERROR - postAccountCreate: Request missing required value `password`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountCreate with empty email', () => {
+    const p = account.postAccountCreate({ username: 'test', password: 'test' }).catch(r => {
+        expect(r).toBe('ERROR - postAccountCreate: Request missing required value `email`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountCreate with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({  });
+    });
+
+    const p = account.postAccountCreate({ username: 'test', password: 'test', email: 'test' }).then(res => {
+        expect(res).toEqual({ });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('POST', '/account/create', {
+        body: {
+            username: 'test',
+            password: 'test',
+            email: 'test'
+        }, headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    spy.mockRestore();
+});
