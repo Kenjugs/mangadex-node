@@ -106,7 +106,7 @@ export const postAccountCreate = function (options: PostAccountCreateRequestOpti
 export const getAccountActivateCode = function (code: string) {
     if (code === undefined) {
         return Promise.reject('ERROR - getAccountActivateCode: Parameter `code` cannot be undefined');
-    } else if (!code.match(/[0-9a-fA-F-]+/)) {
+    } else if (!code.match(/^[0-9a-fA-F-]+$/)) {
         return Promise.reject('ERROR - getAccountActivateCode: Invalid format for parameter `code`');
     }
 
