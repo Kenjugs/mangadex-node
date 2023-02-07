@@ -193,6 +193,9 @@ test('test addTokenAuthorization with valid parameters', () => {
             ids: ['id1', 'id2'],
             limit: 10,
         },
+        headers: {
+            'Content-Type': 'application/json'
+        }
     };
 
     const o = util.addTokenAuthorization({ session: 'test' }, r);
@@ -204,6 +207,7 @@ test('test addTokenAuthorization with valid parameters', () => {
         },
         headers: {
             Authorization: `Bearer test`,
+            'Content-Type': 'application/json'
         },
     });
 
@@ -212,6 +216,9 @@ test('test addTokenAuthorization with valid parameters', () => {
             ids: ['id1', 'id2'],
             limit: 10,
         },
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
 });
 

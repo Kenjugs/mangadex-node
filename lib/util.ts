@@ -173,11 +173,17 @@ export const addTokenAuthorization = function (token: AuthenticationToken, reque
         throw new Error('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
     }
 
-    const o = Object.assign({
+    const headers = request?.headers;
+
+    const o = {
         headers: {
             Authorization: `Bearer ${token.session}`,
-        },
-    }, request ? request : {});
+        }
+    };
+
+    if (headers) {
+        Object.assign(o.headers, headers);
+    }
 
     return o;
 };
