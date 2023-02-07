@@ -176,14 +176,12 @@ export const addTokenAuthorization = function (token: AuthenticationToken, reque
     const headers = request?.headers;
 
     const o = {
+        ...request,
         headers: {
             Authorization: `Bearer ${token.session}`,
+            ...headers
         }
     };
-
-    if (headers) {
-        Object.assign(o.headers, headers);
-    }
 
     return o;
 };
