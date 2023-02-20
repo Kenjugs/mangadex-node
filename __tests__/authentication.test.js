@@ -1,31 +1,31 @@
 const auth = require('../lib/authentication');
 const util = require('../lib/util');
 
-test('test authLogin with no parameters', () => {
-    const p = auth.authLogin().catch(r => {
-        expect(r).toBe('ERROR - authLogin: Parameter `login` cannot be undefined');
+test('test postAuthLogin with no parameters', () => {
+    const p = auth.postAuthLogin().catch(r => {
+        expect(r).toBe('ERROR - postAuthLogin: Parameter `login` cannot be undefined');
     });
     
     expect(p).toBeInstanceOf(Promise);
 });
 
-test('test authLogin with missing email and username', () => {
-    const p = auth.authLogin({ password: 'a' }).catch(r => {
-        expect(r).toBe('ERROR - authLogin: Parameter `login` missing both `login.username` and `login.email`');
+test('test postAuthLogin with missing email and username', () => {
+    const p = auth.postAuthLogin({ password: 'a' }).catch(r => {
+        expect(r).toBe('ERROR - postAuthLogin: Parameter `login` missing both `login.username` and `login.email`');
     });
     
     expect(p).toBeInstanceOf(Promise);
 });
 
-test('test authLogin with missing password', () => {
-    const p = auth.authLogin({ username: 'a', email: 'b' }).catch(r => {
-        expect(r).toBe('ERROR - authLogin: Parameter `login` missing required property `login.password`');
+test('test postAuthLogin with missing password', () => {
+    const p = auth.postAuthLogin({ username: 'a', email: 'b' }).catch(r => {
+        expect(r).toBe('ERROR - postAuthLogin: Parameter `login` missing required property `login.password`');
     });
     
     expect(p).toBeInstanceOf(Promise);
 });
 
-test('test authLogin with valid parameters', () => {
+test('test postAuthLogin with valid parameters', () => {
     const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
         return Promise.resolve({ result: 'ok', token: 'test' });
     });
@@ -35,7 +35,7 @@ test('test authLogin with valid parameters', () => {
         password: 'c',
     };
 
-    const p = auth.authLogin(options).then(res => {
+    const p = auth.postAuthLogin(options).then(res => {
         expect(res).toEqual({ result: 'ok', token: 'test' });
     });
 
@@ -83,8 +83,8 @@ test('test getAuthCheck with valid parameters', () => {
     spy.mockRestore();
 });
 
-test('test authLogout with no parameters', () => {
-    const p = auth.authLogout().catch(r => {
+test('test postAuthLogout with no parameters', () => {
+    const p = auth.postAuthLogout().catch(r => {
         expect(r).toBeInstanceOf(Error);
         expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
     });
@@ -92,8 +92,8 @@ test('test authLogout with no parameters', () => {
     expect(p).toBeInstanceOf(Promise);
 });
 
-test('test authLogout with missing required parameter', () => {
-    const p = auth.authLogout({ refresh: 'abcd' }).catch(r => {
+test('test postAuthLogout with missing required parameter', () => {
+    const p = auth.postAuthLogout({ refresh: 'abcd' }).catch(r => {
         expect(r).toBeInstanceOf(Error);
         expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` missing required property `session`');
     });
@@ -101,7 +101,7 @@ test('test authLogout with missing required parameter', () => {
     expect(p).toBeInstanceOf(Promise);
 });
 
-test('test authLogout with valid parameters', () => {
+test('test postAuthLogout with valid parameters', () => {
     const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
         return Promise.resolve({ result: 'ok' });
     });
@@ -111,7 +111,7 @@ test('test authLogout with valid parameters', () => {
         refresh: 'efgh',
     };
 
-    const p = auth.authLogout(token).then(res => {
+    const p = auth.postAuthLogout(token).then(res => {
         expect(res).toEqual({ result: 'ok' });
     });
 
@@ -121,23 +121,23 @@ test('test authLogout with valid parameters', () => {
     spy.mockRestore();
 });
 
-test('test authRefresh with no parameters', () => {
-    const p = auth.authRefresh().catch(r => {
-        expect(r).toBe('ERROR - authRefresh: Parameter `token` cannot be undefined');
+test('test postAuthRefresh with no parameters', () => {
+    const p = auth.postAuthRefresh().catch(r => {
+        expect(r).toBe('ERROR - postAuthRefresh: Parameter `token` cannot be undefined');
     });
 
     expect(p).toBeInstanceOf(Promise);
 });
 
-test('test authRefresh with missing required parameter', () => {
-    const p = auth.authRefresh({ session: 'expired' }).catch(r => {
-        expect(r).toBe('ERROR - authRefresh: Parameter `token` missing required property `refresh`');
+test('test postAuthRefresh with missing required parameter', () => {
+    const p = auth.postAuthRefresh({ session: 'expired' }).catch(r => {
+        expect(r).toBe('ERROR - postAuthRefresh: Parameter `token` missing required property `refresh`');
     });
 
     expect(p).toBeInstanceOf(Promise);
 });
 
-test('test authRefresh with valid parameters', () => {
+test('test postAuthRefresh with valid parameters', () => {
     const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
         return Promise.resolve({ result: 'ok' });
     });
@@ -147,7 +147,7 @@ test('test authRefresh with valid parameters', () => {
         refresh: 'efgh',
     };
 
-    const p = auth.authRefresh(token).then(res => {
+    const p = auth.postAuthRefresh(token).then(res => {
         expect(res).toEqual({ result: 'ok' });
     });
 

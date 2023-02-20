@@ -117,3 +117,110 @@ test('test getAccountActivateCode with valid parameters', () => {
 
     spy.mockRestore();
 });
+
+test('test postAccountActivateResend with no parameters', () => {
+    const p = account.postAccountActivateResend().catch(r => {
+        expect(r).toBe('ERROR - postAccountActivateResend: Parameter `options` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountActivateResend with invalid parameters', () => {
+    const p = account.postAccountActivateResend({ test: 'value' }).catch(r => {
+        expect(r).toBe('ERROR - postAccountActivateResend: Parameter `options` missing required property `email`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountActivateResend with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = account.postAccountActivateResend({ email: 'test' }).then(res => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('POST', '/account/activate/resend', { body: { email: 'test' }, headers: { 'Content-Type': 'application/json' } });
+
+    spy.mockRestore();
+});
+
+test('test postAccountRecover with no parameters', () => {
+    const p = account.postAccountRecover().catch(r => {
+        expect(r).toBe('ERROR - postAccountRecover: Parameter `options` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountRecover with invalid parameters', () => {
+    const p = account.postAccountRecover({ test: 'value' }).catch(r => {
+        expect(r).toBe('ERROR - postAccountRecover: Parameter `options` missing required property `email`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountRecover with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = account.postAccountRecover({ email: 'test' }).then(res => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('POST', '/account/recover', { body: { email: 'test' }, headers: { 'Content-Type': 'application/json' } });
+
+    spy.mockRestore();
+});
+
+test('test postAccountRecoverCode with no parameters', () => {
+    const p = account.postAccountRecoverCode().catch(r => {
+        expect(r).toBe('ERROR - postAccountRecoverCode: Parameter `code` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountRecoverCode with blank code', () => {
+    const p = account.postAccountRecoverCode('').catch(r => {
+        expect(r).toBe('ERROR - postAccountRecoverCode: Parameter `code` cannot be blank');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountRecoverCode with no options', () => {
+    const p = account.postAccountRecoverCode('test').catch(r => {
+        expect(r).toBe('ERROR - postAccountRecoverCode: Parameter `options` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountRecoverCode with invalid options', () => {
+    const p = account.postAccountRecoverCode('test', { test: 'value' }).catch(r => {
+        expect(r).toBe('ERROR - postAccountRecoverCode: Parameter `options` missing required property `newPassword`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test postAccountRecoverCode with valid options', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = account.postAccountRecoverCode('test', { newPassword: 'value' }).then(res => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('POST', '/account/recover/test', { body: { newPassword: 'value' }, headers: { 'Content-Type': 'application/json' } });
+});

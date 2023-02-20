@@ -26,19 +26,19 @@ export type AuthenticationToken = {
  * Login object for logging in and obtaining an auth token object.
  * At least one of username or email is required.
  */
-export type AuthLoginRequestOptions = Login;
+export type PostAuthLoginRequestOptions = Login;
 
 /** Response from `POST /auth/login` */
-export type AuthLoginResponse = LoginResponse;
+export type PostAuthLoginResponse = LoginResponse;
 
 /** Response from `GET /auth/check` */
 export type GetAuthCheckResponse = CheckResponse;
 
 /** Response from `POST /auth/logout` */
-export type AuthLogoutResponse = LogoutResponse;
+export type PostAuthLogoutResponse = LogoutResponse;
 
 /** Response from `POST /auth/refresh` */
-export type AuthRefreshResponse = RefreshResponse;
+export type PostAuthRefreshResponse = RefreshResponse;
 
 
 /***********************
@@ -46,18 +46,22 @@ export type AuthRefreshResponse = RefreshResponse;
  ***********************/
 
 /**
+ * DEPRECATED
+ * 
  * Send account credentials and receive an authentication token.
  * 
- * @param {AuthLoginRequestOptions} login Login object containing username/email and password
- * @returns A promise that resolves to an {@link AuthLoginResponse} object.
+ * @param {PostAuthLoginRequestOptions} login Login object containing username/email and password
+ * @returns A promise that resolves to an {@link PostAuthLoginResponse} object.
  */
-export const authLogin = function (login: AuthLoginRequestOptions) {
+export const postAuthLogin = function (login: PostAuthLoginRequestOptions) {
+    console.warn('The function `postAuthLogin` is using a deprecated endpoint. Please consider removing it as it may not work in the future.');
+
     if (login === undefined) {
-        return Promise.reject('ERROR - authLogin: Parameter `login` cannot be undefined');
+        return Promise.reject('ERROR - postAuthLogin: Parameter `login` cannot be undefined');
     } else if (!('username' in login) && !('email' in login)) {
-        return Promise.reject('ERROR - authLogin: Parameter `login` missing both `login.username` and `login.email`');
+        return Promise.reject('ERROR - postAuthLogin: Parameter `login` missing both `login.username` and `login.email`');
     } else if (!('password' in login)) {
-        return Promise.reject('ERROR - authLogin: Parameter `login` missing required property `login.password`');
+        return Promise.reject('ERROR - postAuthLogin: Parameter `login` missing required property `login.password`');
     }
 
     const path = '/auth/login';
@@ -69,7 +73,7 @@ export const authLogin = function (login: AuthLoginRequestOptions) {
         },
     };
 
-    return util.createHttpsRequestPromise<AuthLoginResponse>('POST', path, options);
+    return util.createHttpsRequestPromise<PostAuthLoginResponse>('POST', path, options);
 };
 
 /**
@@ -90,38 +94,46 @@ export const getAuthCheck = function (token: AuthenticationToken) {
 };
 
 /**
+ * DEPRECATED
+ * 
  * Logs out of a currently valid session.
  * 
  * @param {AuthenticationToken} token See {@link AuthenticationToken}
- * @returns A promise that resolves to an {@link AuthLogoutResponse} object.
- * Will resolve to a {@link ErrorResponse} object on error.
+ * @returns A promise that resolves to an {@link PostAuthLogoutResponse} object.
+ * Can also resolve to an {@link ErrorResponse} object.
  */
-export const authLogout = function (token: AuthenticationToken) {
+export const postAuthLogout = function (token: AuthenticationToken) {
+    console.warn('The function `postAuthLogout` is using a deprecated endpoint. Please consider removing it as it may not work in the future.');
+
     const path = '/auth/logout';
 
     try {
         const httpsRequestOptions = util.addTokenAuthorization(token);
-        return util.createHttpsRequestPromise<AuthLogoutResponse>('POST', path, httpsRequestOptions);
+        return util.createHttpsRequestPromise<PostAuthLogoutResponse>('POST', path, httpsRequestOptions);
     } catch (err: any) {
         return Promise.reject(err);
     }
 };
 
 /**
+ * DEPRECATED
+ * 
  * Refreshes a session token that has expired. Session tokens only last for 15
  * minutes; refresh tokens allow you to refresh session tokens for up to a month
  * without needing to re-authenticate. If the refresh token has expired, you
  * will need to log in again; you cannot refresh a refresh token any other way.
  * 
  * @param {AuthenticationToken} token See {@link AuthenticationToken}
- * @returns A promise that resolves to an {@link AuthRefreshResponse} object.
- * Will resolve to a {@link ErrorResponse} object on error.
+ * @returns A promise that resolves to an {@link PostAuthRefreshResponse} object.
+ * Can also resolve to an {@link ErrorResponse} object.
  */
-export const authRefresh = function (token: AuthenticationToken) {
+export const postAuthRefresh = function (token: AuthenticationToken) {
+    console.warn('The function `postAuthRefresh` is using a deprecated endpoint. Please consider removing it as it may not work in the future.');
+
     if (token === undefined) {
-        return Promise.reject('ERROR - authRefresh: Parameter `token` cannot be undefined');
+        return Promise.reject('ERROR - postAuthRefresh: Parameter `token` cannot be undefined');
     } else if (!('refresh' in token)) {
-        return Promise.reject('ERROR - authRefresh: Parameter `token` missing required property `refresh`');
+        return Promise.reject('ERROR - postAuthRefresh: Parameter `token` missing required property `refresh`');
     }
 
     const path = '/auth/refresh';
@@ -135,5 +147,5 @@ export const authRefresh = function (token: AuthenticationToken) {
         },
     };
 
-    return util.createHttpsRequestPromise<AuthRefreshResponse>('POST', path, httpsRequestOptions);
+    return util.createHttpsRequestPromise<PostAuthRefreshResponse>('POST', path, httpsRequestOptions);
 };

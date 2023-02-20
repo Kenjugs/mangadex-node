@@ -46,6 +46,8 @@ export type PostAccountRecoverCodeResponse = AccountActivateResponse;
  ***********************/
 
 /**
+ * DEPRECATED
+ * 
  * Check if an account username is available for account creation.
  * 
  * @param {string} username Username to check availability of
@@ -53,6 +55,8 @@ export type PostAccountRecoverCodeResponse = AccountActivateResponse;
  * Can also resolve to an {@link ErrorResponse} object.
  */
 export const getAccountAvailable = function (username: string) {
+    console.warn('The function `getAccountAvailable` is using a deprecated endpoint. Please consider removing it as it may not work in the future.');
+
     if (username === undefined) {
         return Promise.reject('ERROR - getAccountAvailable: Parameter `username` cannot be undefined');
     } else if (username === '') {
@@ -67,6 +71,8 @@ export const getAccountAvailable = function (username: string) {
 
 
 /**
+ * DEPRECATED
+ * 
  * Creates a new user acount with the provided information.
  * 
  * @param {PostAccountCreateRequestOptions} options Request options that include username, password, and email of new account
@@ -74,6 +80,8 @@ export const getAccountAvailable = function (username: string) {
  * Can also resolve to an {@link ErrorResponse} object.
  */
 export const postAccountCreate = function (options: PostAccountCreateRequestOptions) {
+    console.warn('The function `postAccountCreate` is using a deprecated endpoint. Please consider removing it as it may not work in the future.');
+    
     if (!options) {
         return Promise.reject('ERROR - postAccountCreate: Parameter `options` cannot be undefined');
     } else if (!options.username || options.username === '') {
@@ -97,6 +105,8 @@ export const postAccountCreate = function (options: PostAccountCreateRequestOpti
 };
 
 /**
+ * DEPRECATED
+ * 
  * Activates an account using the account activation code.
  * 
  * @param {string} code Activation code. Pattern: [0-9a-fA-F-]+
@@ -104,6 +114,8 @@ export const postAccountCreate = function (options: PostAccountCreateRequestOpti
  * Can also resolve to an {@link ErrorResponse} object.
  */
 export const getAccountActivateCode = function (code: string) {
+    console.warn('The function `getAccountActivateCode` is using a deprecated endpoint. Please consider removing it as it may not work in the future.');
+
     if (code === undefined) {
         return Promise.reject('ERROR - getAccountActivateCode: Parameter `code` cannot be undefined');
     } else if (!code.match(/^[0-9a-fA-F-]+$/)) {
@@ -116,6 +128,8 @@ export const getAccountActivateCode = function (code: string) {
 };
 
 /**
+ * DEPRECATED
+ * 
  * Resends an account activation code to the supplied email.
  * 
  * @param {PostAccountActivateResendRequestOptions} options Request options that include email of account
@@ -123,8 +137,12 @@ export const getAccountActivateCode = function (code: string) {
  * Can also resolve to an {@link ErrorResponse} object.
  */
 export const postAccountActivateResend = function (options: PostAccountActivateResendRequestOptions) {
-    if (!options.email || options.email === '') {
-        return Promise.reject('ERROR - postAccountActivateResend: Request missing required value `email`');
+    console.warn('The function `postAccountActivateResend` is using a deprecated endpoint. Please consider removing it as it may not work in the future.');
+
+    if (options === undefined) {
+        return Promise.reject('ERROR - postAccountActivateResend: Parameter `options` cannot be undefined');
+    } else if (!('email' in options)) {
+        return Promise.reject('ERROR - postAccountActivateResend: Parameter `options` missing required property `email`');
     }
 
     const req = {
@@ -140,6 +158,8 @@ export const postAccountActivateResend = function (options: PostAccountActivateR
 };
 
 /**
+ * DEPRECATED
+ * 
  * Send a request to recover an account. Can only be requested once per hour for the same email address.
  * 
  * @param {PostAccountRecoverRequestOptions} options Request options that include email of account
@@ -147,8 +167,12 @@ export const postAccountActivateResend = function (options: PostAccountActivateR
  * Can also resolve to an {@link ErrorResponse} object.
  */
 export const postAccountRecover = function (options: PostAccountRecoverRequestOptions) {
-    if (!options.email || options.email === '') {
-        return Promise.reject('ERROR - postAccountRecover: Request missing required value `email`');
+    console.warn('The function `postAccountRecover` is using a deprecated endpoint. Please consider removing it as it may not work in the future.');
+
+    if (options === undefined) {
+        return Promise.reject('ERROR - postAccountRecover: Parameter `options` cannot be undefined');
+    } else if (!('email' in options)) {
+        return Promise.reject('ERROR - postAccountRecover: Parameter `options` missing required property `email`');
     }
 
     const req = {
@@ -164,6 +188,8 @@ export const postAccountRecover = function (options: PostAccountRecoverRequestOp
 };
 
 /**
+ * DEPRECATED
+ * 
  * Complete the account recovery process with a supplied new password.
  * 
  * @param {PostAccountRecoverCodeRequestOptions} options Request options that include a new password for the account
@@ -171,10 +197,16 @@ export const postAccountRecover = function (options: PostAccountRecoverRequestOp
  * Can also resolve to an {@link ErrorResponse} object.
  */
 export const postAccountRecoverCode = function (code: string, options: PostAccountRecoverCodeRequestOptions) {
+    console.warn('The function `postAccountRecoverCode` is using a deprecated endpoint. Please consider removing it as it may not work in the future.');
+
     if (code === undefined) {
         return Promise.reject('ERROR - postAccountRecoverCode: Parameter `code` cannot be undefined');
-    } else if (!options.newPassword || options.newPassword === '') {
-        return Promise.reject('ERROR - postAccountRecoverCode: Request missing required value `newPassword`');
+    } else if (code === '') {
+        return Promise.reject('ERROR - postAccountRecoverCode: Parameter `code` cannot be blank');
+    } else if (options === undefined) {
+        return Promise.reject('ERROR - postAccountRecoverCode: Parameter `options` cannot be undefined');
+    } else if (!('newPassword' in options)) {
+        return Promise.reject('ERROR - postAccountRecoverCode: Parameter `options` missing required property `newPassword`');
     }
 
     const req = {
