@@ -2,7 +2,7 @@
  * IMPORT STATEMENTS
  ********************/
 
-import { ErrorResponse } from './schema';
+import type { ErrorResponse } from './schema';
 import * as util from './util';
 
 /***********************

@@ -2,7 +2,7 @@
  * IMPORT STATEMENTS
  ********************/
 
-import { CreateAccount, UserResponse, AccountActivateResponse, SendAccountActivationCode, RecoverCompleteBody, ErrorResponse } from './schema';
+import type { CreateAccount, UserResponse, AccountActivateResponse, SendAccountActivationCode, RecoverCompleteBody, ErrorResponse } from './schema';
 import * as util from './util';
 
 /***********************

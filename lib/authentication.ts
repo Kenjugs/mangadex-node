@@ -2,8 +2,7 @@
  * IMPORT STATEMENTS
  ********************/
 
-import { isNativeError } from 'util/types';
-import { Login, LoginResponse, CheckResponse, LogoutResponse, RefreshResponse, ErrorResponse } from './schema';
+import type { Login, LoginResponse, CheckResponse, LogoutResponse, RefreshResponse, ErrorResponse } from './schema';
 import * as util from './util';
 
 /*******************
