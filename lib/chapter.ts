@@ -2,17 +2,18 @@
  * IMPORT STATEMENTS
  ********************/
 
-import { MangaContentRating } from './manga';
-import { ChapterList, ChapterResponse, ErrorResponse } from './schema';
-import { Order, Includes } from './static';
+import type { AuthenticationToken } from './authentication';
+import type { MangaContentRating } from './manga';
+import type { ChapterList, ChapterResponse, ReferenceExpansionChapter, ErrorResponse, ChapterEdit } from './schema';
+import type { Order } from './static';
 import * as util from './util';
 
 /*******************
  * TYPE DEFINITIONS
  *******************/
 
-/** Order object for GetChaptersRequestOptions */
-export type GetChaptersOrder = {
+/** Order object for GetChapterRequestOptions */
+export type GetChapterOrder = {
     createdAt?: Order
     updatedAt?: Order
     publishAt?: Order
@@ -26,7 +27,7 @@ export type GetChaptersOrder = {
  ***********************/
 
 /** Request parameters for `GET /chapter` */
-export type GetChaptersRequestOptions = {
+export type GetChapterRequestOptions = {
     /**
      * ```console
      * Default: 10
@@ -60,59 +61,35 @@ export type GetChaptersRequestOptions = {
     excludedUploaders?: string[]
     /** Default: '1' */
     includeFutureUpdates?: '0' | '1'
+    includeEmptyPages?: 0 | 1
+    includeFuturePublishAt?: 0 | 1
+    includeExternalUrl?: 0 | 1
     /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
     createdAtSince?: string
     /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
     updatedAtSince?: string
     /** DateTime formatted as YYYY-MM-DDTHH:mm:SS */
     publishAtSince?: string
-    order?: GetChaptersOrder
-    includes?: Includes[]
+    order?: GetChapterOrder
+    includes?: ReferenceExpansionChapter
 };
 
 /** Response from `GET /chapter` */
-export type GetChaptersResponse = ChapterList;
+export type GetChapterResponse = ChapterList;
 
 /** Request parameters for `GET /chapter/{id}` */
 export type GetChapterIdRequestOptions = {
-    includes?: Includes[]
+    includes?: ReferenceExpansionChapter
 };
 
 /** Response from `GET /chapter/{id}` */
 export type GetChapterIdResponse = ChapterResponse;
 
-/** Request parameters for `GET /at-home/server/{chapterId}` */
-export type GetAtHomeServerChapterIdRequestOptions = {
-    /**
-     * Force selecting from MangaDex@Home servers that use the standard HTTPS port 443.
-     * 
-     * While the conventional port for HTTPS traffic is 443 and servers are encouraged to
-     * use it, it is not a hard requirement as it technically isn't anything special.
-     * 
-     * However, some misbehaving school/office network will at time block traffic to
-     * non-standard ports, and setting this flag to `true` will ensure selection of a
-     * server that uses these.
-     */
-    forcePort443?: boolean
-};
+/** Request parameters for `PUT /chapter/{id}` */
+export type PutChapterIdRequestOptions = ChapterEdit;
 
-/** Response from `GET /at-home/server/{chapterId}` */
-export type GetAtHomeServerChapterIdResponse = {
-    /** Default: "ok" */
-    result: string
-    /**
-     * The base URL to construct final image URLs from.
-     * 
-     * The URL returned is valid for the requested chapter only, and for a duration of
-     * 15 minutes from the time of the response.
-     */
-    baseUrl: string
-    chapter: {
-        hash: string
-        data: string[]
-        dataSaver: string[]
-    }
-};
+/** Response from `PUT /chapter/{id}` */
+export type PutChapterIdResponse = ChapterResponse;
 
 /***********************
  * FUNCTION DEFINITIONS
@@ -121,24 +98,24 @@ export type GetAtHomeServerChapterIdResponse = {
 /**
  * Gets a list of chapters based on search options.
  * 
- * @param {GetChaptersRequestOptions} [options] See {@link GetChaptersRequestOptions}
- * @returns A promise that resolves to a {@link GetChaptersResponse} object.
- * Will return a {@link ErrorResponse} object on error.
+ * @param {GetChapterRequestOptions} [options] See {@link GetChapterRequestOptions}
+ * @returns A promise that resolves to a {@link GetChapterResponse} object.
+ * Can also reject to an {@link ErrorResponse} object.
  */
-export const getChapters = function (options?: GetChaptersRequestOptions) {
+export const getChapter = function (options?: GetChapterRequestOptions) {
     const qs = util.buildQueryStringFromOptions(options);
     const path = `/chapter${qs}`;
 
-    return util.createHttpsRequestPromise<GetChaptersResponse>('GET', path);
+    return util.createHttpsRequestPromise<GetChapterResponse>('GET', path);
 };
 
 /**
- * Gets information about a specific 
+ * Gets information about a specific manga chapter.
  * 
  * @param {string} id UUID formatted string
  * @param {GetChapterIdRequestOptions} [options] See {@link GetChapterIdRequestOptions}
  * @returns A promise that resolves to a {@link GetChapterIdResponse} object.
- * Will resolve to a {@link ErrorResponse} object on error.
+ * Can also reject to an {@link ErrorResponse} object.
  */
 export const getChapterId = function (id: string, options?: GetChapterIdRequestOptions) {
     if (id === undefined) {
@@ -153,28 +130,42 @@ export const getChapterId = function (id: string, options?: GetChapterIdRequestO
     return util.createHttpsRequestPromise<GetChapterIdResponse>('GET', path);
 };
 
-// Kenjugs (06/23/2022) TODO: Implement functionality for `PUT /chapter/{id}`
-// export const updateChapterId = function (token, id, options) { };
+/**
+ * Update a chapter by ID.
+ * 
+ * @param {string} id UUID formatted string
+ * @param {PutChapterIdRequestOptions} options See {@link PutChapterIdRequestOptions}
+ * @param {AuthenticationToken} token See {@link AuthenticationToken}
+ * @returns A promise that resolves to a {@link PutChapterIdResponse} object.
+ * Can also reject to an {@link ErrorResponse} object.
+ */
+export const putChapterId = function (id: string, options: PutChapterIdRequestOptions, token: AuthenticationToken) {
+    if (id === undefined) {
+        return Promise.reject('ERROR - putChapterId: Parameter `id` cannot be undefined');
+    } else if (id === '') {
+        return Promise.reject('ERROR - putChapterId: Parameter `id` cannot be blank');
+    } else if (options === undefined) {
+        return Promise.reject('ERROR - putChapterId: Parameter `options` cannot be undefined');
+    } else if (!('version' in options)) {
+        return Promise.reject('ERROR - putChapterId: Parameter `options` missing required property `version`');
+    }
+
+    const req = {
+        body: options,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    const path = `/chapter/${id}`;
+
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token, req);
+        return util.createHttpsRequestPromise<PutChapterIdResponse>('PUT', path, httpsRequestOptions);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
 
 // Kenjugs (06/23/2022) TODO: Implement functionality for `DELETE /chapter/{id}`
 // export const deleteChapterId = function (token, id, options) { };
-
-/**
- * Get MangaDex@Home server URL.
- * 
- * @param {string} chapterId UUID formatted string
- * @param {GetAtHomeServerChapterIdRequestOptions} [options] See {@link GetAtHomeServerChapterIdRequestOptions}
- * @returns A promise that resolves to a {@link GetAtHomeServerChapterIdResponse} object
- */
-export const getAtHomeServerChapterId = function (chapterId: string, options?: GetAtHomeServerChapterIdRequestOptions) {
-    if (chapterId === undefined) {
-        return Promise.reject('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be undefined');
-    } else if (chapterId === '') {
-        return Promise.reject('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be blank');
-    }
-    
-    const qs = util.buildQueryStringFromOptions(options);
-    const path = `/at-home/server/${chapterId}${qs}`;
-
-    return util.createHttpsRequestPromise<GetAtHomeServerChapterIdResponse>('GET', path);
-};

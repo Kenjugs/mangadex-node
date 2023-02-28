@@ -1,12 +1,12 @@
 const util = require('../lib/util');
 const chapter = require('../lib/chapter');
 
-test('test getChapters with no parameters', () => {
+test('test getChapter with no parameters', () => {
     const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
         return Promise.resolve({ result: 'ok' });
     });
 
-    const p = chapter.getChapters().then((res) => {
+    const p = chapter.getChapter().then((res) => {
         expect(res).toEqual({ result: 'ok' });
     });
 
@@ -15,12 +15,12 @@ test('test getChapters with no parameters', () => {
     spy.mockRestore();
 });
 
-test('test getChapters with non-blank parameters', () => {
+test('test getChapter with non-blank parameters', () => {
     const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
         return Promise.resolve({ result: 'ok' });
     });
 
-    const p = chapter.getChapters({ limit: 5, translatedLanguage: ['en'], volume: ['1', '2'] }).then((res) => {
+    const p = chapter.getChapter({ limit: 5, translatedLanguage: ['en'], volume: ['1', '2'] }).then((res) => {
         expect(res).toEqual({ result: 'ok' });
     });
 
@@ -61,33 +61,58 @@ test('test getChapterId with valid parameters', () => {
     spy.mockRestore();
 });
 
-test('test getAtHomeServerChapterId with blank parameters', () => {
-    const p = chapter.getAtHomeServerChapterId().catch(r => {
-        expect(r).toBe('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be undefined');
+test('test putChapterId with no parameters', () => {
+    const p = chapter.putChapterId().catch(r => {
+        expect(r).toBe('ERROR - putChapterId: Parameter `id` cannot be undefined');
     });
 
     expect(p).toBeInstanceOf(Promise);
 });
 
-test('test getAtHomeServerChapterId with invalid parameters', () => {
-    const p = chapter.getAtHomeServerChapterId('',{}).catch(r => {
-        expect(r).toBe('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be blank');
+test('test putChapterId with invalid id', () => {
+    const p = chapter.putChapterId('').catch(r => {
+        expect(r).toBe('ERROR - putChapterId: Parameter `id` cannot be blank');
     });
 
     expect(p).toBeInstanceOf(Promise);
 });
 
-test('test getAtHomeServerChapterId with valid parameters', () => {
+test('test putChapterId with no options', () => {
+    const p = chapter.putChapterId('test').catch(r => {
+        expect(r).toBe('ERROR - putChapterId: Parameter `options` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test putChapterId with invalid options', () => {
+    const p = chapter.putChapterId('test', { title: 'new title' }).catch(r => {
+        expect(r).toBe('ERROR - putChapterId: Parameter `options` missing required property `version`');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test putChapterId with missing token', () => {
+    const p = chapter.putChapterId('test', { title: 'new title', version: '2' }).catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test putChapterId with valid parameters', () => {
     const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
         return Promise.resolve({ result: 'ok' });
     });
 
-    const p = chapter.getAtHomeServerChapterId('test-id', { forcePort443: true }).then(res => {
+    const p = chapter.putChapterId('test', { title: 'new title', version: '2' }, { session: 'session' }).then(res => {
         expect(res).toEqual({ result: 'ok' });
     });
 
     expect(p).toBeInstanceOf(Promise);
-    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('GET', '/at-home/server/test-id?forcePort443=true');
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('PUT', '/chapter/test', { body: { title: 'new title', version: '2' }, headers: { Authorization: 'Bearer session', 'Content-Type': 'application/json' } });
 
     spy.mockRestore();
 });
