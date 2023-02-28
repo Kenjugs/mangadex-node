@@ -116,3 +116,43 @@ test('test putChapterId with valid parameters', () => {
 
     spy.mockRestore();
 });
+
+test('test deleteChapterId with no parameters', () => {
+    const p = chapter.deleteChapterId().catch(r => {
+        expect(r).toBe('ERROR - deleteChapterId: Parameter `id` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test deleteChapterId with invalid id', () => {
+    const p = chapter.deleteChapterId('').catch(r => {
+        expect(r).toBe('ERROR - deleteChapterId: Parameter `id` cannot be blank');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test deleteChapterId with missing token', () => {
+    const p = chapter.deleteChapterId('test').catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test deleteChapterId with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = chapter.deleteChapterId('test', { session: 'session' }).then(res => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('DELETE', '/chapter/test', { headers: { Authorization: 'Bearer session' } });
+
+    spy.mockRestore();
+});

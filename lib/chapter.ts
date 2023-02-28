@@ -4,7 +4,7 @@
 
 import type { AuthenticationToken } from './authentication';
 import type { MangaContentRating } from './manga';
-import type { ChapterList, ChapterResponse, ReferenceExpansionChapter, ErrorResponse, ChapterEdit } from './schema';
+import type { ChapterList, ChapterResponse, ReferenceExpansionChapter, ErrorResponse, ChapterEdit, Response } from './schema';
 import type { Order } from './static';
 import * as util from './util';
 
@@ -91,6 +91,9 @@ export type PutChapterIdRequestOptions = ChapterEdit;
 /** Response from `PUT /chapter/{id}` */
 export type PutChapterIdResponse = ChapterResponse;
 
+/** Response from `DELETE /chapter/{id}` */
+export type DeleteChapterIdResponse = Response;
+
 /***********************
  * FUNCTION DEFINITIONS
  ***********************/
@@ -167,5 +170,27 @@ export const putChapterId = function (id: string, options: PutChapterIdRequestOp
     }
 };
 
-// Kenjugs (06/23/2022) TODO: Implement functionality for `DELETE /chapter/{id}`
-// export const deleteChapterId = function (token, id, options) { };
+/**
+ * Delete a chapter by ID.
+ * 
+ * @param {string} id UUID formatted string
+ * @param {AuthenticationToken} token See {@link AuthenticationToken}
+ * @returns A promise that resolves to a {@link DeleteChapterIdResponse} object.
+ * Can also reject to an {@link ErrorResponse} object.
+ */
+export const deleteChapterId = function (id: string, token: AuthenticationToken) {
+    if (id === undefined) {
+        return Promise.reject('ERROR - deleteChapterId: Parameter `id` cannot be undefined');
+    } else if (id === '') {
+        return Promise.reject('ERROR - deleteChapterId: Parameter `id` cannot be blank');
+    }
+
+    const path = `/chapter/${id}`;
+
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<DeleteChapterIdResponse>('DELETE', path, httpsRequestOptions);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
