@@ -1,7 +1,8 @@
 const util = require('../lib/util');
+const atHome = require('../lib/atHome');
 
 test('test getAtHomeServerChapterId with blank parameters', () => {
-    const p = chapter.getAtHomeServerChapterId().catch(r => {
+    const p = atHome.getAtHomeServerChapterId().catch(r => {
         expect(r).toBe('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be undefined');
     });
 
@@ -9,7 +10,7 @@ test('test getAtHomeServerChapterId with blank parameters', () => {
 });
 
 test('test getAtHomeServerChapterId with invalid parameters', () => {
-    const p = chapter.getAtHomeServerChapterId('',{}).catch(r => {
+    const p = atHome.getAtHomeServerChapterId('',{}).catch(r => {
         expect(r).toBe('ERROR - getAtHomeServerChapterId: Parameter `chapterId` cannot be blank');
     });
 
@@ -21,7 +22,7 @@ test('test getAtHomeServerChapterId with valid parameters', () => {
         return Promise.resolve({ result: 'ok' });
     });
 
-    const p = chapter.getAtHomeServerChapterId('test-id', { forcePort443: true }).then(res => {
+    const p = atHome.getAtHomeServerChapterId('test-id', { forcePort443: true }).then(res => {
         expect(res).toEqual({ result: 'ok' });
     });
 
