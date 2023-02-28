@@ -141,7 +141,7 @@ export type ChapterAttributes = {
     /** ```console
      * Maximum length: 255
      * ``` */
-    title: string
+    title: string | null
     volume: string | null
     /** ```console
      * Maximum length: 8
@@ -182,6 +182,8 @@ export type MangaAttributes = {
     contentRating: 'safe' | 'suggestive' | 'erotica' | 'pornographic'
     chapterNumbersResetOnNewVolume: boolean
     availableTranslatedLanguages: any[]
+    /** UUID formatted string */
+    latestUploadedChapter: string
     tags: Tag[]
     state: 'draft' | 'submitted' | 'published' | 'rejected'
     /** ```console
@@ -617,7 +619,7 @@ export type Tag = {
 export type TagAttributes = {
     name: LocalizedString
     description: LocalizedString
-    group: string
+    group: 'content' | 'format' | 'genre' | 'theme'
     /** ```console
      * Minimum: 1
      * ``` */
@@ -944,4 +946,61 @@ export type ReportAttributes = {
     createdAt: string
 };
 
-export type ReferenceExpansion = ('manga' | 'chapter' | 'cover_art' | 'author' | 'artist' | 'scanlation_group' | 'tag' | 'user' | 'custom_list')[]
+export type ForumsThreadResponse = {
+    /** Default: "ok" */
+    result: string
+    /** Default: "entity" */
+    response: string
+    data: {
+        /** Default: "thread" */
+        type: string
+        /** The id for the thread on the forums, accessible at https://forums.mangadex.org/threads/:id */
+        id: number
+        attributes: {
+            /** The number of replies so far in the forums thread returned */
+            repliesCount: number
+        }
+    }
+};
+
+/** Reference expansion options for author/artist entities or lists */
+export type ReferenceExpansionAuthor = ('manga')[];
+
+/** Reference expansion options for chapter entities or lists */
+export type ReferenceExpansionChapter = ('manga' | 'scanlation_group' | 'user')[];
+
+/** Reference expansion options for cover art entities or lists */
+export type ReferenceExpansionCoverArt = ('manga' | 'user')[];
+
+/** Reference expansion options for manga entities or lists */
+export type ReferenceExpansionManga = ('manga' | 'cover_art' | 'author' | 'artist' | 'tag')[];
+
+/** Reference expansion options for manga relation entities or lists */
+export type ReferenceExpansionMangaRelation = ('manga')[];
+
+/** Reference expansion options for user report entities or lists */
+export type ReferenceExpansionReport = ('user' | 'reason')[];
+
+/** Reference expansion options for scanlation group entities or lists */
+export type ReferenceExpansionScanlationGroup = ('leader' | 'member')[];
+
+/** Comments-related statistics of an entity. If it is `null`, the entity doesn't have a backing comments thread, and therefore has no comments yet. */
+export type StatisticsDetailsComments = {
+    /**
+     * The id of the thread backing the comments for that entity on the MangaDex Forums.
+     * 
+     * ```console
+     * Minimum: 1
+     * ```
+     */
+    threadId: number
+    /**
+     * The number of replies on the MangaDex Forums thread backing this entity's comments.
+     * This excludes the initial comment that opens the thread, which is created by our systems.
+     * 
+     * ```console
+     * Minimum: 0
+     * ```
+     */
+    repliesCount: number
+} | null;
