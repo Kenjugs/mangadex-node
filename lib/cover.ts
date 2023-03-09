@@ -2,7 +2,8 @@
  * IMPORT STATEMENTS
  ********************/
 
-import { CoverList, CoverResponse, ErrorResponse } from './schema';
+import { AuthenticationToken } from './authentication';
+import { CoverEdit, CoverList, CoverResponse, ErrorResponse, ReferenceExpansionCoverArt } from './schema';
 import { Order } from './static';
 import * as util from './util';
 
@@ -58,7 +59,7 @@ export type GetCoverRequestOptions = {
      */
     locales?: string[]
     order?: GetCoverOrder
-    includes?: string[]
+    includes?: ReferenceExpansionCoverArt
 };
 
 /** Response from `GET /cover` */
@@ -66,11 +67,17 @@ export type GetCoverResponse = CoverList;
 
 /** Request parameters for `GET /cover/{mangaOrCoverId}` */
 export type GetCoverIdRequestOptions = {
-    includes?: string[]
+    includes?: ReferenceExpansionCoverArt
 };
 
 /** Response from `GET /cover/{mangaOrCoverId}` */
 export type GetCoverIdResponse = CoverResponse;
+
+/** Request parameters for `PUT /cover/{mangaOrCoverId}` */
+export type EditCoverRequestOptions = CoverEdit;
+
+/** Response from `PUT /cover/{mangaOrCoverId}` */
+export type EditCoverResponse = CoverResponse;
 
 /***********************
  * FUNCTION DEFINITIONS
@@ -81,7 +88,7 @@ export type GetCoverIdResponse = CoverResponse;
  * 
  * @param {GetCoverRequestOptions} [options] See {@link GetCoverRequestOptions}
  * @returns A promise that resolves to a {@link GetCoverResponse} object.
- * Will resolve to a {@link ErrorResponse} object on error.
+ * Can also resolve to an {@link ErrorResponse} object.
  */
 export const getCover = function (options?: GetCoverRequestOptions) {
     const qs = util.buildQueryStringFromOptions(options);
@@ -96,7 +103,7 @@ export const getCover = function (options?: GetCoverRequestOptions) {
  * @param {string} id UUID formatted string.
  * @param {GetCoverIdRequestOptions} [options] See {@link GetCoverIdRequestOptions}
  * @returns A promise that resolves to a {@link GetCoverIdResponse} object.
- * Will resolve to a {@link ErrorResponse} object on error.
+ * Can also reject to an {@link ErrorResponse} object.
  */
 export const getCoverId = function (id: string, options?: GetCoverIdRequestOptions) {
     if (id === undefined) {
@@ -109,4 +116,36 @@ export const getCoverId = function (id: string, options?: GetCoverIdRequestOptio
     const path = `/cover/${id}${qs}`;
 
     return util.createHttpsRequestPromise<GetCoverIdResponse>('GET', path);
+};
+
+/**
+ * Edit a manga's cover art metadata
+ * 
+ * @param {string} id UUID formatted string
+ * @param {EditCoverRequestOptions} options See {@link EditCoverRequestOptions}
+ * @returns A promise that resolves to an {@link EditCoverResponse} object.
+ * Can also reject to an {@link ErrorResponse} object.
+ */
+export const editCover = function (id: string, options: EditCoverRequestOptions, token: AuthenticationToken) {
+    if (id === undefined) {
+        return Promise.reject('ERROR - editCover: Parameter `id` cannot be undefined');
+    } else if (id === '') {
+        return Promise.reject('ERROR - editCover: Parameter `id` cannot be blank');
+    }
+
+    const req = {
+        body: options,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    const path = `/cover/${id}`;
+
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token, req);
+        return util.createHttpsRequestPromise('PUT', path, httpsRequestOptions);
+    } catch (error) {
+        return Promise.reject(error);
+    }
 };
