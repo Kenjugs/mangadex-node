@@ -1,4 +1,5 @@
 [![Kenjugs](https://dl.circleci.com/status-badge/img/gh/Kenjugs/mangadex-node/tree/main.svg?style=svg&circle-token=ff5f3b7d1d203386a31b9fba946496865c3c02c9)](https://dl.circleci.com/status-badge/redirect/gh/Kenjugs/mangadex-node/tree/main)
+[![Coverage Status](https://coveralls.io/repos/github/Kenjugs/mangadex-node/badge.svg?branch=main)](https://coveralls.io/github/Kenjugs/mangadex-node?branch=main)
 
 Low-level Mangadex v5 API Node Library
 
