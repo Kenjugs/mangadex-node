@@ -24,7 +24,6 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./coverage
       - codecov/upload:
-          file: ./coverage/clover.xml
           token: CODECOV_TOKEN
 
 # Invoke jobs via workflows
