@@ -101,3 +101,43 @@ test('test editCover with valid parameters', () => {
 
     spy.mockRestore();
 });
+
+test('test deleteCover with no parameters', () => {
+    const p = cover.deleteCover().catch(r => {
+        expect(r).toBe('ERROR - deleteCover: Parameter `id` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test deleteCover with invalid id', () => {
+    const p = cover.deleteCover('').catch(r => {
+        expect(r).toBe('ERROR - deleteCover: Parameter `id` cannot be blank');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test deleteCover with no token', () => {
+    const p = cover.deleteCover('test-id').catch(r => {
+        expect(r).toBeInstanceOf(Error);
+        expect(r.message).toBe('ERROR - addTokenAuthorization: Parameter `token` cannot be undefined');
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+});
+
+test('test deleteCover with valid parameters', () => {
+    const spy = jest.spyOn(util, 'createHttpsRequestPromise').mockImplementation((m, p, o) => {
+        return Promise.resolve({ result: 'ok' });
+    });
+
+    const p = cover.deleteCover('test-id', { session: 'test-session' }).then(res => {
+        expect(res).toEqual({ result: 'ok' });
+    });
+
+    expect(p).toBeInstanceOf(Promise);
+    expect(util.createHttpsRequestPromise).toHaveBeenCalledWith('DELETE', '/cover/test-id', { headers: { Authorization: 'Bearer test-session' } });
+
+    spy.mockRestore();
+});

@@ -3,7 +3,7 @@
  ********************/
 
 import { AuthenticationToken } from './authentication';
-import { CoverEdit, CoverList, CoverResponse, ErrorResponse, ReferenceExpansionCoverArt } from './schema';
+import { CoverEdit, CoverList, CoverResponse, ErrorResponse, ReferenceExpansionCoverArt, Response } from './schema';
 import { Order } from './static';
 import * as util from './util';
 
@@ -79,6 +79,9 @@ export type EditCoverRequestOptions = CoverEdit;
 /** Response from `PUT /cover/{mangaOrCoverId}` */
 export type EditCoverResponse = CoverResponse;
 
+/** Response from `DELETE /cover/{mangaOrCoverId}` */
+export type DeleteCoverResponse = Response;
+
 /***********************
  * FUNCTION DEFINITIONS
  ***********************/
@@ -98,7 +101,7 @@ export const getCover = function (options?: GetCoverRequestOptions) {
 };
 
 /**
- * Get manga cover by ID
+ * Get manga cover art by ID.
  * 
  * @param {string} id UUID formatted string.
  * @param {GetCoverIdRequestOptions} [options] See {@link GetCoverIdRequestOptions}
@@ -119,7 +122,7 @@ export const getCoverId = function (id: string, options?: GetCoverIdRequestOptio
 };
 
 /**
- * Edit a manga's cover art metadata
+ * Edit cover art metadata by ID.
  * 
  * @param {string} id UUID formatted string
  * @param {EditCoverRequestOptions} options See {@link EditCoverRequestOptions}
@@ -144,7 +147,32 @@ export const editCover = function (id: string, options: EditCoverRequestOptions,
 
     try {
         const httpsRequestOptions = util.addTokenAuthorization(token, req);
-        return util.createHttpsRequestPromise('PUT', path, httpsRequestOptions);
+        return util.createHttpsRequestPromise<EditCoverResponse>('PUT', path, httpsRequestOptions);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+/**
+ * Delete cover art by ID.
+ * 
+ * @param {string} id UUID formatted string
+ * @param {AuthenticationToken} token See {@link AuthenticationToken}
+ * @returns A promise that resolves to a {@link DeleteCoverResponse} object.
+ * Can also reject to an {@link ErrorResponse} object.
+ */
+export const deleteCover = function (id: string, token: AuthenticationToken) {
+    if (id === undefined) {
+        return Promise.reject('ERROR - deleteCover: Parameter `id` cannot be undefined');
+    } else if (id === '') {
+        return Promise.reject('ERROR - deleteCover: Parameter `id` cannot be blank');
+    }
+
+    const path = `/cover/${id}`;
+
+    try {
+        const httpsRequestOptions = util.addTokenAuthorization(token);
+        return util.createHttpsRequestPromise<DeleteCoverResponse>('DELETE', path, httpsRequestOptions);
     } catch (error) {
         return Promise.reject(error);
     }
