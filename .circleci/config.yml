@@ -26,7 +26,7 @@ jobs:
       - store_test_results:
           path: coverage
       - codecov/upload:
-          file: ./coverage/coverage-final.json
+          file: ./coverage/clover.xml
           token: CODECOV_TOKEN
 
 # Invoke jobs via workflows
