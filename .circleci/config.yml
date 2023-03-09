@@ -16,9 +16,23 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm install && make test-coverage
-          name: Install JUnit coverage reporter
-      - coveralls/upload
+          name: Install jest packages
+          command: npm install --save-dev jest-junit ts-node ts-jest
+      - run:
+          name: Create coverage files
+          command: npx jest --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+              JEST_JUNIT_OUTPUT_DIR: ./coverage
+      - coveralls/upload:
+          parallel: true
+          flag_name: Test 1
+          verbose: true
+  done:
+      executor: node/default
+      steps:
+          - coveralls/upload:
+              parallel_finished: true
+              carryforward: "Test 1"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -26,3 +40,5 @@ workflows:
   coveralls-workflow:
     jobs:
       - run-tests
+      - done:
+          requires: [run-tests]
